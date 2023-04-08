@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/YekanBakh-Black.otf",
+      "sha1": "c8267eebc302ac51a7458da77102c99b8037961c"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-Bold.otf",
+      "sha1": "e6da0b98832cde9e8247c0e4e6c13cb03914e1d8"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-ExtraBlack.otf",
+      "sha1": "38ab48a0629e4bc6ec074b870d41caef485e1d52"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-ExtraBold.otf",
+      "sha1": "5ed3b20ada08b540a925f9300bf68d6fea2caee5"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-Light.otf",
+      "sha1": "310a5c25cb61f2c6d8a489ebd39334fdbc261320"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-Regular.otf",
+      "sha1": "909007436a036caaeb3644dfa820ebdf9a466c81"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-SemiBold.otf",
+      "sha1": "2ba001130424c80a4bd2cb7662ecf56066f1adf5"
+    },
+    {
+      "path": "src/assets/fonts/YekanBakh-Thin.otf",
+      "sha1": "a6777fd20766e027557e7f9c3c27db68bfeb9244"
+    }
+  ]
+}
