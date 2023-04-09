@@ -17,36 +17,37 @@ const subCategories = [
 const AdvertisingCategoryScreen = () => {
     return (
         <CreateAdvertisingLayout>
-            <VStack h={"full"} justifyContent={"flex-start"}>
-                <ScrollView automaticallyAdjustKeyboardInsets={true} px={6} pt={4} flexGrow={0}>
-                    <Heading size={"md"}>انتخاب دسته بندی</Heading>
-                    <Text color={"gray.400"} fontSize={"md"} fontWeight={"500"}>
-                        لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
-                    </Text>
-                    <Input
-                        placeholderTextColor={"gray.300"}
-                        placeholder={"نام یک دسته بندی را وارد کنید"}
-                        rightElement={<Box pr={4}><SearchNormal1 color="black" size={20}/></Box>}
-                        borderWidth={0}
-                        fontWeight={"500"}
-                        textAlign={"right"}
-                        fontSize={"md"}
-                        variant={"rounded"}
-                        shadow={2}
-                        _focus={{bg: "white"}}
-                        bg={"white"}
-                        mt={6}
-                        pl={4}
-                        h={"14"}
-                        m={1}
-                    />
+            <ScrollView px={6} pt={4} h={"full"}
+                        _contentContainerStyle={{minH: "full", pb: 4}}
+            >
+                <Heading size={"md"}>انتخاب دسته بندی</Heading>
+                <Text color={"gray.400"} fontSize={"md"} fontWeight={"500"}>
+                    لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
+                </Text>
+                <Input
+                    placeholderTextColor={"gray.300"}
+                    placeholder={"نام یک دسته بندی را وارد کنید"}
+                    rightElement={<Box pr={4}><SearchNormal1 color="black" size={20}/></Box>}
+                    borderWidth={0}
+                    fontWeight={"500"}
+                    textAlign={"right"}
+                    fontSize={"md"}
+                    variant={"rounded"}
+                    shadow={2}
+                    _focus={{bg: "white"}}
+                    bg={"white"}
+                    mt={6}
+                    pl={4}
+                    h={"14"}
+                    m={1}
+                />
 
-                </ScrollView>
                 <ScrollView
                     showsHorizontalScrollIndicator={false}
                     _contentContainerStyle={{py: 1}}
-                    flexGrow={0}
+                    nestedScrollEnabled
                     horizontal
+                    flexGrow={0}
                     mt={6}
                 >
                     {
@@ -70,8 +71,9 @@ const AdvertisingCategoryScreen = () => {
                 <ScrollView
                     showsHorizontalScrollIndicator={false}
                     _contentContainerStyle={{py: 1}}
-                    flexGrow={0}
+                    nestedScrollEnabled
                     horizontal
+                    flexGrow={0}
                     mt={4}
                 >
                     {
@@ -92,7 +94,8 @@ const AdvertisingCategoryScreen = () => {
                         )
                     }
                 </ScrollView>
-                <VStack flex={1} justifyContent={"flex-end"} px={6} mb={4} flexGrow={1}>
+
+                <VStack justifyContent={"flex-end"} px={6} mb={4} flexGrow={1}>
                     <HStack bg={"white"} shadow={5} rounded={"3xl"} justifyContent={"flex-end"} px={4} py="12px">
                         <Text bold fontSize={"md"}>خودروی سواری</Text>
                         <Text bold fontSize={"md"}>/</Text>
@@ -100,7 +103,9 @@ const AdvertisingCategoryScreen = () => {
                         <Menu variant={"TwoTone"} color={"black"} size={24} rotation={90}/>
                     </HStack>
                 </VStack>
-            </VStack>
+
+            </ScrollView>
+
 
         </CreateAdvertisingLayout>
     )

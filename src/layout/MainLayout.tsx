@@ -1,5 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import {HStack, IconButton, Stack, useTheme, VStack} from "native-base";
+import {HStack, IconButton, ScrollView, Stack, useTheme} from "native-base";
 import {StyleSheet} from "react-native";
 import {Add, Home2, MessageMinus, Note} from "iconsax-react-native";
 import {TabItem} from "~/components";
@@ -18,7 +18,7 @@ const MainLayout: FC<Props> = ({children, bg = "orange.600"}) => {
     const navigation = useNavigation();
     const route = useRoute();
     return (
-        <VStack justifyContent={"space-between"} h="full" bg={bg}>
+        <ScrollView h="full" bg={bg} _contentContainerStyle={{minH: "full"}}>
             <Stack flex={1}>
                 {children}
             </Stack>
@@ -38,7 +38,7 @@ const MainLayout: FC<Props> = ({children, bg = "orange.600"}) => {
                 }
 
             </HStack>
-        </VStack>
+        </ScrollView>
     )
         ;
 };

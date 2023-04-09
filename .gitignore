@@ -147,3 +147,4 @@ package-lock.json
 
 .idea
 .idea/*
+*.jks
