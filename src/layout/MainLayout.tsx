@@ -4,10 +4,19 @@ import {StyleSheet} from "react-native";
 import {Add, Home2, MessageMinus, Note} from "iconsax-react-native";
 import {TabItem} from "~/components";
 import {ColorType} from "native-base/lib/typescript/components/types";
+import {useNavigation, useRoute} from "@react-navigation/native";
 
 type Props = { children: ReactNode, bg?: ColorType };
+
+const items = [
+    {name: "chat", Icon: MessageMinus},
+    {name: "note", Icon: Note},
+    {name: "dashboardScreen", Icon: Home2},
+];
 const MainLayout: FC<Props> = ({children, bg = "orange.600"}) => {
     const {colors} = useTheme();
+    const navigation = useNavigation();
+    const route = useRoute();
     return (
         <VStack justifyContent={"space-between"} h="full" bg={bg}>
             <Stack flex={1}>
@@ -16,16 +25,22 @@ const MainLayout: FC<Props> = ({children, bg = "orange.600"}) => {
             <HStack h={"28"} w={"full"} shadow={9} roundedTop={"3xl"} bg={"white"} alignItems={"center"} px={"8"}
                     justifyContent={"space-between"}>
                 <IconButton icon={<Add color={colors.black} size={28}/>} rounded={"full"} bg={"orange.600"} h={"14"}
-                            w={"14"}/>
-                <IconButton icon={<MessageMinus color={colors.gray["400"]} size={28}/>} rounded={"full"} h={"14"}
-                            w={"14"}/>
-                <IconButton icon={<Note color={colors.gray["400"]} size={28}/>} rounded={"full"} h={"14"} w={"14"}/>
-                <TabItem active>
-                    <IconButton icon={<Home2 color={colors.black} size={28}/>} rounded={"full"} h={"14"} w={"14"}/>
-                </TabItem>
+                            w={"14"} onPress={() => navigation.navigate("createAdvertisingCategoryScreen")}/>
+                {
+                    items.map(({name, Icon}) => (
+                        <TabItem active={route.name === name} key={name}>
+                            <IconButton
+                                icon={<Icon color={route.name === name ? "black" : colors.gray["400"]} size={28}/>}
+                                rounded={"full"} h={"14"}
+                                w={"14"}/>
+                        </TabItem>
+                    ))
+                }
+
             </HStack>
         </VStack>
-    );
+    )
+        ;
 };
 
 export default MainLayout;

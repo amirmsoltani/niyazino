@@ -24,7 +24,7 @@ type Props = StackScreenProps<RootParamList, "dashboardScreen">;
 const DashboardScreen: FC<Props> = () => {
     const {colors} = useTheme()
     return (
-        <MainLayout bg={"cyan.50"}>
+        <MainLayout bg={"coolGray.100"}>
             <VStack safeArea bg={"orange.600"} flex={1}>
                 <StatusBar backgroundColor={colors.orange["600"]}/>
                 <HStack mt={8} ml={8}>
@@ -68,7 +68,7 @@ const DashboardScreen: FC<Props> = () => {
 
             </VStack>
             <Stack bg={"orange.600"}>
-                <VStack alignSelf={"flex-end"} bg={"cyan.50"} w={"full"} roundedTop={"3xl"} px={8}>
+                <VStack alignSelf={"flex-end"} bg={"coolGray.100"} w={"full"} roundedTop={"3xl"} px={8}>
                     <Center><Badge colorScheme={"warmGray"} rounded={"full"} pt={"2px"} pb={0} px={8}
                                    variant={"solid"} mt={4} mb={8} opacity={.5}/></Center>
                     <Heading size={"md"}>نیازینو چیه و به چه دردی میخوره؟</Heading>
