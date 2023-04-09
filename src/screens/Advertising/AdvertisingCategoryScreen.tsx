@@ -1,6 +1,6 @@
 import React from 'react';
 import {CreateAdvertisingLayout} from "~/layout";
-import {Box, Button, Heading, HStack, Input, ScrollView, Text, VStack} from "native-base";
+import {Box, Button, Heading, HStack, Input, ScrollView, Stack, Text, VStack} from "native-base";
 import {Menu, SearchNormal1} from "iconsax-react-native";
 
 const categorise = [
@@ -17,30 +17,32 @@ const subCategories = [
 const AdvertisingCategoryScreen = () => {
     return (
         <CreateAdvertisingLayout>
-            <ScrollView px={6} pt={4} h={"full"}
+            <ScrollView pt={4} h={"full"}
                         _contentContainerStyle={{minH: "full", pb: 4}}
             >
-                <Heading size={"md"}>انتخاب دسته بندی</Heading>
-                <Text color={"gray.400"} fontSize={"md"} fontWeight={"500"}>
-                    لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
-                </Text>
-                <Input
-                    placeholderTextColor={"gray.300"}
-                    placeholder={"نام یک دسته بندی را وارد کنید"}
-                    rightElement={<Box pr={4}><SearchNormal1 color="black" size={20}/></Box>}
-                    borderWidth={0}
-                    fontWeight={"500"}
-                    textAlign={"right"}
-                    fontSize={"md"}
-                    variant={"rounded"}
-                    shadow={2}
-                    _focus={{bg: "white"}}
-                    bg={"white"}
-                    mt={6}
-                    pl={4}
-                    h={"14"}
-                    m={1}
-                />
+                <Stack px={6}>
+                    <Heading size={"md"}>انتخاب دسته بندی</Heading>
+                    <Text color={"gray.400"} fontSize={"md"} fontWeight={"500"}>
+                        لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
+                    </Text>
+                    <Input
+                        placeholderTextColor={"gray.300"}
+                        placeholder={"نام یک دسته بندی را وارد کنید"}
+                        rightElement={<Box pr={4}><SearchNormal1 color="black" size={20}/></Box>}
+                        borderWidth={0}
+                        fontWeight={"500"}
+                        textAlign={"right"}
+                        fontSize={"md"}
+                        variant={"rounded"}
+                        shadow={2}
+                        _focus={{bg: "white"}}
+                        bg={"white"}
+                        mt={6}
+                        pl={4}
+                        h={"14"}
+                        m={1}
+                    />
+                </Stack>
 
                 <ScrollView
                     showsHorizontalScrollIndicator={false}
