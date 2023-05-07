@@ -1,8 +1,8 @@
 export type RootParamList = {
-    welcomeScreen: undefined;
-    dashboardScreen: undefined;
-    createAdvertisingCategoryScreen: undefined;
-    createAdvertisingTitleScreen: undefined;
-    createAdvertisingDescriptionScreen: undefined;
-    createAdvertisingAuthorizeScreen: undefined;
-}
+  welcomeScreen: undefined;
+  dashboardScreen: undefined;
+  createAdvertisingCategoryScreen: undefined;
+  createAdvertisingTitleScreen: undefined;
+  createAdvertisingSpecificationsScreen: undefined;
+  createAdvertisingAuthorizeScreen: undefined;
+};
