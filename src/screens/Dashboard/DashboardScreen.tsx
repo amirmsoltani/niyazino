@@ -1,98 +1,164 @@
-import {FC} from 'react';
-import {StackScreenProps} from "@react-navigation/stack";
-import {RootParamList} from "~/screens/type";
+import {FC, useRef} from 'react';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootParamList} from '~/screens/type';
 import {
-    Badge,
-    Button,
-    Center,
-    Heading,
-    HStack,
-    IconButton,
-    Image,
-    Input,
-    ScrollView,
-    Stack,
-    StatusBar,
-    Text,
-    useTheme,
-    VStack
-} from "native-base";
-import {Add, AlignLeft} from "iconsax-react-native";
-import {MainLayout} from "~/layout";
+  Badge,
+  Center,
+  Heading,
+  HStack,
+  IconButton,
+  Image,
+  Input,
+  ScrollView,
+  Stack,
+  StatusBar,
+  Text,
+  useTheme,
+  VStack,
+} from 'native-base';
+import {Add, AlignLeft, ArrowLeft2, ArrowRight2} from 'iconsax-react-native';
+import {MainLayout} from '~/layout';
+import Carousel from 'react-native-snap-carousel';
+import {Dimensions} from 'react-native';
+import {useDrawer} from '~/hooks';
 
-type Props = StackScreenProps<RootParamList, "dashboardScreen">;
+type Props = StackScreenProps<RootParamList, 'dashboardScreen'>;
 
+const {width} = Dimensions.get('window');
 const DashboardScreen: FC<Props> = () => {
-    const {colors} = useTheme()
-    return (
-        <MainLayout bg={"coolGray.100"}>
-            <Stack flex={1}>
-                <ScrollView bg={"orange.600"} automaticallyAdjustKeyboardInsets
-                            _contentContainerStyle={{pb: 6, minH: "full"}} nestedScrollEnabled>
-                    <StatusBar backgroundColor={colors.orange["600"]}/>
-                    <HStack mt={8} ml={8}>
-                        <IconButton icon={<AlignLeft size={32} color={colors.black}/>} p={0}/>
-                    </HStack>
-                    <Center mt={20} mx={8}>
-                        <Image source={require("~/assets/images/logoWhite.png")} alt={"logo"} resizeMode={"center"}
-                               w={"48"}
-                               height={"24"}/>
-                        <Text fontSize={"md"} color={"white"} fontWeight={"600"}>عصر جدیدی در نیازمندی ها</Text>
-                        <Input variant={"rounded"} bg={"white"} shadow={"4"} mt={4} h={"55px"}
-                               paddingRight={12}
-                               textAlign={"center"}
-                               fontSize={"md"}
-                               fontWeight={"600"}
-                               placeholder={"چی نیاز داری بگو برات ثبت کنم؟!"}
-                               _focus={{bg: "white"}}
-                               leftElement={
-                                   <IconButton
-                                       icon={<Add color={colors.white}/>}
-                                       bg={"orange.600"}
-                                       rounded={"full"}
-                                       m={2}
-                                   />}/>
-
-                    </Center>
-                    <HStack mt={4} px={8} flexWrap={"wrap"} justifyContent={"flex-end"} flexDir={"row"}>
-                        <Button rounded={"full"} flexGrow={1} bg={"black"} h={"12"} _text={{fontWeight: "600"}} mt={4}
-                                mr={"4"}>
-                            نقاش لازمم
-                        </Button>
-                        <Button rounded={"full"} flexGrow={1} bg={"black"} fontWeight={"600"} h={"12"}
-                                _text={{fontWeight: "600"}}
-                                mt={4}>
-                            یک ماشین مدل ۹۶ لازم دارم
-                        </Button>
-                        <Button rounded={"full"} px={4} bg={"black"} fontWeight={"600"} h={"12"}
-                                _text={{fontWeight: "600"}}
-                                mt={4} mr={4}>
-                            بوس بده
-                        </Button>
-                        <Button rounded={"full"} px={4} bg={"black"} fontWeight={"600"} h={"12"}
-                                _text={{fontWeight: "600"}}
-                                mt={4}>(:
-                            زن
-                            میخوام</Button>
-                    </HStack>
-
-                </ScrollView>
-            </Stack>
-            <Stack bg={"orange.600"}>
-                <VStack alignSelf={"flex-end"} bg={"coolGray.100"} w={"full"} roundedTop={"3xl"} px={8}>
-                    <Center><Badge colorScheme={"warmGray"} rounded={"full"} pt={"2px"} pb={0} px={8}
-                                   variant={"solid"} mt={4} mb={8} opacity={.5}/></Center>
-                    <Heading size={"md"}>نیازینو چیه و به چه دردی میخوره؟</Heading>
-                    <Text color={"gray.400"} mt={4} mb={8} fontWeight={"600"}>
-                        اجازه دهید صفحه درباره ما بگوید شرکت چگونه شروع به کارکرده است یک روایت کوتاهی را...
-                        <Text color={"orange.600"} fontWeight={"600"}>
-                            {" "} بیشتر
-                        </Text>
+  const {colors, sizes} = useTheme();
+  const carouselRef = useRef<Carousel<any>>(null);
+  const {setDrawerStatus} = useDrawer();
+  return (
+    <MainLayout bg={'coolGray.100'}>
+      <Stack h={'full'}>
+        <ScrollView
+          _contentContainerStyle={{minH: 'full'}}
+          bg={'orange.600'}
+          automaticallyAdjustKeyboardInsets
+          nestedScrollEnabled>
+          <StatusBar backgroundColor={colors.orange['600']} />
+          <HStack mt={8} mx={8}>
+            <IconButton
+              _pressed={{bg: '#ffffff5e'}}
+              icon={<AlignLeft color={colors.black} size={32} />}
+              onPress={() => setDrawerStatus(true)}
+              p={0}
+            />
+          </HStack>
+          <Center mt={20} mx={8}>
+            <Image
+              alt={'logo'}
+              height={'16'}
+              resizeMode={'cover'}
+              source={require('~/assets/images/logoWhite.png')}
+              w={'48'}
+            />
+            <Text color={'white'} fontSize={'md'} fontWeight={'600'}>
+              عصری نو، نیازی نو
+            </Text>
+            <Input
+              _focus={{bg: 'white'}}
+              bg={'white'}
+              fontSize={'md'}
+              fontWeight={'600'}
+              h={'55px'}
+              mt={6}
+              placeholder={'چی نیاز داری بگو برات ثبت کنم؟!'}
+              shadow={'4'}
+              textAlign={'right'}
+              variant={'rounded'}
+              InputRightElement={
+                <IconButton
+                  bg={'orange.600'}
+                  icon={<Add color={colors.white} />}
+                  m={2}
+                  rounded={'full'}
+                />
+              }
+            />
+          </Center>
+          <HStack alignItems={'center'} mt={12} px={8}>
+            <IconButton
+              _pressed={{bg: '#ffffff7e'}}
+              icon={<ArrowLeft2 color={'#0000007e'} variant={'Bold'} />}
+              left={2}
+              onPress={() => carouselRef.current?.snapToPrev()}
+              position={'absolute'}
+            />
+            <Carousel
+              ref={carouselRef}
+              data={[1, 2, 3]}
+              itemWidth={width - sizes[8] * 2}
+              sliderWidth={width - sizes[8] * 2}
+              renderItem={({item}) => (
+                <Center h="32">
+                  <VStack
+                    alignItems={'flex-end'}
+                    bg={'black'}
+                    h={32}
+                    justifyContent={'center'}
+                    px={8}
+                    rounded={'3xl'}
+                    w={'72'}>
+                    <Text color={'white'} fontSize={'xs'} fontWeight={'400'}>
+                      پرطرفدار ترین
                     </Text>
-                </VStack>
-            </Stack>
-        </MainLayout>
-    );
+                    <Text color={'white'} fontSize={'sm'}>
+                      خودروی سواری دست دوم کارکرده خوش فرمون خوش پوش
+                    </Text>
+                  </VStack>
+                </Center>
+              )}
+            />
+            <IconButton
+              _pressed={{bg: '#ffffff7e'}}
+              icon={<ArrowRight2 color={'#0000007e'} variant={'Bold'} />}
+              onPress={() => carouselRef.current?.snapToNext()}
+              position={'absolute'}
+              right={2}
+            />
+          </HStack>
+          <VStack mt={'1/6'}>
+            <VStack
+              alignSelf={'flex-end'}
+              bg={'coolGray.100'}
+              px={8}
+              roundedTop={'3xl'}
+              w={'full'}>
+              <Center>
+                <Badge
+                  colorScheme={'warmGray'}
+                  mb={8}
+                  mt={4}
+                  opacity={0.5}
+                  pb={0}
+                  pt={'2px'}
+                  px={8}
+                  rounded={'full'}
+                  variant={'solid'}
+                />
+              </Center>
+              <Heading size={'md'}>نیازینو چیه و به چه دردی میخوره؟</Heading>
+              <Text
+                color={'gray.400'}
+                fontWeight={'600'}
+                mb={8}
+                mt={4}
+                textAlign={'justify'}>
+                نیازینو پلتفرمی متفاوت از تمام نیازمندی هاست در اینجا به جای
+                فروشندگان. خریداران و متقاضیان خدمات و کالا آگهی ثبت میکنند. در
+                نیازینو نیازی نیست که خریداران در میان انبوه آگهی های نیازمندی
+                ها به دنبال خواسته خود بگردن بلکه آنچه نیاز دارند را ثبت میکنند
+                و فروشندگانی که آرن کالا یا خدمات را برای ارائه دارد با خریدار
+                ارتباط برقراد میکنند
+              </Text>
+            </VStack>
+          </VStack>
+        </ScrollView>
+      </Stack>
+    </MainLayout>
+  );
 };
 
 export default DashboardScreen;

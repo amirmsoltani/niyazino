@@ -1,117 +1,145 @@
 import React from 'react';
-import {CreateAdvertisingLayout} from "~/layout";
-import {Box, Button, Heading, HStack, Input, ScrollView, Stack, Text, VStack} from "native-base";
-import {Menu, SearchNormal1} from "iconsax-react-native";
+import {CreateAdvertisingLayout} from '~/layout';
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Input,
+  ScrollView,
+  Stack,
+  Text,
+  VStack,
+} from 'native-base';
+import {Menu, SearchNormal1} from 'iconsax-react-native';
 
 const categorise = [
-    {name: "خدمات منزل"},
-    {name: "وسایل نقلیه"},
-    {name: "باربری"},
-    {name: "موتور برقی"},
-]
+  {name: 'خدمات منزل'},
+  {name: 'وسایل نقلیه'},
+  {name: 'باربری'},
+  {name: 'موتور برقی'},
+];
 const subCategories = [
-    {name: "خودروی سواری"},
-    {name: "موتورسیکلت"},
-    {name: "دوچرخه"},
-]
+  {name: 'خودروی سواری'},
+  {name: 'موتورسیکلت'},
+  {name: 'دوچرخه'},
+];
 const AdvertisingCategoryScreen = () => {
-    return (
-        <CreateAdvertisingLayout>
-            <ScrollView pt={4} h={"full"}
-                        _contentContainerStyle={{minH: "full", pb: 4}}
-            >
-                <Stack px={6}>
-                    <Heading size={"md"}>انتخاب دسته بندی</Heading>
-                    <Text color={"gray.400"} fontSize={"md"} fontWeight={"500"}>
-                        لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
-                    </Text>
-                    <Input
-                        placeholderTextColor={"gray.300"}
-                        placeholder={"نام یک دسته بندی را وارد کنید"}
-                        rightElement={<Box pr={4}><SearchNormal1 color="black" size={20}/></Box>}
-                        borderWidth={0}
-                        fontWeight={"500"}
-                        textAlign={"right"}
-                        fontSize={"md"}
-                        variant={"rounded"}
-                        shadow={2}
-                        _focus={{bg: "white"}}
-                        bg={"white"}
-                        mt={6}
-                        pl={4}
-                        h={"14"}
-                        m={1}
-                    />
-                </Stack>
+  return (
+    <CreateAdvertisingLayout>
+      <ScrollView
+        _contentContainerStyle={{minH: 'full', pb: 4}}
+        h={'full'}
+        pt={4}>
+        <Stack px={6}>
+          <Heading size={'md'}>انتخاب دسته بندی</Heading>
+          <Text color={'gray.400'} fontSize={'md'} fontWeight={'500'}>
+            لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
+          </Text>
+          <Input
+            _focus={{bg: 'white'}}
+            bg={'white'}
+            borderWidth={0}
+            fontSize={'md'}
+            fontWeight={'500'}
+            h={'14'}
+            m={1}
+            mt={6}
+            pl={4}
+            placeholder={'نام یک دسته بندی را وارد کنید'}
+            placeholderTextColor={'gray.300'}
+            shadow={2}
+            textAlign={'right'}
+            variant={'rounded'}
+            InputRightElement={
+              <Box pr={4}>
+                <SearchNormal1 color="black" size={20} />
+              </Box>
+            }
+          />
+        </Stack>
 
-                <ScrollView
-                    showsHorizontalScrollIndicator={false}
-                    _contentContainerStyle={{py: 1}}
-                    nestedScrollEnabled
-                    horizontal
-                    flexGrow={0}
-                    mt={6}
-                >
-                    {
-                        categorise.map(({name}) => (
-                                <Button
-                                    fontWeight={"600"} h={"12"}
-                                    rounded={"full"}
-                                    shadow={2}
-                                    _text={{fontWeight: "600", color: name === "وسایل نقلیه" ? "white" : "black"}}
-                                    key={name}
-                                    mx={2}
-                                    px={6}
-                                    bg={name === "وسایل نقلیه" ? "black" : "white"}
-                                >
-                                    {name}
-                                </Button>
-                            )
-                        )
-                    }
-                </ScrollView>
-                <ScrollView
-                    showsHorizontalScrollIndicator={false}
-                    _contentContainerStyle={{py: 1}}
-                    nestedScrollEnabled
-                    horizontal
-                    flexGrow={0}
-                    mt={4}
-                >
-                    {
-                        subCategories.map(({name}) => (
-                                <Button
-                                    fontWeight={"600"} h={"12"}
-                                    rounded={"full"}
-                                    shadow={2}
-                                    _text={{fontWeight: "600", color: name === "خودروی سواری" ? "white" : "black"}}
-                                    key={name}
-                                    mx={2}
-                                    px={6}
-                                    bg={name === "خودروی سواری" ? "black" : "white"}
-                                >
-                                    {name}
-                                </Button>
-                            )
-                        )
-                    }
-                </ScrollView>
+        <ScrollView
+          flexGrow={0}
+          mt={6}
+          showsHorizontalScrollIndicator={false}
+          style={{direction: 'ltr'}}
+          _contentContainerStyle={{
+            py: 1,
+          }}
+          horizontal
+          invertStickyHeaders
+          nestedScrollEnabled>
+          {categorise.map(({name}) => (
+            <Button
+              key={name}
+              _pressed={{bg: 'orange.300'}}
+              bg={name === 'وسایل نقلیه' ? 'black' : 'white'}
+              fontWeight={'600'}
+              h={'12'}
+              mx={2}
+              px={6}
+              rounded={'full'}
+              shadow={2}
+              _text={{
+                fontWeight: '600',
+                color: name === 'وسایل نقلیه' ? 'white' : 'black',
+              }}>
+              {name}
+            </Button>
+          ))}
+        </ScrollView>
+        <ScrollView
+          _contentContainerStyle={{py: 1}}
+          flexGrow={0}
+          mt={4}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          nestedScrollEnabled>
+          {subCategories.map(({name}) => (
+            <Button
+              key={name}
+              _pressed={{bg: 'orange.300'}}
+              bg={name === 'خودروی سواری' ? 'black' : 'white'}
+              fontWeight={'600'}
+              h={'12'}
+              mx={2}
+              px={6}
+              rounded={'full'}
+              shadow={2}
+              _text={{
+                fontWeight: '600',
+                color: name === 'خودروی سواری' ? 'white' : 'black',
+              }}>
+              {name}
+            </Button>
+          ))}
+        </ScrollView>
 
-                <VStack justifyContent={"flex-end"} px={6} mb={4} flexGrow={1}>
-                    <HStack bg={"white"} shadow={5} rounded={"3xl"} justifyContent={"flex-end"} px={4} py="12px">
-                        <Text bold fontSize={"md"}>خودروی سواری</Text>
-                        <Text bold fontSize={"md"}>/</Text>
-                        <Text mr={2} bold fontSize={"md"}>وسایل نقلیه</Text>
-                        <Menu variant={"TwoTone"} color={"black"} size={24} rotation={90}/>
-                    </HStack>
-                </VStack>
+        <VStack flexGrow={1} justifyContent={'flex-end'} mb={4} px={6}>
+          <HStack
+            bg={'white'}
+            justifyContent={'flex-end'}
+            px={4}
+            py="12px"
+            rounded={'3xl'}
+            shadow={5}>
+            <Text fontSize={'md'} bold>
+              خودروی سواری
+            </Text>
+            <Text fontSize={'md'} bold>
+              /
+            </Text>
+            <Text fontSize={'md'} mr={2} bold>
+              وسایل نقلیه
+            </Text>
 
-            </ScrollView>
-
-
-        </CreateAdvertisingLayout>
-    )
-        ;
+            <Menu color={'black'} rotation={90} size={24} variant={'TwoTone'} />
+          </HStack>
+        </VStack>
+      </ScrollView>
+    </CreateAdvertisingLayout>
+  );
 };
 
 export default AdvertisingCategoryScreen;
