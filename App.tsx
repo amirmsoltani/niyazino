@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import Screens from './src/screens';
 import {NativeBaseProvider} from 'native-base';
 import customTheme from './src/util/CustomThem';
-import {I18nManager} from 'react-native';
 // import {store} from '~/store';
 
 const config = {
@@ -12,7 +11,6 @@ const config = {
   },
 };
 
-I18nManager.forceRTL(false);
 const App = () => {
   return (
     <NavigationContainer>

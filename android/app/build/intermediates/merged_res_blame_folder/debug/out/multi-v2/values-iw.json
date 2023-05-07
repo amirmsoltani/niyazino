@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.niyazino.app-mergeDebugResources-27:/values-iw/values-iw.xml",
+            "outputFile": "com.niyazino.app-mergeDebugResources-28:/values-iw/values-iw.xml",
             "map": [
                 {
                     "source": "/home/amir/.gradle/caches/transforms-3/08e1174eef2c209ea18090f1084adbcb/transformed/core-1.7.0/res/values-iw/values-iw.xml",

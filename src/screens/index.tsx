@@ -4,6 +4,7 @@ import {RootParamList} from './type';
 import * as Auth from './Auth';
 import * as Dashboard from './Dashboard';
 import * as Advertising from './Advertising';
+import * as Chat from './Chat';
 import {DrawerLayout} from '~/layout';
 
 const Stack = createStackNavigator<RootParamList>();
@@ -35,6 +36,23 @@ const Screens = () => {
             component={Advertising.AdvertisingSpecificationsScreen}
             name={'createAdvertisingSpecificationsScreen'}
           />
+          <Stack.Screen
+            component={Advertising.AdvertisingAuthorizeScreen}
+            name={'createAdvertisingAuthorizeScreen'}
+          />
+          <Stack.Screen
+            component={Advertising.AdvertisingDetailScreen}
+            name={'advertisingDetailScreen'}
+          />
+          <Stack.Screen
+            component={Advertising.AdvertisingListScreen}
+            name={'advertisingListScreen'}
+          />
+          <Stack.Screen
+            component={Chat.ChatListScreen}
+            name={'chatListScreen'}
+          />
+          <Stack.Screen component={Chat.ChatScreen} name={'chatScreen'} />
         </Stack.Group>
       </Stack.Navigator>
     </DrawerLayout>

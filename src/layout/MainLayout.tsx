@@ -1,16 +1,36 @@
 import React, {FC, ReactNode} from 'react';
 import {HStack, IconButton, ScrollView, Stack, useTheme} from 'native-base';
-import {Add, Home2, MessageMinus, Note} from 'iconsax-react-native';
+import {Add, Home2, Icon, MessageMinus, Note} from 'iconsax-react-native';
 import {TabItem} from '~/components';
 import {ColorType} from 'native-base/lib/typescript/components/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {RootParamList} from '~/screens/type';
 
 type Props = {children: ReactNode; bg?: ColorType};
 
-const items = [
-  {name: 'chat', Icon: MessageMinus},
-  {name: 'note', Icon: Note},
-  {name: 'dashboardScreen', Icon: Home2},
+const items: {
+  name: string;
+  Icon: Icon;
+  path: keyof Pick<
+    RootParamList,
+    | 'dashboardScreen'
+    | 'advertisingListScreen'
+    | 'chatListScreen'
+    | 'createAdvertisingCategoryScreen'
+  >;
+  bg?: ColorType;
+  color?: string;
+}[] = [
+  {path: 'dashboardScreen', Icon: Home2, name: 'home'},
+  {path: 'advertisingListScreen', Icon: Note, name: 'list'},
+  {path: 'chatListScreen', Icon: MessageMinus, name: 'chat'},
+  {
+    path: 'createAdvertisingCategoryScreen',
+    Icon: Add,
+    name: 'add',
+    bg: 'orange.600',
+    color: 'white',
+  },
 ];
 const MainLayout: FC<Props> = ({children, bg = 'orange.600'}) => {
   const {colors} = useTheme();
@@ -20,10 +40,9 @@ const MainLayout: FC<Props> = ({children, bg = 'orange.600'}) => {
     <Stack safeArea>
       <ScrollView
         _contentContainerStyle={{minH: 'full', maxH: 'full'}}
+        bg={bg}
         h="full">
-        <Stack bg={bg} flex={1}>
-          {children}
-        </Stack>
+        <Stack flex={1}>{children}</Stack>
         <HStack
           alignItems={'center'}
           bg={'white'}
@@ -33,26 +52,21 @@ const MainLayout: FC<Props> = ({children, bg = 'orange.600'}) => {
           roundedTop={'3xl'}
           shadow={9}
           w={'full'}>
-          <IconButton
-            bg={'orange.600'}
-            h={'14'}
-            icon={<Add color={colors.black} size={28} />}
-            rounded={'full'}
-            w={'14'}
-            onPress={() =>
-              navigation.navigate('createAdvertisingCategoryScreen')
-            }
-          />
-          {items.map(({name, Icon}) => (
-            <TabItem key={name} active={route.name === name}>
+          {items.map(({name, Icon, path, ...btn}) => (
+            <TabItem key={name} active={route.name === path}>
               <IconButton
+                bg={btn.bg || 'transparent'}
                 h={'14'}
+                onPress={() => navigation.navigate(path)}
                 rounded={'full'}
                 w={'14'}
                 icon={
                   <Icon
-                    color={route.name === name ? 'black' : colors.gray['400']}
                     size={28}
+                    color={
+                      btn.color ||
+                      (route.name === path ? 'black' : colors.gray['400'])
+                    }
                   />
                 }
               />

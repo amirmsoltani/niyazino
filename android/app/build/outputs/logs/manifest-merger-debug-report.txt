@@ -1,19 +1,22 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
-INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
-INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
-INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
-MERGED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
+ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
+INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
+INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
+INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
+MERGED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.125.0] /home/amir/.gradle/caches/transforms-3/d3cca00246c663d3c66c0792858497b5/transformed/jetified-flipper-network-plugin-0.125.0/AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.125.0] /home/amir/.gradle/caches/transforms-3/d583b133a68ceecad4ecdddb740e6639/transformed/jetified-flipper-fresco-plugin-0.125.0/AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper:0.125.0] /home/amir/.gradle/caches/transforms-3/236929aa564a4c4dfa1b417642a2a2ae/transformed/jetified-flipper-0.125.0/AndroidManifest.xml:8:1-18:12
 MERGED from [:react-native-masked-view_masked-view] /home/amir/Documents/niyazino-front/node_modules/@react-native-masked-view/masked-view/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-gesture-handler] /home/amir/Documents/niyazino-front/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-21:12
 MERGED from [:react-native-linear-gradient] /home/amir/Documents/niyazino-front/node_modules/react-native-linear-gradient/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-safe-area-context] /home/amir/Documents/niyazino-front/node_modules/react-native-safe-area-context/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-screens] /home/amir/Documents/niyazino-front/node_modules/react-native-screens/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-svg] /home/amir/Documents/niyazino-front/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-vector-icons] /home/amir/Documents/niyazino-front/node_modules/react-native-vector-icons/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-video] /home/amir/Documents/niyazino-front/node_modules/react-native-video/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.react:react-android:0.71.6] /home/amir/.gradle/caches/transforms-3/e130ab6804e166a1486f733ffc21e975/transformed/jetified-react-android-0.71.6-debug/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/amir/.gradle/caches/transforms-3/091aa78edfb1f2d80073a0612085f398/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.facebook.react:hermes-android:0.71.6] /home/amir/.gradle/caches/transforms-3/176199b1ccd52fcc577c18b9a3a5a18e/transformed/jetified-hermes-android-0.71.6-debug/AndroidManifest.xml:2:1-9:12
@@ -34,6 +37,7 @@ MERGED from [com.facebook.fresco:imagepipeline:2.6.0] /home/amir/.gradle/caches/
 MERGED from [com.facebook.fresco:nativeimagetranscoder:2.6.0] /home/amir/.gradle/caches/transforms-3/e719d0f842c50945933d9ad949cfe736/transformed/jetified-nativeimagetranscoder-2.6.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] /home/amir/.gradle/caches/transforms-3/1f1efa8ba876ad719b65ea6db8106154/transformed/jetified-imagepipeline-base-2.6.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.material:material:1.1.0] /home/amir/.gradle/caches/transforms-3/4af7f0d23266db3f5bdb15fc939a61bd/transformed/material-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.github.adityaxjha:Android-ScalableVideoView:10e7b4da8b] /home/amir/.gradle/caches/transforms-3/51737a27f57f328a4dc4384b2fe83cea/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.appcompat:appcompat:1.4.1] /home/amir/.gradle/caches/transforms-3/be9a285d7d94d789380b4b7ef5365ae2/transformed/appcompat-1.4.1/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.sqlite:sqlite-framework:2.1.0] /home/amir/.gradle/caches/transforms-3/a022374c772579687e4a912372d249a2/transformed/sqlite-framework-2.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.4.1] /home/amir/.gradle/caches/transforms-3/c10bb5e6b3f5dcf7b6548984476ee588/transformed/jetified-appcompat-resources-1.4.1/AndroidManifest.xml:17:1-24:12
@@ -51,6 +55,7 @@ MERGED from [com.facebook.fresco:ui-common:2.6.0] /home/amir/.gradle/caches/tran
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/amir/.gradle/caches/transforms-3/44bba98a37763cf00efc76fddb8a4592/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] /home/amir/.gradle/caches/transforms-3/986171b3670fe1d6c18fb4320cd44d05/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core-ktx:1.6.0] /home/amir/.gradle/caches/transforms-3/3d2c4646980e639400d3d9460b902877/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] /home/amir/.gradle/caches/transforms-3/d082d7e7281475c075541e03651bd77d/transformed/exifinterface-1.3.3/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/amir/.gradle/caches/transforms-3/088f813046d1b0cdd1267d207854bd15/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.sqlite:sqlite:2.1.0] /home/amir/.gradle/caches/transforms-3/7beb639fcc3269499a2075501baa3ff3/transformed/sqlite-2.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/amir/.gradle/caches/transforms-3/66d8fd6a87c1cb24b88597f2714c06ac/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
@@ -78,17 +83,17 @@ INJECTED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidM
 INJECTED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:2:1-13:12
 	package
 		INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
 		INJECTED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml
 	android:versionName
 		INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
 		INJECTED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml
 	xmlns:tools
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-25:12
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:1-27:12
 		INJECTED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml
 	xmlns:android
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:1:11-69
@@ -99,9 +104,11 @@ MERGED from [com.facebook.flipper:flipper:0.125.0] /home/amir/.gradle/caches/tra
 	android:name
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:3:22-64
 application
-ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-24:19
-MERGED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-24:19
-MERGED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-24:19
+ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-26:19
+MERGED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-26:19
+MERGED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-26:19
+MERGED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-19:19
+MERGED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-19:19
 MERGED from [com.facebook.react:react-android:0.71.6] /home/amir/.gradle/caches/transforms-3/e130ab6804e166a1486f733ffc21e975/transformed/jetified-react-android-0.71.6-debug/AndroidManifest.xml:9:5-20
 MERGED from [com.facebook.react:react-android:0.71.6] /home/amir/.gradle/caches/transforms-3/e130ab6804e166a1486f733ffc21e975/transformed/jetified-react-android-0.71.6-debug/AndroidManifest.xml:9:5-20
 MERGED from [com.facebook.soloader:soloader:0.10.4] /home/amir/.gradle/caches/transforms-3/d9d4a04e8da57caa836ea6ca264f4e9a/transformed/jetified-soloader-0.10.4/AndroidManifest.xml:11:5-20
@@ -120,9 +127,15 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/amir/
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/amir/.gradle/caches/transforms-3/7de4cb111fcc2bef0540bb573df92db9/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.7.0] /home/amir/.gradle/caches/transforms-3/08e1174eef2c209ea18090f1084adbcb/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:11:7-33
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:11:7-33
 	android:label
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:7:7-39
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:7:7-39
+	android:layoutDirection
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:12:7-36
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:12:7-36
 	tools:ignore
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:10:9-48
 	android:roundIcon
@@ -137,37 +150,37 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/amir/
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:10:7-34
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:10:7-34
 	android:theme
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:11:7-38
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:11:7-38
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:13:7-38
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:13:7-38
 	android:usesCleartextTraffic
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:8:9-44
 	android:name
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:6:7-38
 		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:6:7-38
 activity#com.niyazino.MainActivity
-ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:12:7-23:18
+ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:14:7-25:18
 	android:label
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:14:9-41
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:16:9-41
 	android:launchMode
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:16:9-40
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:18:9-40
 	android:windowSoftInputMode
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:17:9-51
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:19:9-51
 	android:exported
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:18:9-32
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:20:9-32
 	android:configChanges
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:15:9-118
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:17:9-118
 	android:name
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:13:9-37
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:15:9-37
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:19:9-22:25
+ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:21:9-24:25
 action#android.intent.action.MAIN
-ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:20:13-65
+ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:22:13-65
 	android:name
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:20:21-62
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:22:21-62
 category#android.intent.category.LAUNCHER
-ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:21:13-73
+ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:23:13-73
 	android:name
-		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:21:23-70
+		ADDED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:23:23-70
 uses-sdk
 INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml
@@ -182,6 +195,8 @@ MERGED from [:react-native-masked-view_masked-view] /home/amir/Documents/niyazin
 MERGED from [:react-native-masked-view_masked-view] /home/amir/Documents/niyazino-front/node_modules/@react-native-masked-view/masked-view/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-gesture-handler] /home/amir/Documents/niyazino-front/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-gesture-handler] /home/amir/Documents/niyazino-front/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-linear-gradient] /home/amir/Documents/niyazino-front/node_modules/react-native-linear-gradient/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-linear-gradient] /home/amir/Documents/niyazino-front/node_modules/react-native-linear-gradient/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-safe-area-context] /home/amir/Documents/niyazino-front/node_modules/react-native-safe-area-context/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
@@ -190,6 +205,10 @@ MERGED from [:react-native-screens] /home/amir/Documents/niyazino-front/node_mod
 MERGED from [:react-native-screens] /home/amir/Documents/niyazino-front/node_modules/react-native-screens/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-svg] /home/amir/Documents/niyazino-front/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-svg] /home/amir/Documents/niyazino-front/node_modules/react-native-svg/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-vector-icons] /home/amir/Documents/niyazino-front/node_modules/react-native-vector-icons/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-vector-icons] /home/amir/Documents/niyazino-front/node_modules/react-native-vector-icons/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-video] /home/amir/Documents/niyazino-front/node_modules/react-native-video/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-video] /home/amir/Documents/niyazino-front/node_modules/react-native-video/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-android:0.71.6] /home/amir/.gradle/caches/transforms-3/e130ab6804e166a1486f733ffc21e975/transformed/jetified-react-android-0.71.6-debug/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-android:0.71.6] /home/amir/.gradle/caches/transforms-3/e130ab6804e166a1486f733ffc21e975/transformed/jetified-react-android-0.71.6-debug/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/amir/.gradle/caches/transforms-3/091aa78edfb1f2d80073a0612085f398/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
@@ -230,6 +249,8 @@ MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] /home/amir/.gradle/ca
 MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] /home/amir/.gradle/caches/transforms-3/1f1efa8ba876ad719b65ea6db8106154/transformed/jetified-imagepipeline-base-2.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.material:material:1.1.0] /home/amir/.gradle/caches/transforms-3/4af7f0d23266db3f5bdb15fc939a61bd/transformed/material-1.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.1.0] /home/amir/.gradle/caches/transforms-3/4af7f0d23266db3f5bdb15fc939a61bd/transformed/material-1.1.0/AndroidManifest.xml:20:5-44
+MERGED from [com.github.adityaxjha:Android-ScalableVideoView:10e7b4da8b] /home/amir/.gradle/caches/transforms-3/51737a27f57f328a4dc4384b2fe83cea/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.adityaxjha:Android-ScalableVideoView:10e7b4da8b] /home/amir/.gradle/caches/transforms-3/51737a27f57f328a4dc4384b2fe83cea/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.appcompat:appcompat:1.4.1] /home/amir/.gradle/caches/transforms-3/be9a285d7d94d789380b4b7ef5365ae2/transformed/appcompat-1.4.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat:1.4.1] /home/amir/.gradle/caches/transforms-3/be9a285d7d94d789380b4b7ef5365ae2/transformed/appcompat-1.4.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.sqlite:sqlite-framework:2.1.0] /home/amir/.gradle/caches/transforms-3/a022374c772579687e4a912372d249a2/transformed/sqlite-framework-2.1.0/AndroidManifest.xml:20:5-22:41
@@ -264,6 +285,8 @@ MERGED from [androidx.interpolator:interpolator:1.0.0] /home/amir/.gradle/caches
 MERGED from [androidx.interpolator:interpolator:1.0.0] /home/amir/.gradle/caches/transforms-3/986171b3670fe1d6c18fb4320cd44d05/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.core:core-ktx:1.6.0] /home/amir/.gradle/caches/transforms-3/3d2c4646980e639400d3d9460b902877/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.core:core-ktx:1.6.0] /home/amir/.gradle/caches/transforms-3/3d2c4646980e639400d3d9460b902877/transformed/jetified-core-ktx-1.6.0/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] /home/amir/.gradle/caches/transforms-3/d082d7e7281475c075541e03651bd77d/transformed/exifinterface-1.3.3/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.3] /home/amir/.gradle/caches/transforms-3/d082d7e7281475c075541e03651bd77d/transformed/exifinterface-1.3.3/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/amir/.gradle/caches/transforms-3/088f813046d1b0cdd1267d207854bd15/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/amir/.gradle/caches/transforms-3/088f813046d1b0cdd1267d207854bd15/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.sqlite:sqlite:2.1.0] /home/amir/.gradle/caches/transforms-3/7beb639fcc3269499a2075501baa3ff3/transformed/sqlite-2.1.0/AndroidManifest.xml:20:5-22:41
@@ -330,6 +353,22 @@ uses-permission#android.permission.ACCESS_WIFI_STATE
 ADDED from [com.facebook.flipper:flipper:0.125.0] /home/amir/.gradle/caches/transforms-3/236929aa564a4c4dfa1b417642a2a2ae/transformed/jetified-flipper-0.125.0/AndroidManifest.xml:16:5-76
 	android:name
 		ADDED from [com.facebook.flipper:flipper:0.125.0] /home/amir/.gradle/caches/transforms-3/236929aa564a4c4dfa1b417642a2a2ae/transformed/jetified-flipper-0.125.0/AndroidManifest.xml:16:22-73
+provider#com.imagepicker.ImagePickerProvider
+ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-18:20
+	android:grantUriPermissions
+		ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-47
+	android:authorities
+		ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-71
+	android:exported
+		ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
+	android:name
+		ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-63
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-17:70
+	android:resource
+		ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:17:17-67
+	android:name
+		ADDED from [:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:16:17-67
 provider#androidx.startup.InitializationProvider
 ADDED from [androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:26:9-34:20

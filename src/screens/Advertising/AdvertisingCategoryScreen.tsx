@@ -45,14 +45,14 @@ const AdvertisingCategoryScreen = () => {
             h={'14'}
             m={1}
             mt={6}
-            pl={4}
             placeholder={'نام یک دسته بندی را وارد کنید'}
             placeholderTextColor={'gray.300'}
+            pr={4}
             shadow={2}
             textAlign={'right'}
             variant={'rounded'}
-            InputRightElement={
-              <Box pr={4}>
+            InputLeftElement={
+              <Box pl={4}>
                 <SearchNormal1 color="black" size={20} />
               </Box>
             }
@@ -119,22 +119,22 @@ const AdvertisingCategoryScreen = () => {
         <VStack flexGrow={1} justifyContent={'flex-end'} mb={4} px={6}>
           <HStack
             bg={'white'}
-            justifyContent={'flex-end'}
+            justifyContent={'flex-start'}
             px={4}
             py="12px"
             rounded={'3xl'}
             shadow={5}>
-            <Text fontSize={'md'} bold>
-              خودروی سواری
+            <Menu color={'black'} rotation={90} size={24} variant={'TwoTone'} />
+
+            <Text fontSize={'md'} ml={2} bold>
+              وسایل نقلیه
             </Text>
             <Text fontSize={'md'} bold>
               /
             </Text>
-            <Text fontSize={'md'} mr={2} bold>
-              وسایل نقلیه
+            <Text fontSize={'md'} bold>
+              خودروی سواری
             </Text>
-
-            <Menu color={'black'} rotation={90} size={24} variant={'TwoTone'} />
           </HStack>
         </VStack>
       </ScrollView>

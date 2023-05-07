@@ -3,6 +3,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
 import {
   Badge,
+  Button,
   Center,
   Heading,
   HStack,
@@ -16,15 +17,18 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import {Add, AlignLeft, ArrowLeft2, ArrowRight2} from 'iconsax-react-native';
+import {Add, ArrowLeft2, ArrowRight2} from 'iconsax-react-native';
 import {MainLayout} from '~/layout';
 import Carousel from 'react-native-snap-carousel';
 import {Dimensions} from 'react-native';
 import {useDrawer} from '~/hooks';
+import VideoPlayer from 'react-native-video-player';
 
 type Props = StackScreenProps<RootParamList, 'dashboardScreen'>;
 
 const {width} = Dimensions.get('window');
+
+const menuIcon = require('src/assets/images/menuIcon.png');
 const DashboardScreen: FC<Props> = () => {
   const {colors, sizes} = useTheme();
   const carouselRef = useRef<Carousel<any>>(null);
@@ -38,13 +42,20 @@ const DashboardScreen: FC<Props> = () => {
           automaticallyAdjustKeyboardInsets
           nestedScrollEnabled>
           <StatusBar backgroundColor={colors.orange['600']} />
-          <HStack mt={8} mx={8}>
-            <IconButton
+          <HStack justifyContent={'flex-end'} mt={8} mx={8}>
+            <Button
               _pressed={{bg: '#ffffff5e'}}
-              icon={<AlignLeft color={colors.black} size={32} />}
               onPress={() => setDrawerStatus(true)}
-              p={0}
-            />
+              p={0}>
+              <Image
+                alt={'icon'}
+                m={0}
+                maxH={'30px'}
+                maxW={'30px'}
+                resizeMode={'contain'}
+                source={menuIcon}
+              />
+            </Button>
           </HStack>
           <Center mt={20} mx={8}>
             <Image
@@ -68,7 +79,7 @@ const DashboardScreen: FC<Props> = () => {
               shadow={'4'}
               textAlign={'right'}
               variant={'rounded'}
-              InputRightElement={
+              InputLeftElement={
                 <IconButton
                   bg={'orange.600'}
                   icon={<Add color={colors.white} />}
@@ -82,9 +93,9 @@ const DashboardScreen: FC<Props> = () => {
             <IconButton
               _pressed={{bg: '#ffffff7e'}}
               icon={<ArrowLeft2 color={'#0000007e'} variant={'Bold'} />}
-              left={2}
               onPress={() => carouselRef.current?.snapToPrev()}
               position={'absolute'}
+              right={2}
             />
             <Carousel
               ref={carouselRef}
@@ -94,7 +105,7 @@ const DashboardScreen: FC<Props> = () => {
               renderItem={({item}) => (
                 <Center h="32">
                   <VStack
-                    alignItems={'flex-end'}
+                    alignItems={'flex-start'}
                     bg={'black'}
                     h={32}
                     justifyContent={'center'}
@@ -110,19 +121,23 @@ const DashboardScreen: FC<Props> = () => {
                   </VStack>
                 </Center>
               )}
+              autoplay
+              loop
+              nestedScrollEnabled
             />
             <IconButton
               _pressed={{bg: '#ffffff7e'}}
               icon={<ArrowRight2 color={'#0000007e'} variant={'Bold'} />}
+              left={2}
               onPress={() => carouselRef.current?.snapToNext()}
               position={'absolute'}
-              right={2}
             />
           </HStack>
           <VStack mt={'1/6'}>
             <VStack
               alignSelf={'flex-end'}
               bg={'coolGray.100'}
+              pb={4}
               px={8}
               roundedTop={'3xl'}
               w={'full'}>
@@ -153,6 +168,19 @@ const DashboardScreen: FC<Props> = () => {
                 و فروشندگانی که آرن کالا یا خدمات را برای ارائه دارد با خریدار
                 ارتباط برقراد میکنند
               </Text>
+              <VideoPlayer
+                thumbnail={require('~/assets/images/logoWhite.png')}
+                videoHeight={900}
+                videoWidth={1600}
+                customStyles={{
+                  controls: {transform: [{scaleX: -1}]},
+                  controlButton: {transform: [{scaleX: -1}]},
+                  seekBarFullWidth: {transform: [{scaleX: -1}]},
+                }}
+                video={{
+                  uri: 'http://niyazino.com/niyazino-intro.mp4',
+                }}
+              />
             </VStack>
           </VStack>
         </ScrollView>
