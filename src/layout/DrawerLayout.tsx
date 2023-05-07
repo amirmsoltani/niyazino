@@ -34,7 +34,7 @@ const drawerItems: {
 ];
 type PropsType = {children: ReactNode};
 const DrawerLayout: FC<PropsType> = ({children}) => {
-  const translateX = useRef(new Animated.Value(-sixtyPercent)).current;
+  const translateX = useRef(new Animated.Value(sixtyPercent)).current;
 
   const [state, dispatch] = useReducer(
     drawerReducer,
@@ -59,7 +59,7 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
           transform: [{translateX: translateX}],
           zIndex: 100,
           position: 'absolute',
-          left: 0,
+          right: 0,
           paddingVertical: sizes[6],
           top: 0,
           flexDirection: 'column',
@@ -104,10 +104,10 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
       <Pressable
         bottom={0}
         display={state.open ? 'flex' : 'none'}
-        left={sixtyPercent}
-        onPress={() => closeDrawer()}
+        left={0}
+        onPress={closeDrawer}
         position={'absolute'}
-        right={0}
+        right={sixtyPercent}
         top={0}
         zIndex={1}
       />

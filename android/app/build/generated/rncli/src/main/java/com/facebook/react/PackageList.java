@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+// react-native-image-picker
+import com.imagepicker.ImagePickerPackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-safe-area-context
@@ -23,6 +25,10 @@ import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 // react-native-svg
 import com.horcrux.svg.SvgPackage;
+// react-native-vector-icons
+import com.oblador.vectoricons.VectorIconsPackage;
+// react-native-video
+import com.brentvatne.react.ReactVideoPackage;
 
 public class PackageList {
   private Application application;
@@ -70,10 +76,13 @@ public class PackageList {
       new MainReactPackage(mConfig),
       new RNCMaskedViewPackage(),
       new RNGestureHandlerPackage(),
+      new ImagePickerPackage(),
       new LinearGradientPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
-      new SvgPackage()
+      new SvgPackage(),
+      new VectorIconsPackage(),
+      new ReactVideoPackage()
     ));
   }
 }

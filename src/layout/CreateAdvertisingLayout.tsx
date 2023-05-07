@@ -14,15 +14,27 @@ import {Add} from 'iconsax-react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {RootParamList} from '~/screens/type';
 
-type PropsType = {children: ReactNode};
+type PropsType = {children: ReactNode; validateForNext?: () => boolean};
 
-const tabItems: {name: string; path: keyof RootParamList}[] = [
+const tabItems: {
+  name: string;
+  path: keyof Pick<
+    RootParamList,
+    | 'createAdvertisingCategoryScreen'
+    | 'createAdvertisingTitleScreen'
+    | 'createAdvertisingSpecificationsScreen'
+    | 'createAdvertisingAuthorizeScreen'
+  >;
+}[] = [
   {name: 'دسته بندی', path: 'createAdvertisingCategoryScreen'},
   {name: 'عنوان', path: 'createAdvertisingTitleScreen'},
   {name: 'مشخصات', path: 'createAdvertisingSpecificationsScreen'},
   {name: 'تایید هویت', path: 'createAdvertisingAuthorizeScreen'},
 ];
-const CreateAdvertisingLayout: FC<PropsType> = ({children}) => {
+const CreateAdvertisingLayout: FC<PropsType> = ({
+  children,
+  validateForNext,
+}) => {
   const navigation = useNavigation();
   const route = useRoute();
   let find = -1;
@@ -32,12 +44,15 @@ const CreateAdvertisingLayout: FC<PropsType> = ({children}) => {
       h={'full'}
       justifyContent={'space-between'}
       safeArea>
-      <StatusBar backgroundColor={'white'} />
+      <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
       <Stack bg={'white'} px={6} py={4} roundedBottom={'3xl'} shadow={6}>
         <HStack
           alignItems={'center'}
           justifyContent={'space-between'}
           w={'full'}>
+          <Text fontSize={'2xl'} fontWeight={'800'}>
+            ثبت آگهی
+          </Text>
           <IconButton
             icon={<Add color={'black'} rotation={45} size={42} />}
             p={0}
@@ -45,17 +60,14 @@ const CreateAdvertisingLayout: FC<PropsType> = ({children}) => {
               navigation.reset({index: 0, routes: [{name: 'dashboardScreen'}]})
             }
           />
-          <Text fontSize={'2xl'} fontWeight={'800'}>
-            ثبت آگهی
-          </Text>
         </HStack>
-        <HStack justifyContent={'space-between'} my={6}>
+        <HStack justifyContent={'space-between'} my={6} space={3}>
           {tabItems.map(({name, path}, index) => {
             const color = find === -1 ? 'orange.600' : 'gray.400';
             find = route.name === path ? index : find;
             return (
-              <Box key={name} w={'1/5'}>
-                <Text color={color} textAlign={'center'}>
+              <Box key={name} flex={1}>
+                <Text color={color} fontSize={'xs'} textAlign={'center'}>
                   {name}
                 </Text>
                 <Badge
@@ -80,17 +92,10 @@ const CreateAdvertisingLayout: FC<PropsType> = ({children}) => {
           borderColor={'gray.400'}
           borderWidth={2}
           flex={1}
+          onPress={() => navigation.goBack()}
           py={4}
           rounded={'3xl'}
-          variant={'outline'}
-          onPress={() =>
-            find === 0
-              ? navigation.reset({
-                  routes: [{name: 'dashboardScreen'}],
-                  index: 0,
-                })
-              : navigation.goBack()
-          }>
+          variant={'outline'}>
           {find === 0 ? 'انصراف' : 'قبلی'}
         </Button>
         <Button
@@ -100,10 +105,14 @@ const CreateAdvertisingLayout: FC<PropsType> = ({children}) => {
           flex={1}
           py={4}
           rounded={'3xl'}
-          onPress={() =>
-            find + 1 < tabItems.length &&
-            navigation.navigate(tabItems[find + 1].path)
-          }>
+          onPress={() => {
+            if (validateForNext && !validateForNext()) {
+              return;
+            }
+            if (find + 1 < tabItems.length) {
+              navigation.navigate(tabItems[find + 1].path);
+            }
+          }}>
           بعدی
         </Button>
       </HStack>

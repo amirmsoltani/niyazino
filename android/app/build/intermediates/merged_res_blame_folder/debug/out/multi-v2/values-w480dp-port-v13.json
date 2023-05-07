@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.niyazino.app-mergeDebugResources-27:/values-w480dp-port-v13/values-w480dp-port-v13.xml",
+            "outputFile": "com.niyazino.app-mergeDebugResources-28:/values-w480dp-port-v13/values-w480dp-port-v13.xml",
             "map": [
                 {
                     "source": "/home/amir/.gradle/caches/transforms-3/4af7f0d23266db3f5bdb15fc939a61bd/transformed/material-1.1.0/res/values-w480dp-port-v13/values-w480dp-port-v13.xml",

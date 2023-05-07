@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.niyazino.app-mergeDebugResources-27:/values/values.xml",
+            "outputFile": "com.niyazino.app-mergeDebugResources-28:/values/values.xml",
             "map": [
                 {
                     "source": "/home/amir/.gradle/caches/transforms-3/97aa19878e2d0d07709ad1e6d84d3065/transformed/jetified-autofill-1.1.0/res/values/values.xml",
@@ -92,6 +92,25 @@
                         "startOffsets": "41665,41729",
                         "endColumns": "63,68",
                         "endOffsets": "41724,41793"
+                    }
+                },
+                {
+                    "source": "/home/amir/.gradle/caches/transforms-3/51737a27f57f328a4dc4384b2fe83cea/transformed/jetified-Android-ScalableVideoView-10e7b4da8b/res/values/values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "35",
+                        "endColumns": "24",
+                        "endOffsets": "1444"
+                    },
+                    "to": {
+                        "startLines": "7116",
+                        "startColumns": "4",
+                        "startOffsets": "385857",
+                        "endLines": "7149",
+                        "endColumns": "24",
+                        "endOffsets": "387246"
                     }
                 },
                 {

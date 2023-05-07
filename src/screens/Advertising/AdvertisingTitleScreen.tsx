@@ -7,7 +7,7 @@ const AdvertisingTitleScreen = () => {
     <CreateAdvertisingLayout>
       <ScrollView p={6}>
         <FormControl isInvalid>
-          <Stack alignItems={'flex-end'} mx={1}>
+          <Stack mx={1}>
             <FormControl.Label
               _text={{color: 'black', fontSize: 20, fontWeight: 900}}
               color={'black'}>
@@ -38,7 +38,7 @@ const AdvertisingTitleScreen = () => {
           </Stack>
         </FormControl>
         <FormControl isInvalid>
-          <Stack alignItems={'flex-end'} mx={1}>
+          <Stack mx={1}>
             <FormControl.Label
               _text={{color: 'black', fontSize: 20, fontWeight: 900}}
               color={'black'}>

@@ -1,8 +1,8 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.niyazino"
-4    android:versionCode="1"
-5    android:versionName="1.0" >
+4    android:versionCode="3"
+5    android:versionName="0.0.2" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="21"
@@ -19,7 +19,7 @@
 13-->[com.facebook.flipper:flipper:0.125.0] /home/amir/.gradle/caches/transforms-3/236929aa564a4c4dfa1b417642a2a2ae/transformed/jetified-flipper-0.125.0/AndroidManifest.xml:16:22-73
 14
 15    <application
-15-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-24:19
+15-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:5:5-26:19
 16        android:name="com.niyazino.MainApplication"
 16-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:6:7-38
 17        android:allowBackup="false"
@@ -31,65 +31,86 @@
 20-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:8:7-41
 21        android:label="@string/app_name"
 21-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:7:7-39
-22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:9:7-52
-23        android:theme="@style/AppTheme"
-23-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:11:7-38
-24        android:usesCleartextTraffic="true" >
-24-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:8:9-44
-25        <activity
-25-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:11:9-111
-26            android:name="com.facebook.react.devsupport.DevSettingsActivity"
-26-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:11:19-83
-27            android:exported="false" />
-27-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:11:84-108
-28        <activity
-28-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:12:7-23:18
-29            android:name="com.niyazino.MainActivity"
-29-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:13:9-37
-30            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-30-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:15:9-118
-31            android:exported="true"
-31-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:18:9-32
-32            android:label="@string/app_name"
-32-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:14:9-41
-33            android:launchMode="singleTask"
-33-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:16:9-40
-34            android:windowSoftInputMode="adjustResize" >
-34-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:17:9-51
-35            <intent-filter>
-35-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:19:9-22:25
-36                <action android:name="android.intent.action.MAIN" />
-36-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:20:13-65
-36-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:20:21-62
-37
-38                <category android:name="android.intent.category.LAUNCHER" />
-38-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:21:13-73
-38-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:21:23-70
-39            </intent-filter>
-40        </activity>
-41
-42        <provider
-42-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
-43            android:name="androidx.startup.InitializationProvider"
-43-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:27:13-67
-44            android:authorities="com.niyazino.androidx-startup"
-44-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:28:13-68
-45            android:exported="false" >
-45-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:29:13-37
-46            <meta-data
-46-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:31:13-33:52
-47                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-47-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:32:17-75
-48                android:value="androidx.startup" />
-48-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:33:17-49
+22        android:layoutDirection="rtl"
+22-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:12:7-36
+23        android:roundIcon="@mipmap/ic_launcher_round"
+23-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:9:7-52
+24        android:supportsRtl="true"
+24-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:11:7-33
+25        android:theme="@style/AppTheme"
+25-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:13:7-38
+26        android:usesCleartextTraffic="true" >
+26-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:8:9-44
+27        <activity
+27-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:11:9-111
+28            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+28-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:11:19-83
+29            android:exported="false" />
+29-->/home/amir/Documents/niyazino-front/android/app/src/debug/AndroidManifest.xml:11:84-108
+30        <activity
+30-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:14:7-25:18
+31            android:name="com.niyazino.MainActivity"
+31-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:15:9-37
+32            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+32-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:17:9-118
+33            android:exported="true"
+33-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:20:9-32
+34            android:label="@string/app_name"
+34-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:16:9-41
+35            android:launchMode="singleTask"
+35-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:18:9-40
+36            android:windowSoftInputMode="adjustResize" >
+36-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:19:9-51
+37            <intent-filter>
+37-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:21:9-24:25
+38                <action android:name="android.intent.action.MAIN" />
+38-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:22:13-65
+38-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:22:21-62
+39
+40                <category android:name="android.intent.category.LAUNCHER" />
+40-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:23:13-73
+40-->/home/amir/Documents/niyazino-front/android/app/src/main/AndroidManifest.xml:23:23-70
+41            </intent-filter>
+42        </activity>
+43
+44        <provider
+44-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:9-18:20
+45            android:name="com.imagepicker.ImagePickerProvider"
+45-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-63
+46            android:authorities="com.niyazino.imagepickerprovider"
+46-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:13-71
+47            android:exported="false"
+47-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:13-37
+48            android:grantUriPermissions="true" >
+48-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:14:13-47
 49            <meta-data
-49-->[androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:31:13-33:52
-50                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-50-->[androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:32:17-78
-51                android:value="androidx.startup" />
-51-->[androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:33:17-49
+49-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-17:70
+50                android:name="android.support.FILE_PROVIDER_PATHS"
+50-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:16:17-67
+51                android:resource="@xml/imagepicker_provider_paths" />
+51-->[:react-native-image-picker] /home/amir/Documents/niyazino-front/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:17:17-67
 52        </provider>
-53    </application>
-54
-55</manifest>
+53        <provider
+53-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
+54            android:name="androidx.startup.InitializationProvider"
+54-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:27:13-67
+55            android:authorities="com.niyazino.androidx-startup"
+55-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:28:13-68
+56            android:exported="false" >
+56-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:29:13-37
+57            <meta-data
+57-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:31:13-33:52
+58                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+58-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:32:17-75
+59                android:value="androidx.startup" />
+59-->[androidx.emoji2:emoji2:1.0.0] /home/amir/.gradle/caches/transforms-3/30102b16e64b2b966e993f978f0d77f3/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:33:17-49
+60            <meta-data
+60-->[androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:31:13-33:52
+61                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+61-->[androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:32:17-78
+62                android:value="androidx.startup" />
+62-->[androidx.lifecycle:lifecycle-process:2.4.0] /home/amir/.gradle/caches/transforms-3/168829b299da31b5f39d19c1353bb79f/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:33:17-49
+63        </provider>
+64    </application>
+65
+66</manifest>
