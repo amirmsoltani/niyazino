@@ -21,7 +21,7 @@ function* createAdvertisingAfterUploadPhotos() {
         has_chat: true,
         province_id: advertising.province_id!,
         city_id: advertising.city_id!,
-        images_ids: files.length ? files.map(file => file.id).join(',') : null,
+        images_ids: files.length ? files.map(file => file.id) : null,
         category_id: advertising.category_id!,
       },
     }),

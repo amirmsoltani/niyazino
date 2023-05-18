@@ -7,6 +7,7 @@ import {
   IconButton,
   Image,
   ScrollView,
+  Skeleton,
   Stack,
   StatusBar,
   Text,
@@ -27,6 +28,9 @@ import Carousel from 'react-native-snap-carousel';
 import {Dimensions} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
+import {useHttpRequest} from '~/hooks';
+import dayjs from 'dayjs';
+import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
 
 const car = require('~/assets/images/car.png');
 const car2 = require('~/assets/images/car2.png');
@@ -37,43 +41,42 @@ type Props = StackScreenProps<RootParamList, 'advertisingDetailScreen'>;
 const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
   const carouselRef = useRef<Carousel<any>>(null);
   const {sizes} = useTheme();
+  const {
+    state: {detail, category},
+  } = useHttpRequest({
+    selector: state => ({
+      detail: state.http.detailAdvertisements,
+      category: state.categories,
+    }),
+    clearAfterUnmount: ['detailAdvertisements'],
+    initialRequests: request => {
+      request('detailAdvertisements', {params: {id: route.params.id}});
+    },
+  });
 
-  return (
-    <VStack bg={'white'} h={'full'} safeArea>
-      <StatusBar backgroundColor={'white'} />
-      <HStack
-        alignItems={'center'}
-        h={14}
-        justifyContent={'space-between'}
-        px={6}>
-        <Text fontSize={'2xl'} fontWeight={700}>
-          جزئیات آگهی
-        </Text>
-        <IconButton
-          onPress={() => navigation.goBack()}
-          px={0}
-          icon={
-            <Add
-              color={'black'}
-              size={40}
-              style={{transform: [{rotate: '45deg'}]}}
-            />
-          }
-        />
-      </HStack>
+  const loadingSection = () => (
+    <VStack flex={1} px={6} space={5}>
+      <Skeleton h={'32'} rounded={'xl'} />
+      <Skeleton h={'20'} rounded={'xl'} />
+      <Skeleton rounded={'xl'} />
+      <Skeleton rounded={'xl'} />
+      <Skeleton rounded={'xl'} />
+      <Skeleton h={'3xs'} rounded={'xl'} />
+    </VStack>
+  );
+  const detailSection = () => {
+    const data = detail!.data!.data[detail!.data!.__typename];
+    const selectedCategory =
+      category.categoriesObject[category.childrenToParent[data.category_id]];
+    return (
       <Stack flex={1}>
         <Stack h={'full'}>
           <ScrollView pt={6} px={6}>
             <Text fontSize={'lg'} fontWeight={600}>
-              خودروی بی.ام.دبلیو ۲۰۰۲ شما را خریداریم
+              {data.title}
             </Text>
             <Text color={'gray.400'} my={6}>
-              می توانید یک یا چند مکان مختلف را برای نمایش آگهی خود انتخاب کنید.
-              انتخاب حداقال یک مکان الزامی است
-              <Text color={'orange.600'} fontWeight={600}>
-                {' '}
-                بیشتر
-              </Text>
+              {data.description}
             </Text>
 
             <HStack
@@ -86,7 +89,9 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
                   <Clock color={'black'} size={20} variant={'TwoTone'} />
                 </Box>
                 <Text color={'gray.500'} fontSize={'xs'} fontWeight={600}>
-                  ۲۴ دقیقه قبل
+                  {dayjs(data.created_at)
+                    .fromNow()
+                    .replace(regMapToJalali, changeToJalali)}
                 </Text>
               </HStack>
               <HStack alignItems={'center'} ml={4}>
@@ -94,7 +99,8 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
                   <Menu color={'black'} size={20} variant={'TwoTone'} />
                 </Box>
                 <Text color={'gray.500'} fontSize={'xs'} fontWeight={600}>
-                  وسیله نقلیه / خودروی سواری
+                  {selectedCategory.title}/{' '}
+                  {selectedCategory.children[data.category_id].title}
                 </Text>
               </HStack>
             </HStack>
@@ -219,6 +225,36 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
           </ScrollView>
         </Stack>
       </Stack>
+    );
+  };
+  return (
+    <VStack bg={'white'} h={'full'} safeArea>
+      <StatusBar backgroundColor={'white'} />
+      <HStack
+        alignItems={'center'}
+        h={14}
+        justifyContent={'space-between'}
+        px={6}>
+        <Text fontSize={'2xl'} fontWeight={700}>
+          جزئیات آگهی
+        </Text>
+        <IconButton
+          onPress={() => navigation.goBack()}
+          px={0}
+          icon={
+            <Add
+              color={'black'}
+              size={40}
+              style={{transform: [{rotate: '45deg'}]}}
+            />
+          }
+        />
+      </HStack>
+      <Stack flex={1}>
+        {detail?.httpRequestStatus === 'success' ? detailSection() : null}
+        {detail?.httpRequestStatus === 'loading' ? loadingSection() : null}
+      </Stack>
+
       <HStack h={'20'} justifyContent={'space-between'} pb={6} px={6}>
         <Button
           _text={{fontSize: 'md'}}

@@ -64,7 +64,7 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     auth: true,
   },
   detailAdvertisements: {
-    url: BASE_URL + 'v1/advertisements',
+    url: BASE_URL + 'v1/advertisements/show/{id}',
     method: 'get',
     auth: true,
   },
@@ -87,15 +87,7 @@ export type RequestListTypes = {
   verifyCode: {data: {mobile: string; code: string}};
   createAdvertisements: {data: AdvertisementDataType};
   detailAdvertisements: {
-    data: {
-      queryStrings: {
-        province_id?: number;
-        city_id?: number;
-        districts_ids?: string;
-        category_id?: number;
-        title?: string;
-      };
-    };
+    params: {id: number};
   };
 };
 
@@ -108,5 +100,5 @@ export type ResponseListType = {
   sendVerificationCode: RequestType<'expire_in', number>;
   verifyCode: RequestType<'token', string>;
   createAdvertisements: RequestType<'advertisement', AdvertisementType>;
-  detailAdvertisements: RequestType<'advertisements', AdvertisementType>;
+  detailAdvertisements: RequestType<'advertisement', AdvertisementType>;
 };

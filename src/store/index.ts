@@ -4,9 +4,11 @@ import {
   categoriesReducer,
   httpsReducer,
   locationsReducer,
+  storageReducer,
 } from './slices';
 import createSagaMiddleware from 'redux-saga';
 import {AppSaga} from './saga';
+
 const middlewares: Middleware[] = [];
 
 const sagaMiddleware = createSagaMiddleware();
@@ -18,6 +20,7 @@ export const store = configureStore({
     http: httpsReducer,
     advertising: advertisingReducer,
     locations: locationsReducer,
+    storage: storageReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(middlewares),

@@ -1,27 +1,18 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {HttpRequestStatusType} from '~/types';
 import {
   HttpActionType,
   HttpRequestAction,
 } from '~/store/Actions/httpRequest.action';
-import {
-  excludeList,
-  RequestKeyExclude,
-  ResponseListType,
-} from '~/util/RequestList';
-import {AxiosError} from 'axios';
+import {excludeList, RequestKeyExclude} from '~/util/RequestList';
 import {
   HttpResponseAction,
   HttpResponseActionType,
 } from '~/store/Actions/httpResponse.action';
-
-export type HttpSliceType<K extends RequestKeyExclude = RequestKeyExclude> = {
-  [k in K]?: {
-    httpRequestStatus: HttpRequestStatusType;
-    data?: ResponseListType[k];
-    error?: AxiosError | Error;
-  };
-};
+import {
+  SET_STORAGE,
+  SetStorageActionType,
+} from '~/store/Actions/setStorage.action';
+import {HttpSliceType} from '~/types/HttpSliceType';
 
 const initialState: HttpSliceType = {};
 
@@ -66,6 +57,14 @@ export const httpsSlice = createSlice({
         };
       },
     );
+
+    builder.addCase(SET_STORAGE, (state, action: SetStorageActionType) => {
+      if (action.payload.status === 'success') {
+        const data = action.payload.data!.auth;
+        return {...state, verifyCode: {...data, httpRequestStatus: 'success'}};
+      }
+      return state;
+    });
   },
 });
 export const {httpClear} = httpsSlice.actions;

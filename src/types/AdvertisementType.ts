@@ -3,7 +3,7 @@ export type AdvertisementType = {
   province_id: number;
   city_id: number;
   districts_ids: string[];
-  images_ids: string | null;
+  images_ids: number[] | null;
   title: string;
   description: string;
   has_chat: boolean;

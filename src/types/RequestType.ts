@@ -9,16 +9,6 @@ export type RequestType<N extends string, D> = {
   __typename: N;
 };
 
-export type RequestListType<N extends string, D> = {
-  code: number;
-  message: string;
-  error: boolean;
-  __typename: N;
-  data: {
-    [K in string]: D;
-  };
-};
-
 export type ActionRequestType = {
   method: Method;
   url: string;

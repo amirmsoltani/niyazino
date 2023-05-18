@@ -221,7 +221,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
         <ScrollView _contentContainerStyle={{pb: 8}} p={2} nestedScrollEnabled>
           <AdvertisingCard
             category={'وسایل نقلیه / خودروی سواری'}
-            id={1}
+            id={8}
             onPress={onPress}
             price={'سیصد تا هفصد میلیون تومان'}
             time={'۴۰ دقیقه پیش'}
@@ -229,7 +229,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           />
           <AdvertisingCard
             category={'وسایل نقلیه / دوچرخه'}
-            id={1}
+            id={7}
             onPress={onPress}
             price={'هزار تا دوهزار تومان'}
             time={'۴۰ دقیقه پیش'}
@@ -237,7 +237,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           />
           <AdvertisingCard
             category={'وسایل نقلیه / خودروی سواری'}
-            id={1}
+            id={7}
             onPress={onPress}
             price={'توافقی'}
             time={'۴۰ دقیقه پیش'}

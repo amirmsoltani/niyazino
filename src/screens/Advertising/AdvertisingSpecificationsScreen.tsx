@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import {
   Box,
   Button,
@@ -27,20 +27,55 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Dimensions} from 'react-native';
 import {useHttpRequest} from '~/hooks';
-import {setRemoveAssets} from '~/store/slices';
+import {advertisingClear, setRemoveAssets} from '~/store/slices';
+import {createAdvertisingAfterUploadPhotos} from '~/store/Actions';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootParamList} from '~/screens/type';
 
 const {width} = Dimensions.get('window');
 
-const AdvertisingSpecificationsScreen = () => {
+type Props = StackScreenProps<
+  RootParamList,
+  'createAdvertisingSpecificationsScreen'
+>;
+const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
   const {
     dispatch,
-    state: {districts_ids, districtsList, images},
+    state: {districts_ids, districtsList, images, auth, isLoading},
   } = useHttpRequest({
     selector: state => ({
       districts_ids: state.advertising.districts_ids,
       districtsList: state.http.districtList,
       images: state.advertising.assets,
+      auth: state.http.verifyCode,
+      isLoading: [
+        state.http.uploadFile?.httpRequestStatus,
+        state.http.createAdvertisements?.httpRequestStatus,
+      ].includes('loading'),
+      create: state.http.createAdvertisements,
     }),
+    onUpdate: (lastState, state) => {
+      if (
+        lastState.create?.httpRequestStatus === 'loading' &&
+        state.create?.httpRequestStatus === 'success'
+      ) {
+        const name = state!.create.data!.__typename;
+        navigation.reset({
+          index: 2,
+          routes: [
+            {name: 'dashboardScreen'},
+            {name: 'advertisingListScreen'},
+            {
+              name: 'advertisingDetailScreen',
+              params: {
+                id: state!.create!.data!.data![name]!.id,
+              },
+            },
+          ],
+        });
+        dispatch(advertisingClear());
+      }
+    },
   });
   const [dirty, setDirty] = useState(false);
   const locationModalRef = useRef<SelectLocationModalRef>(null);
@@ -57,9 +92,14 @@ const AdvertisingSpecificationsScreen = () => {
   const [agreedPrice, setAgreedPrice] = useState(false);
   return (
     <CreateAdvertisingLayout
+      isLoading={isLoading}
       validateForNext={() => {
         setDirty(true);
         if (!districts_ids?.length) {
+          return false;
+        }
+        if (auth?.httpRequestStatus === 'success') {
+          dispatch(createAdvertisingAfterUploadPhotos());
           return false;
         }
         return true;

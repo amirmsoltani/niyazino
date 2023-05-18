@@ -52,10 +52,14 @@ export const categoriesSlice = createSlice({
           if (category.parent_id) {
             const parentId = category.parent_id;
             childrenToParent[category.id] = category.parent_id;
-            categoriesObject[parentId] = {
-              ...(categoriesObject[parentId] || {}),
-              children: {[category.id]: category},
-            };
+            if (categoriesObject[parentId]) {
+              categoriesObject[parentId].children[category.id] = category;
+            } else {
+              // @ts-ignore
+              categoriesObject[parentId] = {
+                children: {[category.id]: category},
+              };
+            }
           } else {
             categoriesObject[category.id] = {
               ...category,

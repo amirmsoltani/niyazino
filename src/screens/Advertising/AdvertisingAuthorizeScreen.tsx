@@ -5,7 +5,10 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
 import {Controller, useForm} from 'react-hook-form';
 import {useHttpRequest} from '~/hooks';
-import {createAdvertisingAfterUploadPhotos} from '~/store/Actions';
+import {
+  createAdvertisingAfterUploadPhotos,
+  syncStorageAction,
+} from '~/store/Actions';
 import {advertisingClear} from '~/store/slices';
 
 type Props = StackScreenProps<
@@ -35,6 +38,7 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
         lastState.auth?.httpRequestStatus === 'loading' &&
         state.auth!.httpRequestStatus === 'success'
       ) {
+        dispatch(syncStorageAction('update'));
         dispatch(createAdvertisingAfterUploadPhotos());
       }
       if (
