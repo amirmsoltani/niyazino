@@ -24,33 +24,52 @@ import {
   SelectSpecificationsActionSheet,
   SelectSpecificationsActionSheetRef,
 } from '~/components';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {Dimensions} from 'react-native';
+import {useHttpRequest} from '~/hooks';
+import {setRemoveAssets} from '~/store/slices';
 
 const {width} = Dimensions.get('window');
 
 const AdvertisingSpecificationsScreen = () => {
+  const {
+    dispatch,
+    state: {districts_ids, districtsList, images},
+  } = useHttpRequest({
+    selector: state => ({
+      districts_ids: state.advertising.districts_ids,
+      districtsList: state.http.districtList,
+      images: state.advertising.assets,
+    }),
+  });
+  const [dirty, setDirty] = useState(false);
   const locationModalRef = useRef<SelectLocationModalRef>(null);
   const specificationRef = useRef<SelectSpecificationsActionSheetRef>(null);
   const pricePickerRef = useRef<PricePickerModalRef>(null);
-  const [images, setImages] = useState<Asset[]>([]);
   const openGallery = () => {
     launchImageLibrary({mediaType: 'photo'}).then(response => {
       if (!response.didCancel) {
-        setImages([...images, response.assets![0]]);
+        dispatch(setRemoveAssets(response.assets![0]));
       }
     });
   };
   const {colors, sizes} = useTheme();
   const [agreedPrice, setAgreedPrice] = useState(false);
   return (
-    <CreateAdvertisingLayout>
+    <CreateAdvertisingLayout
+      validateForNext={() => {
+        setDirty(true);
+        if (!districts_ids?.length) {
+          return false;
+        }
+        return true;
+      }}>
       <SelectLocationModal ref={locationModalRef} />
       <SelectSpecificationsActionSheet ref={specificationRef} />
       <PricePickerModal ref={pricePickerRef} />
 
       <ScrollView p={6}>
-        <FormControl isInvalid>
+        <FormControl isInvalid={!districts_ids?.length && dirty}>
           <Stack mx={1}>
             <FormControl.Label
               _text={{color: 'black', fontSize: 20, fontWeight: 700}}
@@ -63,26 +82,36 @@ const AdvertisingSpecificationsScreen = () => {
               حداقال یک مکان الزامی است
             </FormControl.HelperText>
             <HStack alignItems={'center'} flexWrap={'wrap'} my={4}>
-              <Button
-                _pressed={{bg: 'orange.400'}}
-                bg={'white'}
-                leftIcon={<Location color={'black'} />}
-                mr={4}
-                py={'4'}
-                rounded={'full'}
-                _text={{
-                  color: 'black',
-                }}>
-                چهارمحال و بختیاری
-              </Button>
-              <IconButton
-                bg={'orange.600'}
-                icon={<Add color={'white'} size={32} />}
-                mr={2}
-                onPress={() => locationModalRef.current?.setStatus(true)}
-                rounded={'full'}
-              />
-              <Text fontWeight={500}>موقعیت جدید</Text>
+              {districts_ids?.map(district => {
+                const data = districtsList?.data?.data[
+                  districtsList?.data?.__typename
+                ].find(item => item.id === +district);
+                return (
+                  <Button
+                    key={district}
+                    _pressed={{bg: 'orange.400'}}
+                    bg={'white'}
+                    leftIcon={<Location color={'black'} />}
+                    mr={4}
+                    py={'4'}
+                    rounded={'full'}
+                    _text={{
+                      color: 'black',
+                    }}>
+                    {data?.name}
+                  </Button>
+                );
+              })}
+              <HStack alignItems={'center'} my={2}>
+                <IconButton
+                  bg={'orange.600'}
+                  icon={<Add color={'white'} size={32} />}
+                  mr={2}
+                  onPress={() => locationModalRef.current?.setStatus(true)}
+                  rounded={'full'}
+                />
+                <Text fontWeight={500}>موقعیت جدید</Text>
+              </HStack>
             </HStack>
             <FormControl.ErrorMessage>
               لطفا یک محدوده جغرافیایی انتخاب کنید
@@ -129,9 +158,9 @@ const AdvertisingSpecificationsScreen = () => {
 
                 <Text fontWeight={'400'}>تصویر جدید</Text>
               </Pressable>
-              {images.map((image, index) => (
+              {images?.map(image => (
                 <Box
-                  key={image.id}
+                  key={image.fileName}
                   alignItems={'center'}
                   bg={'white'}
                   h={(width - sizes['6'] * 2) * 0.42}
@@ -156,9 +185,7 @@ const AdvertisingSpecificationsScreen = () => {
                       />
                     }
                     onPress={() => {
-                      const newImages = [...images];
-                      newImages.splice(index, 1);
-                      setImages([...newImages]);
+                      dispatch(setRemoveAssets(image));
                     }}
                   />
                   <Image

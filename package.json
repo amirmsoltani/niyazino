@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-masked-view/masked-view": "^0.2.9",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
@@ -21,6 +22,7 @@
     "iconsax-react-native": "^0.0.8",
     "native-base": "^3.4.28",
     "react": "18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-native": "0.71.6",
     "react-native-asset": "^2.1.0",
     "react-native-gesture-handler": "^2.9.0",
@@ -34,7 +36,8 @@
     "react-native-video": "^5.2.1",
     "react-native-video-player": "^0.14.0",
     "react-redux": "^8.0.5",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "redux-saga": "^1.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

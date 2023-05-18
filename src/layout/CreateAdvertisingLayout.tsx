@@ -14,7 +14,12 @@ import {Add} from 'iconsax-react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {RootParamList} from '~/screens/type';
 
-type PropsType = {children: ReactNode; validateForNext?: () => boolean};
+type PropsType = {
+  children: ReactNode;
+  validateForNext?: () => boolean;
+  goBack?: () => void;
+  isLoading?: boolean;
+};
 
 const tabItems: {
   name: string;
@@ -34,6 +39,8 @@ const tabItems: {
 const CreateAdvertisingLayout: FC<PropsType> = ({
   children,
   validateForNext,
+  goBack,
+  isLoading,
 }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -92,10 +99,14 @@ const CreateAdvertisingLayout: FC<PropsType> = ({
           borderColor={'gray.400'}
           borderWidth={2}
           flex={1}
-          onPress={() => navigation.goBack()}
+          isLoading={isLoading}
           py={4}
           rounded={'3xl'}
-          variant={'outline'}>
+          variant={'outline'}
+          onPress={() => {
+            goBack?.();
+            navigation.goBack();
+          }}>
           {find === 0 ? 'انصراف' : 'قبلی'}
         </Button>
         <Button
@@ -103,6 +114,7 @@ const CreateAdvertisingLayout: FC<PropsType> = ({
           _text={{color: 'white', fontWeight: '500', fontSize: 'lg'}}
           bg={'orange.600'}
           flex={1}
+          isLoading={isLoading}
           py={4}
           rounded={'3xl'}
           onPress={() => {

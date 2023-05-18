@@ -21,9 +21,9 @@ import {useDrawer} from '~/hooks';
 import {MainLayout} from '~/layout';
 import {Add, Filter, Location, Menu, SearchNormal1} from 'iconsax-react-native';
 import {
+  AdvertisingCard,
   SelectLocationModal,
   SelectLocationModalRef,
-  AdvertisingCard,
 } from '~/components';
 
 type Props = StackScreenProps<RootParamList, 'advertisingListScreen'>;
@@ -38,12 +38,17 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
   const {setDrawerStatus} = useDrawer();
   const {colors} = useTheme();
   return (
-    <MainLayout bg={'blueGray.200'}>
-      <SelectLocationModal ref={selectLocationRef} />
-      <StatusBar
-        backgroundColor={colors.blueGray['200']}
-        barStyle={'dark-content'}
-      />
+    <MainLayout
+      bg={'blueGray.200'}
+      hiddenElements={
+        <>
+          <SelectLocationModal ref={selectLocationRef} />
+          <StatusBar
+            backgroundColor={colors.blueGray['200']}
+            barStyle={'dark-content'}
+          />
+        </>
+      }>
       <VStack px={6}>
         <HStack h={14} justifyContent={'space-between'}>
           <AspectRatio ratio={16 / 9}>

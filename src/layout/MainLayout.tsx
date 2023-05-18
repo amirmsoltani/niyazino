@@ -6,7 +6,7 @@ import {ColorType} from 'native-base/lib/typescript/components/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {RootParamList} from '~/screens/type';
 
-type Props = {children: ReactNode; bg?: ColorType};
+type Props = {children: ReactNode; bg?: ColorType; hiddenElements?: ReactNode};
 
 const items: {
   name: string;
@@ -32,12 +32,17 @@ const items: {
     color: 'white',
   },
 ];
-const MainLayout: FC<Props> = ({children, bg = 'orange.600'}) => {
+const MainLayout: FC<Props> = ({
+  children,
+  bg = 'orange.600',
+  hiddenElements,
+}) => {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const route = useRoute();
   return (
     <Stack safeArea>
+      {hiddenElements}
       <ScrollView
         _contentContainerStyle={{minH: 'full', maxH: 'full'}}
         bg={bg}

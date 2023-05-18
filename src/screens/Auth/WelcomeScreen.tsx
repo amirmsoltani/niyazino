@@ -1,16 +1,13 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {RootParamList} from '~/screens/type';
 import {Center, Image, Spinner, StatusBar, Text, useTheme} from 'native-base';
 import {StackScreenProps} from '@react-navigation/stack';
+import {useWelcome} from '~/hooks';
 
 type Props = StackScreenProps<RootParamList, 'welcomeScreen'>;
-const WelcomeScreen: FC<Props> = ({navigation}) => {
+const WelcomeScreen: FC<Props> = () => {
   const {colors} = useTheme();
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.replace('dashboardScreen');
-    }, 2000);
-  });
+  useWelcome();
   return (
     <Center bg={'orange.600'} h={'full'} w={'full'} safeArea>
       <StatusBar backgroundColor={colors.orange['600']} />

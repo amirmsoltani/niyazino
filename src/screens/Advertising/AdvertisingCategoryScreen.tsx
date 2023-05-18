@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useDebugValue, useState} from 'react';
 import {CreateAdvertisingLayout} from '~/layout';
 import {
   Box,
   Button,
+  FlatList,
   Heading,
   HStack,
   Input,
@@ -11,22 +12,36 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import {Menu, SearchNormal1} from 'iconsax-react-native';
+import {EmojiSad, Menu, SearchNormal1} from 'iconsax-react-native';
+import {useAppDispatch, useAppSelector} from '~/hooks/reduxHooks';
+import {advertisingSetData} from '~/store/slices';
+import {CategoriesType, CategoryType} from '~/types';
 
-const categorise = [
-  {name: 'خدمات منزل'},
-  {name: 'وسایل نقلیه'},
-  {name: 'باربری'},
-  {name: 'موتور برقی'},
-];
-const subCategories = [
-  {name: 'خودروی سواری'},
-  {name: 'موتورسیکلت'},
-  {name: 'دوچرخه'},
-];
 const AdvertisingCategoryScreen = () => {
+  const dispatch = useAppDispatch();
+  const {categories, selectedId} = useAppSelector(state => ({
+    categories: state.categories,
+    selectedId: state.advertising.category_id,
+  }));
+
+  const entries = Object.entries(categories.categoriesObject || {});
+  const [selectedCategory, setSelectedCategory] = useState({
+    parent: selectedId
+      ? categories.childrenToParent[selectedId]
+      : entries[0][1].id,
+    child: selectedId || Object.entries(entries[0][1].children)[0][1].id,
+  });
+  const [searchValue, setSearchValue] = useState('');
+
+  const filteredCategory = entries.filter(category =>
+    category[1].title.includes(searchValue),
+  );
   return (
-    <CreateAdvertisingLayout>
+    <CreateAdvertisingLayout
+      validateForNext={() => {
+        dispatch(advertisingSetData({category_id: selectedCategory.child}));
+        return true;
+      }}>
       <ScrollView
         _contentContainerStyle={{minH: 'full', pb: 4}}
         h={'full'}
@@ -45,6 +60,7 @@ const AdvertisingCategoryScreen = () => {
             h={'14'}
             m={1}
             mt={6}
+            onChangeText={value => setSearchValue(value)}
             placeholder={'نام یک دسته بندی را وارد کنید'}
             placeholderTextColor={'gray.300'}
             pr={4}
@@ -59,48 +75,83 @@ const AdvertisingCategoryScreen = () => {
           />
         </Stack>
 
-        <ScrollView
+        <FlatList<[string, CategoriesType]>
+          data={filteredCategory}
           flexGrow={0}
           mt={6}
           showsHorizontalScrollIndicator={false}
-          style={{direction: 'ltr'}}
+          w={'full'}
           _contentContainerStyle={{
             py: 1,
+            minW: 'full',
+            justifyContent: 'flex-end',
           }}
+          ListEmptyComponent={() => (
+            <VStack alignItems={'center'} w={'full'}>
+              <EmojiSad color={'orange'} />
+              <Text color={'orange.300'} fontWeight={'500'}>
+                دسته بندی یافت نشد
+              </Text>
+            </VStack>
+          )}
+          renderItem={({item: [id, category]}) => (
+            <Button
+              key={id}
+              _pressed={{bg: 'orange.300'}}
+              bg={category.id === selectedCategory.parent ? 'black' : 'white'}
+              fontWeight={'600'}
+              h={'12'}
+              mx={2}
+              px={6}
+              rounded={'full'}
+              shadow={2}
+              _text={{
+                fontWeight: '600',
+                color:
+                  category.id === selectedCategory.parent ? 'white' : 'black',
+              }}
+              onPress={() => {
+                setSelectedCategory({
+                  parent: +id,
+                  child: +Object.entries(
+                    categories.categoriesObject[+id].children,
+                  )[0][1].id,
+                });
+              }}>
+              {category.title}
+            </Button>
+          )}
           horizontal
           invertStickyHeaders
-          nestedScrollEnabled>
-          {categorise.map(({name}) => (
-            <Button
-              key={name}
-              _pressed={{bg: 'orange.300'}}
-              bg={name === 'وسایل نقلیه' ? 'black' : 'white'}
-              fontWeight={'600'}
-              h={'12'}
-              mx={2}
-              px={6}
-              rounded={'full'}
-              shadow={2}
-              _text={{
-                fontWeight: '600',
-                color: name === 'وسایل نقلیه' ? 'white' : 'black',
-              }}>
-              {name}
-            </Button>
-          ))}
-        </ScrollView>
-        <ScrollView
-          _contentContainerStyle={{py: 1}}
+          nestedScrollEnabled
+        />
+
+        <FlatList<[string, CategoryType]>
           flexGrow={0}
+          mb={4}
           mt={4}
           showsHorizontalScrollIndicator={false}
-          horizontal
-          nestedScrollEnabled>
-          {subCategories.map(({name}) => (
+          _contentContainerStyle={{
+            py: 1,
+            minW: 'full',
+            justifyContent: 'flex-end',
+          }}
+          data={Object.entries(
+            categories.categoriesObject[selectedCategory.parent].children,
+          )}
+          ListEmptyComponent={() => (
+            <VStack alignItems={'center'} w={'full'}>
+              <EmojiSad color={'orange'} />
+              <Text color={'orange.300'} fontWeight={'500'}>
+                دسته بندی موجود نیست
+              </Text>
+            </VStack>
+          )}
+          renderItem={({item: [id, child]}) => (
             <Button
-              key={name}
+              key={id}
               _pressed={{bg: 'orange.300'}}
-              bg={name === 'خودروی سواری' ? 'black' : 'white'}
+              bg={child.id === selectedCategory.child ? 'black' : 'white'}
               fontWeight={'600'}
               h={'12'}
               mx={2}
@@ -109,12 +160,14 @@ const AdvertisingCategoryScreen = () => {
               shadow={2}
               _text={{
                 fontWeight: '600',
-                color: name === 'خودروی سواری' ? 'white' : 'black',
+                color: child.id === selectedCategory.child ? 'white' : 'black',
               }}>
-              {name}
+              {child.title}
             </Button>
-          ))}
-        </ScrollView>
+          )}
+          horizontal
+          nestedScrollEnabled
+        />
 
         <VStack flexGrow={1} justifyContent={'flex-end'} mb={4} px={6}>
           <HStack
@@ -127,13 +180,17 @@ const AdvertisingCategoryScreen = () => {
             <Menu color={'black'} rotation={90} size={24} variant={'TwoTone'} />
 
             <Text fontSize={'md'} ml={2} bold>
-              وسایل نقلیه
+              {categories.categoriesObject[selectedCategory.parent].title}
             </Text>
             <Text fontSize={'md'} bold>
               /
             </Text>
             <Text fontSize={'md'} bold>
-              خودروی سواری
+              {
+                categories.categoriesObject[selectedCategory.parent].children[
+                  selectedCategory.child
+                ].title
+              }
             </Text>
           </HStack>
         </VStack>
