@@ -18,7 +18,10 @@ const {width} = Dimensions.get('window');
 const sixtyPercent = Math.floor(width * 0.6);
 const drawerItems: {
   name: string;
-  path: keyof RootParamList;
+  path: keyof Pick<
+    RootParamList,
+    'userBookmarksScreen' | 'userAdvertisingScreen'
+  >;
   Icon: Icon;
 }[] = [
   {
@@ -26,10 +29,10 @@ const drawerItems: {
     path: 'userAdvertisingScreen',
     Icon: Receipt21,
   },
-  {name: 'نشان شده ها', path: 'createAdvertisingTitleScreen', Icon: Save2},
+  {name: 'نشان شده ها', path: 'userBookmarksScreen', Icon: Save2},
   {
     name: 'پشتیبانی',
-    path: 'createAdvertisingSpecificationsScreen',
+    path: 'userAdvertisingScreen',
     Icon: CallCalling,
   },
 ];
@@ -84,7 +87,7 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
           خروج از حساب کاربری
         </Button>
         <VStack borderTopColor={'gray.200'} borderTopWidth={1}>
-          {drawerItems.map(({name, Icon}) => (
+          {drawerItems.map(({name, path, Icon}) => (
             <Pressable
               key={name}
               _pressed={{bg: 'orange.300'}}
@@ -96,7 +99,7 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
               py={4}
               onPress={() => {
                 closeDrawer();
-                navigation.navigate('userAdvertisingScreen');
+                navigation.navigate(path);
               }}>
               <Text fontWeight={'600'} mr={'10'}>
                 {name}

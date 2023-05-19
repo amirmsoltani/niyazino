@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {RootParamList} from './type';
 import * as Auth from './Auth';
@@ -57,6 +57,10 @@ const Screens = () => {
           <Stack.Screen
             component={User.UserAdvertisingScreen}
             name={'userAdvertisingScreen'}
+          />
+          <Stack.Screen
+            component={User.UserBookmarksScreen}
+            name={'userBookmarksScreen'}
           />
         </Stack.Group>
       </Stack.Navigator>

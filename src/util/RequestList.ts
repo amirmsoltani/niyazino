@@ -10,6 +10,7 @@ import {
   ProvinceType,
   RequestListType,
   RequestType,
+  UserBookmarkType,
 } from '~/types';
 import {Asset} from 'react-native-image-picker';
 
@@ -29,7 +30,8 @@ type RequestKeys =
   | 'createAdvertisements'
   | 'detailAdvertisements'
   | 'listAdvertisements'
-  | 'userAdvertisements';
+  | 'userAdvertisements'
+  | 'userBookmarks';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + 'v1/categories',
@@ -82,6 +84,11 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     method: 'get',
     auth: true,
   },
+  userBookmarks: {
+    url: BASE_URL + 'v1/bookmarks',
+    method: 'get',
+    auth: true,
+  },
 };
 
 export type RequestListTypes = {
@@ -111,6 +118,7 @@ export type RequestListTypes = {
     queryString: {page?: number};
     addToList?: boolean;
   };
+  userBookmarks: undefined;
 };
 
 export type ResponseListType = {
@@ -125,4 +133,5 @@ export type ResponseListType = {
   detailAdvertisements: RequestType<'advertisement', AdvertisementType>;
   listAdvertisements: RequestListType<'advertisements', AdvertisementType>;
   userAdvertisements: RequestListType<'advertisements', AdvertisementType>;
+  userBookmarks: RequestType<'advertisements', UserBookmarkType[]>;
 };
