@@ -57,6 +57,7 @@ function* HttpRequest(action: HttpActionType) {
       url: urlWithParams,
       headers: requestHeaders,
       data: formData || data?.data,
+      params: data?.queryString,
     });
     if (sagaName) {
       yield put({type: sagaName, payload: response.data, _name: action._name});
@@ -65,6 +66,7 @@ function* HttpRequest(action: HttpActionType) {
         httpResponseAction(action._name as RequestKeyExclude, {
           httpResponseStatus: 'success',
           responseData: response.data,
+          addToList: data?.addToList,
         }),
       );
     }
@@ -73,6 +75,7 @@ function* HttpRequest(action: HttpActionType) {
       httpResponseAction(action._name as RequestKeyExclude, {
         httpResponseStatus: 'error',
         error: e,
+        addToList: data?.addToList,
       }),
     );
     console.log('error');

@@ -7,7 +7,7 @@ const mapToJalali = {
   month: 'ماه',
   year: 'سال',
   few: '',
-  'a ': '',
+  'a ': '۱ ',
   ago: 'قبل',
   an: '۱',
   's ': ' ',
@@ -25,14 +25,18 @@ const mapNumberToPersian = {
   '9': '۹',
 };
 
+export const convertNumToPersian = (num: string) => {
+  return num
+    .split('')
+    .map(n => mapNumberToPersian[n as keyof typeof mapNumberToPersian])
+    .join('');
+};
+
 export const changeToJalali = (subtract: string) => {
   if (subtract in mapToJalali) {
     return mapToJalali[subtract as keyof typeof mapToJalali];
   } else if (subtract.match(/\d/g)) {
-    return subtract
-      .split('')
-      .map(n => mapNumberToPersian[n as keyof typeof mapNumberToPersian])
-      .join('');
+    return convertNumToPersian(subtract);
   }
   return '';
 };

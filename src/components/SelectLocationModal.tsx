@@ -28,7 +28,11 @@ export type RefType = {
   setStatus: (open?: boolean) => void;
 };
 
-type PropsType = {defaultOpen?: boolean; global?: boolean};
+type PropsType = {
+  defaultOpen?: boolean;
+  global?: boolean;
+  closeButtonHidden?: boolean;
+};
 
 type StateType = {
   isOpen: boolean;
@@ -101,7 +105,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
       onClose={setStatus}
       avoidKeyboard>
       <Modal.Content w={'full'}>
-        <Modal.CloseButton />
+        {props.closeButtonHidden ? null : <Modal.CloseButton />}
         <Modal.Header>{'انتخاب ' + stageName}</Modal.Header>
 
         <VStack flexGrow={1} px={4}>
@@ -163,7 +167,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                     (districts &&
                       ((Array.isArray(districts) &&
                         districts.includes(item.id.toString())) ||
-                        item.id in districts)) ||
+                        item.id in (districts as any))) ||
                     false
                   }
                   onChange={isSelected => {

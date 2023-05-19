@@ -91,7 +91,7 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
     const data = detail!.data!.data[detail!.data!.__typename];
     const selectedCategory =
       category.categoriesObject[category.childrenToParent[data.category_id]];
-    const districtIds = (data.districts_ids as string).split(',');
+    const districtIds = (data.districts_ids as string)?.split(',') || [];
     return (
       <Stack flex={1}>
         <Stack h={'full'}>

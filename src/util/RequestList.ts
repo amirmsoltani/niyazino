@@ -2,11 +2,13 @@ import {SerializeCategoriesActionName} from './SagaActionsNames';
 import {
   ActionRequestType,
   AdvertisementDataType,
+  AdvertisementListQueryStringType,
   AdvertisementType,
   CityType,
   DistrictType,
   FileType,
   ProvinceType,
+  RequestListType,
   RequestType,
 } from '~/types';
 import {Asset} from 'react-native-image-picker';
@@ -25,7 +27,8 @@ type RequestKeys =
   | 'sendVerificationCode'
   | 'verifyCode'
   | 'createAdvertisements'
-  | 'detailAdvertisements';
+  | 'detailAdvertisements'
+  | 'listAdvertisements';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + 'v1/categories',
@@ -68,6 +71,11 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     method: 'get',
     auth: true,
   },
+  listAdvertisements: {
+    url: BASE_URL + 'v1/advertisements',
+    method: 'get',
+    auth: true,
+  },
 };
 
 export type RequestListTypes = {
@@ -89,6 +97,10 @@ export type RequestListTypes = {
   detailAdvertisements: {
     params: {id: number};
   };
+  listAdvertisements: {
+    queryString: AdvertisementListQueryStringType;
+    addList?: boolean;
+  };
 };
 
 export type ResponseListType = {
@@ -101,4 +113,5 @@ export type ResponseListType = {
   verifyCode: RequestType<'token', string>;
   createAdvertisements: RequestType<'advertisement', AdvertisementType>;
   detailAdvertisements: RequestType<'advertisement', AdvertisementType>;
+  listAdvertisements: RequestListType<'advertisements', AdvertisementType>;
 };

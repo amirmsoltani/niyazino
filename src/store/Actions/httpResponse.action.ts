@@ -8,22 +8,24 @@ import {AxiosError} from 'axios';
 export const HttpResponseAction = 'Http Response [http]';
 
 export type HttpResponseActionType<
-  K extends keyof RequestListTypes = keyof RequestListTypes,
+  K extends RequestKeyExclude = RequestKeyExclude,
 > = {
   type: typeof HttpResponseAction;
   _name: K;
   payload: {
     httpResponseStatus: 'success' | 'error';
-    responseData?: ResponseListType[K];
+    responseData?: Pick<ResponseListType, RequestKeyExclude>[K];
     error?: Error | AxiosError;
+    addToList?: boolean;
   };
 };
 const httpResponseAction = <K extends RequestKeyExclude = RequestKeyExclude>(
   requestName: K,
   payload: {
     httpResponseStatus: 'success' | 'error';
-    responseData?: ResponseListType[K];
+    responseData?: Pick<ResponseListType, RequestKeyExclude>[K];
     error?: Error | AxiosError;
+    addToList?: boolean;
   },
 ): HttpResponseActionType<K> => ({
   type: HttpResponseAction,

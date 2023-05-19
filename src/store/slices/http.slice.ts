@@ -41,16 +41,29 @@ export const httpsSlice = createSlice({
       HttpResponseAction,
       (state, action: HttpResponseActionType) => {
         const {httpResponseStatus, responseData, error} = action.payload;
-
+        const __typename = responseData?.data
+          ? Object.keys(responseData?.data)[0]
+          : undefined;
+        if (
+          action.payload.addToList &&
+          state[action._name]?.data &&
+          __typename
+        ) {
+          // @ts-ignore ignore for this issue manual
+          responseData!.data[__typename].data = [
+            // @ts-ignore ignore for this issue manual
+            ...state[action._name]!.data!.data[__typename].data,
+            // @ts-ignore ignore for this issue manual
+            ...responseData!.data[__typename].data,
+          ];
+        }
         return {
           ...state,
           [action._name]: {
             httpRequestStatus: httpResponseStatus,
             error,
             data: {
-              __typename: responseData?.data
-                ? Object.keys(responseData?.data)[0]
-                : undefined,
+              __typename,
               ...responseData,
             },
           },

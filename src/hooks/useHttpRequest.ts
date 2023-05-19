@@ -14,6 +14,7 @@ interface Request {
 
 interface UseHttpRequest {
   <S>(effects: {
+    deps?: any[];
     selector: (state: RootState) => S;
     onUpdate?: (lastState: S, state: S) => void;
     clearAfterUnmount?: RequestKeyExclude[];
@@ -34,7 +35,7 @@ const useHttpRequest: UseHttpRequest = effects => {
     effects.onUpdate?.(lastState.current, state);
 
     lastState.current = state;
-  }, [state]);
+  }, [state, ...(effects.deps || [])]);
 
   const request: Request = (requestName, requestData) => {
     dispatch(httpRequestAction(requestName, requestData));

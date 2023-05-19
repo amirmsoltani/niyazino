@@ -9,3 +9,5 @@ export {default as AdvertisingCard} from './AdvertisingCard';
 export {default as ChatCard} from './ChatCard';
 export {default as ContactInformationModal} from './ContactInformationModal';
 export type {RefType as ContactInformationModalRef} from './ContactInformationModal';
+export {default as SelectCategoryModal} from './SelectCategoryModal';
+export type {RefType as SelectCategoryModalRef} from './SelectCategoryModal';
