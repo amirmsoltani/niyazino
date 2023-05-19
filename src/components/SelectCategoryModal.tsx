@@ -193,7 +193,6 @@ const SelectCategoryModal = forwardRef<RefType, PropsType>((props, ref) => {
                 fontWeight={'600'}
                 h={'12'}
                 mx={2}
-                onPress={() => props.onSelect?.(+id)}
                 px={6}
                 rounded={'full'}
                 shadow={2}
@@ -201,6 +200,10 @@ const SelectCategoryModal = forwardRef<RefType, PropsType>((props, ref) => {
                   fontWeight: '600',
                   color:
                     child.id === selectedCategory.child ? 'white' : 'black',
+                }}
+                onPress={() => {
+                  setSelectedCategory({...selectedCategory, child: +id});
+                  props.onSelect?.(+id);
                 }}>
                 {child.title}
               </Button>

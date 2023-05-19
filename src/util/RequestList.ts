@@ -99,7 +99,7 @@ export type RequestListTypes = {
   };
   listAdvertisements: {
     queryString: AdvertisementListQueryStringType;
-    addList?: boolean;
+    addToList?: boolean;
   };
 };
 

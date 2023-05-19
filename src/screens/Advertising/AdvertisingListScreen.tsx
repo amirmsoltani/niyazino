@@ -40,6 +40,7 @@ import {
 } from '~/util/ChangeToJalali';
 import {AdvertisementListQueryStringType} from '~/types';
 import dayjs from 'dayjs';
+import {syncStorageAction} from '~/store/Actions';
 
 type Props = StackScreenProps<RootParamList, 'advertisingListScreen'>;
 
@@ -54,6 +55,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
   const [filters, setFilters] = useState<StateType>({page: 1});
   const lastFilter = useRef<StateType>(filters);
   const {
+    dispatch,
     request,
     state: {locations, list, category},
   } = useHttpRequest({
@@ -63,13 +65,33 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
       list: state.http.listAdvertisements,
       category: state.categories,
     }),
+    initialRequests: (request, state) => {
+      if (state.locations.city && state.locations.province) {
+        const districts = Object.entries(locations.districts);
+        const queryString: AdvertisementListQueryStringType = {
+          province_id: state.locations.province!.id,
+          city_id: state.locations.city!.id,
+          page: filters.page,
+        };
+        if (districts.length) {
+          queryString['districts_ids[]'] = districts.map(([id]) => id);
+        }
+        request('listAdvertisements', {
+          queryString,
+          addToList:
+            lastFilter.current!.page !== filters.page && filters.page !== 1,
+        });
+      }
+    },
     onUpdate: (lastState, state) => {
       if (
         state.locations.city &&
         state.locations.province &&
         (lastState.locations.city?.id !== state.locations.city?.id ||
           lastState.locations.districts !== state.locations.districts ||
-          filters !== lastFilter.current)
+          filters.search !== lastFilter.current!.search ||
+          filters.page !== lastFilter.current!.page ||
+          filters.category !== lastFilter.current!.category)
       ) {
         const districts = Object.entries(locations.districts);
         const queryString: AdvertisementListQueryStringType = {
@@ -86,12 +108,20 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
         if (filters.category) {
           queryString.category_id = filters.category;
         }
+
         request('listAdvertisements', {
           queryString,
-          addList:
+          addToList:
             lastFilter.current!.page !== filters.page && filters.page !== 1,
         });
         lastFilter.current = filters;
+        if (
+          lastState.locations.city !== state.locations.city ||
+          lastState.locations.province !== state.locations.province ||
+          lastState.locations.districts !== state.locations.districts
+        ) {
+          dispatch(syncStorageAction('update'));
+        }
       }
     },
   });
@@ -335,6 +365,13 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
             </Text>
           </VStack>
         )
+      }
+      ListFooterComponent={
+        list?.httpRequestStatus === 'loading' && filters.page > 1 ? (
+          <VStack alignItems={'center'} justifyContent={'center'} my={4}>
+            <Spinner />
+          </VStack>
+        ) : null
       }
       onEndReached={() => {
         if (list?.httpRequestStatus === 'success') {

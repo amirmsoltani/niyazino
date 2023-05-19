@@ -1,4 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {
+  SET_STORAGE,
+  SetStorageActionType,
+} from '~/store/Actions/setStorage.action';
 
 export type LocationsSliceType = {
   province?: {id: number; title: string};
@@ -45,6 +49,15 @@ export const locationsSlice = createSlice({
       delete newDistricts[action.payload];
       return {...state, districts: newDistricts};
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(SET_STORAGE, (state, action: SetStorageActionType) => {
+      if (action.payload.status === 'success') {
+        const data = action.payload.data!.location;
+        return {...state, ...data};
+      }
+      return state;
+    });
   },
 });
 export const {setLocation, clearLocation, deleteDistrict} =

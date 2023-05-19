@@ -13,7 +13,9 @@ function* SyncStorage(action: SyncStorageActionType) {
   if (action.payload === 'update') {
     const state: StorageType = yield select((state: RootState) => ({
       auth: state.http.verifyCode,
+      location: state.locations,
     }));
+    console.log(state);
     yield storage.setItem('_storage', JSON.stringify(state));
   } else {
     const state: string = yield storage.getItem('_storage');

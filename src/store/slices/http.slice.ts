@@ -32,7 +32,13 @@ export const httpsSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(HttpRequestAction, (state, action: HttpActionType) => {
       if (!excludeList.includes(action._name)) {
-        return {...state, [action._name]: {httpRequestStatus: 'loading'}};
+        return {
+          ...state,
+          [action._name]: {
+            ...state[action._name as RequestKeyExclude],
+            httpRequestStatus: 'loading',
+          },
+        };
       }
       return state;
     });
@@ -44,6 +50,7 @@ export const httpsSlice = createSlice({
         const __typename = responseData?.data
           ? Object.keys(responseData?.data)[0]
           : undefined;
+
         if (
           action.payload.addToList &&
           state[action._name]?.data &&

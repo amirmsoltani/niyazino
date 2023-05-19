@@ -11,7 +11,7 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import {ArrowLeft, EmojiSad, SearchNormal1} from 'iconsax-react-native';
+import {ArrowRight, EmojiSad, SearchNormal1} from 'iconsax-react-native';
 import {useHttpRequest} from '~/hooks';
 import {CityType, DistrictType, ProvinceType} from '~/types';
 import {
@@ -225,7 +225,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
           />
         </VStack>
         {stage !== 'provinces' ? (
-          <Modal.Footer>
+          <Modal.Footer justifyContent={'flex-start'}>
             <Button
               _pressed={{bg: 'orange.400'}}
               bg={'orange.200'}
@@ -236,9 +236,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                 }
                 if (props.global) {
                   dispatch(
-                    clearLocation(
-                      (stage === 'cities' && 'city') || 'districts',
-                    ),
+                    clearLocation((stage === 'cities' && 'province') || 'city'),
                   );
                 } else {
                   dispatch(
@@ -248,7 +246,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                   );
                 }
               }}>
-              <ArrowLeft color={colors.gray['600']} />
+              <ArrowRight color={colors.gray['600']} />
             </Button>
           </Modal.Footer>
         ) : null}
