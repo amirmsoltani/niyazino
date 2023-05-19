@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {RootParamList} from './type';
 import * as Auth from './Auth';
 import * as Dashboard from './Dashboard';
 import * as Advertising from './Advertising';
 import * as Chat from './Chat';
+import * as User from './User';
 import {DrawerLayout} from '~/layout';
 
 const Stack = createStackNavigator<RootParamList>();
@@ -53,6 +54,10 @@ const Screens = () => {
             name={'chatListScreen'}
           />
           <Stack.Screen component={Chat.ChatScreen} name={'chatScreen'} />
+          <Stack.Screen
+            component={User.UserAdvertisingScreen}
+            name={'userAdvertisingScreen'}
+          />
         </Stack.Group>
       </Stack.Navigator>
     </DrawerLayout>

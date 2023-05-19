@@ -12,6 +12,7 @@ import {defaultDrawerContextValue, DrawerContext, drawerReducer} from '~/hooks';
 import {CallCalling, Icon, Receipt21, Save2} from 'iconsax-react-native';
 import {RootParamList} from '~/screens/type';
 import {Animated, Dimensions} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 const sixtyPercent = Math.floor(width * 0.6);
@@ -22,7 +23,7 @@ const drawerItems: {
 }[] = [
   {
     name: 'آگهی های من',
-    path: 'createAdvertisingCategoryScreen',
+    path: 'userAdvertisingScreen',
     Icon: Receipt21,
   },
   {name: 'نشان شده ها', path: 'createAdvertisingTitleScreen', Icon: Save2},
@@ -35,6 +36,7 @@ const drawerItems: {
 type PropsType = {children: ReactNode};
 const DrawerLayout: FC<PropsType> = ({children}) => {
   const translateX = useRef(new Animated.Value(sixtyPercent)).current;
+  const navigation = useNavigation();
 
   const [state, dispatch] = useReducer(
     drawerReducer,
@@ -90,9 +92,12 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
               borderBottomWidth={1}
               flexDirection={'row'}
               justifyContent={'flex-end'}
-              onPress={() => {}}
               px={6}
-              py={4}>
+              py={4}
+              onPress={() => {
+                closeDrawer();
+                navigation.navigate('userAdvertisingScreen');
+              }}>
               <Text fontWeight={'600'} mr={'10'}>
                 {name}
               </Text>

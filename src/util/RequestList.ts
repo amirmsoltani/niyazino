@@ -28,7 +28,8 @@ type RequestKeys =
   | 'verifyCode'
   | 'createAdvertisements'
   | 'detailAdvertisements'
-  | 'listAdvertisements';
+  | 'listAdvertisements'
+  | 'userAdvertisements';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + 'v1/categories',
@@ -76,6 +77,11 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     method: 'get',
     auth: true,
   },
+  userAdvertisements: {
+    url: BASE_URL + 'v1/advertisements/my',
+    method: 'get',
+    auth: true,
+  },
 };
 
 export type RequestListTypes = {
@@ -101,6 +107,10 @@ export type RequestListTypes = {
     queryString: AdvertisementListQueryStringType;
     addToList?: boolean;
   };
+  userAdvertisements: {
+    queryString: {page?: number};
+    addToList?: boolean;
+  };
 };
 
 export type ResponseListType = {
@@ -114,4 +124,5 @@ export type ResponseListType = {
   createAdvertisements: RequestType<'advertisement', AdvertisementType>;
   detailAdvertisements: RequestType<'advertisement', AdvertisementType>;
   listAdvertisements: RequestListType<'advertisements', AdvertisementType>;
+  userAdvertisements: RequestListType<'advertisements', AdvertisementType>;
 };

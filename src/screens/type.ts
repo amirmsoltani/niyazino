@@ -9,4 +9,5 @@ export type RootParamList = {
   advertisingListScreen: undefined;
   chatListScreen: undefined;
   chatScreen: {id: number};
+  userAdvertisingScreen: undefined;
 };
