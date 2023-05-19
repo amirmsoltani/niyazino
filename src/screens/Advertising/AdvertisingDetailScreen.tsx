@@ -42,15 +42,38 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
   const carouselRef = useRef<Carousel<any>>(null);
   const {sizes} = useTheme();
   const {
-    state: {detail, category},
+    state: {detail, category, provinceList, districtList, cityLst},
+    request,
   } = useHttpRequest({
     selector: state => ({
       detail: state.http.detailAdvertisements,
       category: state.categories,
+      provinceList: state.http.provinceList,
+      cityLst: state.http.cityList,
+      districtList: state.http.districtList,
     }),
     clearAfterUnmount: ['detailAdvertisements'],
     initialRequests: request => {
       request('detailAdvertisements', {params: {id: route.params.id}});
+    },
+    onUpdate: (lastState, state) => {
+      if (
+        lastState.detail?.httpRequestStatus === 'loading' &&
+        state.detail!.httpRequestStatus === 'success'
+      ) {
+        request('cityList', {
+          params: {
+            id: state.detail!.data!.data[state.detail!.data!.__typename]
+              .province_id,
+          },
+        });
+        request('districtList', {
+          params: {
+            id: state.detail!.data!.data[state.detail!.data!.__typename]
+              .city_id,
+          },
+        });
+      }
     },
   });
 
@@ -68,6 +91,7 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
     const data = detail!.data!.data[detail!.data!.__typename];
     const selectedCategory =
       category.categoriesObject[category.childrenToParent[data.category_id]];
+    const districtIds = (data.districts_ids as string).split(',');
     return (
       <Stack flex={1}>
         <Stack h={'full'}>
@@ -137,14 +161,29 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
               </HStack>
               <VStack>
                 <Text color={'gray.400'} fontWeight={600}>
-                  چهارمحال و بختیاری
+                  {
+                    provinceList?.data?.data[
+                      provinceList!.data!.__typename
+                    ].find(province => province.id === data.province_id)?.name
+                  }
                 </Text>
                 <Text color={'gray.400'} fontWeight={600}>
-                  خراسان رضوی
+                  {
+                    cityLst?.data?.data[cityLst!.data!.__typename].find(
+                      city => city.id === data.city_id,
+                    )?.name
+                  }
                 </Text>
-                <Text color={'gray.400'} fontWeight={600}>
-                  تهران
-                </Text>
+
+                {districtList?.data?.data[districtList!.data!.__typename]
+                  .filter(district =>
+                    districtIds.includes(district.id.toString()),
+                  )
+                  .map(district => (
+                    <Text key={district.id} color={'gray.400'} fontWeight={600}>
+                      {district.name}
+                    </Text>
+                  ))}
               </VStack>
             </HStack>
             <VStack

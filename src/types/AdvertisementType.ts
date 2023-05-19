@@ -2,8 +2,8 @@ export type AdvertisementType = {
   category_id: number;
   province_id: number;
   city_id: number;
-  districts_ids: string[];
-  images_ids: number[] | null;
+  districts_ids: string[] | string;
+  images_ids: number[] | string | null;
   title: string;
   description: string;
   has_chat: boolean;

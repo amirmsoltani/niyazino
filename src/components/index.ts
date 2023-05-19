@@ -7,3 +7,5 @@ export {default as PricePickerModal} from './PricePickerModal';
 export type {RefType as PricePickerModalRef} from './PricePickerModal';
 export {default as AdvertisingCard} from './AdvertisingCard';
 export {default as ChatCard} from './ChatCard';
+export {default as ContactInformationModal} from './ContactInformationModal';
+export type {RefType as ContactInformationModalRef} from './ContactInformationModal';
