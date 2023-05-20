@@ -13,6 +13,7 @@ import {
 import {EmojiSad, Menu} from 'iconsax-react-native';
 import {useAppDispatch, useAppSelector} from '~/hooks/reduxHooks';
 import {advertisingRemoveData, advertisingSetData} from '~/store/slices';
+import {findParentCategory} from '~/util/FindParentCategory';
 
 const AdvertisingCategoryScreen = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,12 @@ const AdvertisingCategoryScreen = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<
     Array<null | number>
-  >([null]);
+  >([
+    null,
+    ...(selectedId
+      ? findParentCategory(selectedId, categories.categoriesObject)
+      : []),
+  ]);
 
   const renderList = (parent_id: null | number, index: number) => (
     <FlatList
