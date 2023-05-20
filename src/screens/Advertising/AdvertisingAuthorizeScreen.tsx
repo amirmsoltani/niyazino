@@ -39,6 +39,7 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
         state.auth!.httpRequestStatus === 'success'
       ) {
         dispatch(syncStorageAction('update'));
+        request('getMe', undefined);
         dispatch(createAdvertisingAfterUploadPhotos());
       }
       if (
@@ -139,6 +140,7 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
                 borderWidth={0}
                 fontSize={'lg'}
                 fontWeight={'700'}
+                keyboardType={'numeric'}
                 mt={4}
                 onBlur={onBlur}
                 onChangeText={onChange}

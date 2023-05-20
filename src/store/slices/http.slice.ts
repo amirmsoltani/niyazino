@@ -81,7 +81,13 @@ export const httpsSlice = createSlice({
     builder.addCase(SET_STORAGE, (state, action: SetStorageActionType) => {
       if (action.payload.status === 'success') {
         const data = action.payload.data!.auth;
-        return {...state, verifyCode: {...data, httpRequestStatus: 'success'}};
+        return {
+          ...state,
+          verifyCode: {
+            ...data.verifyCode,
+            httpRequestStatus: data.verifyCode?.httpRequestStatus || 'idle',
+          },
+        };
       }
       return state;
     });

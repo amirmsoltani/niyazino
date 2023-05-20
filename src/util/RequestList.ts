@@ -11,6 +11,7 @@ import {
   RequestListType,
   RequestType,
   UserBookmarkType,
+  UserType,
 } from '~/types';
 import {Asset} from 'react-native-image-picker';
 
@@ -31,7 +32,9 @@ type RequestKeys =
   | 'detailAdvertisements'
   | 'listAdvertisements'
   | 'userAdvertisements'
-  | 'userBookmarks';
+  | 'userBookmarks'
+  | 'getMe'
+  | 'logOut';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + 'v1/categories',
@@ -89,6 +92,16 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     method: 'get',
     auth: true,
   },
+  getMe: {
+    url: BASE_URL + 'v1/auth/me',
+    method: 'get',
+    auth: true,
+  },
+  logOut: {
+    url: BASE_URL + 'v1/auth/logout',
+    method: 'get',
+    auth: true,
+  },
 };
 
 export type RequestListTypes = {
@@ -119,6 +132,8 @@ export type RequestListTypes = {
     addToList?: boolean;
   };
   userBookmarks: undefined;
+  getMe: undefined;
+  logOut: undefined;
 };
 
 export type ResponseListType = {
@@ -134,4 +149,6 @@ export type ResponseListType = {
   listAdvertisements: RequestListType<'advertisements', AdvertisementType>;
   userAdvertisements: RequestListType<'advertisements', AdvertisementType>;
   userBookmarks: RequestType<'advertisements', UserBookmarkType[]>;
+  getMe: RequestType<'user', UserType>;
+  logOut: RequestType<'data', null>;
 };

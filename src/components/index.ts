@@ -11,3 +11,5 @@ export {default as ContactInformationModal} from './ContactInformationModal';
 export type {RefType as ContactInformationModalRef} from './ContactInformationModal';
 export {default as SelectCategoryModal} from './SelectCategoryModal';
 export type {RefType as SelectCategoryModalRef} from './SelectCategoryModal';
+export {default as AuthModal} from './AuthModal';
+export type {RefType as AuthModalRef} from './AuthModal';

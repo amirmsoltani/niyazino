@@ -8,11 +8,19 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import {defaultDrawerContextValue, DrawerContext, drawerReducer} from '~/hooks';
+import {
+  defaultDrawerContextValue,
+  DrawerContext,
+  drawerReducer,
+  useHttpRequest,
+} from '~/hooks';
 import {CallCalling, Icon, Receipt21, Save2} from 'iconsax-react-native';
 import {RootParamList} from '~/screens/type';
 import {Animated, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {httpClear} from '~/store/slices';
+import {syncStorageAction} from '~/store/Actions';
+import {AuthModal, AuthModalRef} from '~/components';
 
 const {width} = Dimensions.get('window');
 const sixtyPercent = Math.floor(width * 0.6);
@@ -38,6 +46,7 @@ const drawerItems: {
 ];
 type PropsType = {children: ReactNode};
 const DrawerLayout: FC<PropsType> = ({children}) => {
+  const authModalRef = useRef<AuthModalRef>(null);
   const translateX = useRef(new Animated.Value(sixtyPercent)).current;
   const navigation = useNavigation();
 
@@ -57,8 +66,24 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
     dispatch({type: 'CHANGE_STATUS', payload: {isOpen: false}});
   };
   const {sizes, colors} = useTheme();
+
+  const {
+    state: {isLogin},
+    dispatch: reduxDispatch,
+  } = useHttpRequest({
+    selector: state => ({
+      user: null,
+      isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
+    }),
+    onUpdate: (lastState, state) => {
+      if (state.isLogin !== lastState.isLogin) {
+        reduxDispatch(syncStorageAction('update'));
+      }
+    },
+  });
   return (
     <DrawerContext.Provider value={{...state, dispatch}}>
+      <AuthModal ref={authModalRef} />
       <Animated.View
         style={{
           transform: [{translateX: translateX}],
@@ -72,42 +97,53 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
           height: '100%',
           backgroundColor: colors.white,
         }}>
-        <HStack alignItems={'center'} justifyContent={'center'} px={6}>
-          <Text fontWeight={600} mr={4}>
-            ۰۹۱۵۷۱۲۳۱۰۳
-          </Text>
-          <Avatar bg={'coolGray.200'}>AM</Avatar>
-        </HStack>
+        {isLogin ? (
+          <HStack alignItems={'center'} justifyContent={'center'} px={6}>
+            <Text fontWeight={600} mr={4}>
+              ۰۹۱۵۷۱۲۳۱۰۳
+            </Text>
+            <Avatar bg={'coolGray.200'}>AM</Avatar>
+          </HStack>
+        ) : null}
         <Button
           borderColor={'orange.400'}
           mx={6}
           my={4}
           py={2}
-          variant={'outline'}>
-          خروج از حساب کاربری
+          variant={'outline'}
+          onPress={() => {
+            if (isLogin) {
+              reduxDispatch(httpClear(['verifyCode']));
+            } else {
+              authModalRef.current!.setStatus(true);
+            }
+          }}>
+          {isLogin ? 'خروج از حساب کاربری' : 'ورود به حساب کاربری'}
         </Button>
-        <VStack borderTopColor={'gray.200'} borderTopWidth={1}>
-          {drawerItems.map(({name, path, Icon}) => (
-            <Pressable
-              key={name}
-              _pressed={{bg: 'orange.300'}}
-              borderBottomColor={'gray.200'}
-              borderBottomWidth={1}
-              flexDirection={'row'}
-              justifyContent={'flex-end'}
-              px={6}
-              py={4}
-              onPress={() => {
-                closeDrawer();
-                navigation.navigate(path);
-              }}>
-              <Text fontWeight={'600'} mr={'10'}>
-                {name}
-              </Text>
-              <Icon color={'black'} />
-            </Pressable>
-          ))}
-        </VStack>
+        {isLogin ? (
+          <VStack borderTopColor={'gray.200'} borderTopWidth={1}>
+            {drawerItems.map(({name, path, Icon}) => (
+              <Pressable
+                key={name}
+                _pressed={{bg: 'orange.300'}}
+                borderBottomColor={'gray.200'}
+                borderBottomWidth={1}
+                flexDirection={'row'}
+                justifyContent={'flex-end'}
+                px={6}
+                py={4}
+                onPress={() => {
+                  closeDrawer();
+                  navigation.navigate(path);
+                }}>
+                <Text fontWeight={'600'} mr={'10'}>
+                  {name}
+                </Text>
+                <Icon color={'black'} />
+              </Pressable>
+            ))}
+          </VStack>
+        ) : null}
       </Animated.View>
       <Pressable
         bottom={0}

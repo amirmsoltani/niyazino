@@ -8,3 +8,4 @@ export * from './StorageType';
 export * from './HttpSliceType';
 export * from './QueryStringsType';
 export * from './UserBookmarkType';
+export * from './UserType';
