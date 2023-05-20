@@ -2,6 +2,6 @@ import {HttpSliceType} from '~/types/HttpSliceType';
 import {LocationsSliceType} from '~/store/slices';
 
 export type StorageType = {
-  auth: HttpSliceType<'verifyCode'>;
+  auth: HttpSliceType<'verifyCode'>['verifyCode'];
   location: LocationsSliceType;
 };

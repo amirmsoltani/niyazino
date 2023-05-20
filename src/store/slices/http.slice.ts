@@ -84,8 +84,8 @@ export const httpsSlice = createSlice({
         return {
           ...state,
           verifyCode: {
-            ...data.verifyCode,
-            httpRequestStatus: data.verifyCode?.httpRequestStatus || 'idle',
+            ...data,
+            httpRequestStatus: data?.httpRequestStatus || 'idle',
           },
         };
       }

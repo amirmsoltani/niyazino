@@ -21,6 +21,7 @@ import {useNavigation} from '@react-navigation/native';
 import {httpClear} from '~/store/slices';
 import {syncStorageAction} from '~/store/Actions';
 import {AuthModal, AuthModalRef} from '~/components';
+import {convertNumToPersian} from '~/util/ChangeToJalali';
 
 const {width} = Dimensions.get('window');
 const sixtyPercent = Math.floor(width * 0.6);
@@ -68,16 +69,23 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
   const {sizes, colors} = useTheme();
 
   const {
-    state: {isLogin},
+    state: {isLogin, user},
     dispatch: reduxDispatch,
+    request,
   } = useHttpRequest({
     selector: state => ({
-      user: null,
+      user: state.http.getMe,
       isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
     }),
     onUpdate: (lastState, state) => {
       if (state.isLogin !== lastState.isLogin) {
         reduxDispatch(syncStorageAction('update'));
+      }
+      if (
+        state.isLogin &&
+        ['error', 'idle', undefined].includes(state.user?.httpRequestStatus)
+      ) {
+        request('getMe', undefined);
       }
     },
   });
@@ -97,10 +105,12 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
           height: '100%',
           backgroundColor: colors.white,
         }}>
-        {isLogin ? (
+        {isLogin && user?.httpRequestStatus === 'success' ? (
           <HStack alignItems={'center'} justifyContent={'center'} px={6}>
             <Text fontWeight={600} mr={4}>
-              ۰۹۱۵۷۱۲۳۱۰۳
+              {convertNumToPersian(
+                user.data!.data[user.data!.__typename].mobile,
+              )}
             </Text>
             <Avatar bg={'coolGray.200'}>AM</Avatar>
           </HStack>
@@ -113,7 +123,8 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
           variant={'outline'}
           onPress={() => {
             if (isLogin) {
-              reduxDispatch(httpClear(['verifyCode']));
+              request('logOut', undefined);
+              reduxDispatch(httpClear(['verifyCode', 'getMe']));
             } else {
               authModalRef.current!.setStatus(true);
             }
