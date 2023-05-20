@@ -17,6 +17,7 @@ import {EmojiSad} from 'iconsax-react-native';
 import {AdvertisingCard} from '~/components';
 import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
 import dayjs from 'dayjs';
+import {findParentCategory} from '~/util/FindParentCategory';
 
 type Props = StackScreenProps<RootParamList, 'userBookmarksScreen'>;
 
@@ -111,7 +112,10 @@ const UserBookmarksScreen: FC<Props> = ({navigation}) => {
       renderItem={({item}) => {
         const selectedCategory =
           category.categoriesObject[
-            category.childrenToParent[item.advertisement.category_id]
+            findParentCategory(
+              item.advertisement.category_id,
+              category.categoriesObject,
+            )[0]
           ];
         return (
           <AdvertisingCard
@@ -120,7 +124,7 @@ const UserBookmarksScreen: FC<Props> = ({navigation}) => {
             price={'سیصد تا هفصد میلیون تومان'}
             title={item.advertisement.title}
             category={`${selectedCategory.title} /${
-              selectedCategory.children[item.advertisement.category_id].title
+              category.categoriesObject[item.advertisement.category_id].title
             }`}
             time={dayjs(item.advertisement.created_at)
               .fromNow()

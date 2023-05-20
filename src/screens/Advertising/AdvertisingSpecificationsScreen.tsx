@@ -164,6 +164,7 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
               _text={{color: 'black', fontSize: 20, fontWeight: 700}}
               color={'black'}>
               تصاویر
+              <Text fontSize={'2xs'}>اختیاری</Text>
             </FormControl.Label>
             <FormControl.HelperText
               _text={{color: 'gray.400', fontWeight: 600, fontSize: 'sm'}}>

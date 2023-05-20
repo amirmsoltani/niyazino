@@ -3,6 +3,7 @@ import {CreateAdvertisingLayout} from '~/layout';
 import {
   Button,
   FlatList,
+  FormControl,
   Heading,
   HStack,
   ScrollView,
@@ -30,6 +31,7 @@ const AdvertisingCategoryScreen = () => {
       ? findParentCategory(selectedId, categories.categoriesObject)
       : []),
   ]);
+  const [dirty, setDirty] = useState(false);
 
   const renderList = (parent_id: null | number, index: number) => (
     <FlatList
@@ -108,6 +110,7 @@ const AdvertisingCategoryScreen = () => {
   return (
     <CreateAdvertisingLayout
       validateForNext={() => {
+        setDirty(true);
         return !!selectedId;
       }}>
       <ScrollView
@@ -120,10 +123,15 @@ const AdvertisingCategoryScreen = () => {
             لطفا دسته بندی مورد نظر خودتان را برای ثبت آگهی انتخاب بفرمائید
           </Text>
         </Stack>
-        {renderList(null, 0)}
-        {selectedCategory
-          .slice(1)
-          .map((parent_id, index) => renderList(parent_id, index))}
+        <FormControl isInvalid={dirty && !selectedId}>
+          {renderList(null, 0)}
+          {selectedCategory
+            .slice(1)
+            .map((parent_id, index) => renderList(parent_id, index))}
+          <FormControl.ErrorMessage mx={4}>
+            لطفا دسته بندی مورد نظر خود را انتخاب کنید
+          </FormControl.ErrorMessage>
+        </FormControl>
 
         <VStack flexGrow={1} justifyContent={'flex-end'} mb={4} px={6}>
           <HStack
