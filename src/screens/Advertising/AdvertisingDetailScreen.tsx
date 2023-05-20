@@ -31,6 +31,7 @@ import {RootParamList} from '~/screens/type';
 import {useHttpRequest} from '~/hooks';
 import dayjs from 'dayjs';
 import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
+import {findParentCategory} from '~/util/FindParentCategory';
 
 const car = require('~/assets/images/car.png');
 const car2 = require('~/assets/images/car2.png');
@@ -90,7 +91,9 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
   const detailSection = () => {
     const data = detail!.data!.data[detail!.data!.__typename];
     const selectedCategory =
-      category.categoriesObject[category.childrenToParent[data.category_id]];
+      category.categoriesObject[
+        findParentCategory(data.category_id, category.categoriesObject)[0]
+      ];
     const districtIds = (data.districts_ids as string)?.split(',') || [];
     return (
       <Stack flex={1}>
@@ -124,7 +127,7 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
                 </Box>
                 <Text color={'gray.500'} fontSize={'xs'} fontWeight={600}>
                   {selectedCategory.title}/{' '}
-                  {selectedCategory.children[data.category_id].title}
+                  {category.categoriesObject[data.category_id].title}
                 </Text>
               </HStack>
             </HStack>

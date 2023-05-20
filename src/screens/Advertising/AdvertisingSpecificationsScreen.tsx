@@ -122,7 +122,7 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
               حداقال یک مکان الزامی است
             </FormControl.HelperText>
             <HStack alignItems={'center'} flexWrap={'wrap'} my={4}>
-              {districts_ids?.map(district => {
+              {(districts_ids as string[])?.map(district => {
                 const data = districtsList?.data?.data[
                   districtsList?.data?.__typename
                 ].find(item => item.id === +district);

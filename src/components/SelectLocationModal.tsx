@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   FlatList,
+  HStack,
   Input,
   Modal,
   Spinner,
@@ -11,7 +12,13 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import {ArrowRight, EmojiSad, SearchNormal1} from 'iconsax-react-native';
+import {
+  ArrowRight,
+  EmojiSad,
+  LocationTick,
+  SaveRemove,
+  SearchNormal1,
+} from 'iconsax-react-native';
 import {useHttpRequest} from '~/hooks';
 import {CityType, DistrictType, ProvinceType} from '~/types';
 import {
@@ -62,11 +69,17 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
           (stage === 'districts' && districtList) ||
           (stage === 'cities' && cityList) ||
           provinceList,
-        districts:
-          (props.global && locations.districts) || advertising.districts_ids,
-        city_id: (props.global && locations.city?.id) || advertising.city_id,
-        province_id:
-          (props.global && locations.province?.id) || advertising.province_id,
+        ...(props.global
+          ? {
+              districts: locations.districts,
+              city_id: locations.city?.id,
+              province_id: locations.province?.id,
+            }
+          : {
+              districts: advertising.districts_ids,
+              city_id: advertising.city_id,
+              province_id: advertising.province_id,
+            }),
       };
     },
 
@@ -145,7 +158,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
             ListEmptyComponent={() =>
               response?.httpRequestStatus === 'loading' ? (
                 <Spinner />
-              ) : (
+              ) : stage === 'districts' ? null : (
                 <VStack alignItems={'center'}>
                   <EmojiSad color={'gray'} />
                   <Text color={'gray.400'} fontWeight={'600'} mt={'2'}>
@@ -153,6 +166,42 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                   </Text>
                 </VStack>
               )
+            }
+            ListHeaderComponent={
+              stage === 'districts' ? (
+                <Checkbox
+                  flexDirection={'row-reverse'}
+                  h={16}
+                  justifyContent={'space-between'}
+                  size={'sm'}
+                  value={'-1'}
+                  w={'full'}
+                  isChecked={
+                    (districts &&
+                      ((Array.isArray(districts) && districts.includes('-1')) ||
+                        '-1' in (districts as any))) ||
+                    false
+                  }
+                  onChange={isSelected => {
+                    if (props.global) {
+                      if (isSelected) {
+                        dispatch(clearLocation('districts'));
+                        dispatch(
+                          setLocation({
+                            _name: 'districts',
+                            value: {id: -1, title: 'تمامی منطقه ها'},
+                          }),
+                        );
+                      } else {
+                        dispatch(deleteDistrict(-1));
+                      }
+                    } else {
+                      dispatch(advertisingSetData({districts_ids: ['-1']}));
+                    }
+                  }}>
+                  {'تمامی منطقه ها'}
+                </Checkbox>
+              ) : null
             }
             renderItem={({item}) =>
               stage === 'districts' ? (
@@ -163,7 +212,7 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                   size={'sm'}
                   value={item.id.toString()}
                   w={'full'}
-                  defaultIsChecked={
+                  isChecked={
                     (districts &&
                       ((Array.isArray(districts) &&
                         districts.includes(item.id.toString())) ||
@@ -173,6 +222,9 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                   onChange={isSelected => {
                     if (props.global) {
                       if (isSelected) {
+                        if ('-1' in (districts as any)) {
+                          dispatch(deleteDistrict(-1));
+                        }
                         dispatch(
                           setLocation({
                             _name: 'districts',
@@ -183,6 +235,12 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
                         dispatch(deleteDistrict(item.id));
                       }
                     } else {
+                      if (
+                        Array.isArray(districts) &&
+                        districts.includes('-1')
+                      ) {
+                        dispatch(advertisingSetData({districts_ids: []}));
+                      }
                       dispatch(setRemoveDistrict(item.id.toString()));
                     }
                   }}>
@@ -225,7 +283,8 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
           />
         </VStack>
         {stage !== 'provinces' ? (
-          <Modal.Footer justifyContent={'flex-start'}>
+          <Modal.Footer
+            justifyContent={stage === 'city' ? 'flex-end' : 'space-between'}>
             <Button
               _pressed={{bg: 'orange.400'}}
               bg={'orange.200'}
@@ -248,6 +307,29 @@ const SelectLocationModal = forwardRef<RefType, PropsType>((props, ref) => {
               }}>
               <ArrowRight color={colors.gray['600']} />
             </Button>
+            <HStack display={stage === 'districts' ? 'flex' : 'none'}>
+              <Button
+                _pressed={{bg: 'orange.400'}}
+                bg={'red.200'}
+                mr={2}
+                onPress={() => {
+                  if (props.global) {
+                    dispatch(clearLocation('districts'));
+                  } else {
+                    dispatch(advertisingSetData({districts_ids: []}));
+                  }
+                }}>
+                <SaveRemove color={colors.gray['600']} />
+              </Button>
+              <Button
+                _pressed={{bg: 'orange.400'}}
+                bg={'success.200'}
+                onPress={() => {
+                  setStatus(false);
+                }}>
+                <LocationTick color={colors.gray['600']} />
+              </Button>
+            </HStack>
           </Modal.Footer>
         ) : null}
       </Modal.Content>

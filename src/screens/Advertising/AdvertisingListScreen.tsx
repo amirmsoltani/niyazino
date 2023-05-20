@@ -41,6 +41,7 @@ import {
 import {AdvertisementListQueryStringType} from '~/types';
 import dayjs from 'dayjs';
 import {syncStorageAction} from '~/store/Actions';
+import {findParentCategory} from '~/util/FindParentCategory';
 
 type Props = StackScreenProps<RootParamList, 'advertisingListScreen'>;
 
@@ -73,7 +74,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           city_id: state.locations.city!.id,
           page: filters.page,
         };
-        if (districts.length) {
+        if (districts.length && districts.every(([id]) => id !== '-1')) {
           queryString['districts_ids[]'] = districts.map(([id]) => id);
         }
         request('listAdvertisements', {
@@ -81,6 +82,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           addToList:
             lastFilter.current!.page !== filters.page && filters.page !== 1,
         });
+        lastFilter.current = filters;
       }
     },
     onUpdate: (lastState, state) => {
@@ -99,7 +101,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           city_id: state.locations.city!.id,
           page: filters.page,
         };
-        if (districts.length) {
+        if (districts.length && districts.every(([id]) => id !== '-1')) {
           queryString['districts_ids[]'] = districts.map(([id]) => id);
         }
         if (filters.search && filters.search !== '') {
@@ -114,7 +116,6 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           addToList:
             lastFilter.current!.page !== filters.page && filters.page !== 1,
         });
-        lastFilter.current = filters;
         if (
           lastState.locations.city !== state.locations.city ||
           lastState.locations.province !== state.locations.province ||
@@ -122,6 +123,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
         ) {
           dispatch(syncStorageAction('update'));
         }
+        lastFilter.current = filters;
       }
     },
   });
@@ -134,6 +136,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
   const {setDrawerStatus} = useDrawer();
   const {colors} = useTheme();
   const districtLength = Object.keys(locations.districts).length;
+
   return (
     <VirtualizeMainLayout
       bg={'blueGray.200'}
@@ -240,16 +243,15 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
                 shadow={6}>
                 <Menu color={'black'} variant={'TwoTone'} />
               </Box>
-              {filters.category ? (
+              {filters.category && category.categoriesObject ? (
                 <Text fontWeight={'700'} ml={2}>{`${
                   category.categoriesObject[
-                    category.childrenToParent[filters.category]
+                    findParentCategory(
+                      filters.category,
+                      category.categoriesObject,
+                    )[0]
                   ].title
-                }/${
-                  category.categoriesObject[
-                    category.childrenToParent[filters.category]
-                  ].children[filters.category].title
-                }`}</Text>
+                }/${category.categoriesObject[filters.category].title}`}</Text>
               ) : (
                 <>
                   <Text fontSize={'xs'} fontWeight={500} ml={2}>
@@ -387,7 +389,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
       renderItem={({item}) => {
         const selectedCategory =
           category.categoriesObject[
-            category.childrenToParent[item.category_id]
+            findParentCategory(item.category_id, category.categoriesObject)[0]
           ];
         return (
           <AdvertisingCard
@@ -396,7 +398,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
             price={'سیصد تا هفصد میلیون تومان'}
             title={item.title}
             category={`${selectedCategory.title} /${
-              selectedCategory.children[item.category_id].title
+              category.categoriesObject[item.category_id].title
             }`}
             time={dayjs(item.created_at)
               .fromNow()
