@@ -1,18 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {
-  CategoriesType,
-  CategoryType,
-  HttpRequestStatusType,
-  RequestType,
-} from '~/types';
+import {CategoryType, HttpRequestStatusType, RequestType} from '~/types';
 import {
   HttpActionType,
   HttpRequestAction,
 } from '~/store/Actions/httpRequest.action';
 
 export type CategoriesSliceType = {
-  categoriesObject: {[k: number]: CategoriesType};
-  childrenToParent: {[k: number]: number};
+  categoriesObject: {[k: number]: CategoryType};
   categoriesList: CategoryType[];
   httpRequestStatus: HttpRequestStatusType;
 };
@@ -20,7 +14,6 @@ export type CategoriesSliceType = {
 const initialState: CategoriesSliceType = {
   categoriesList: [],
   categoriesObject: {},
-  childrenToParent: {},
   httpRequestStatus: 'idle',
 };
 
@@ -32,46 +25,33 @@ export const categoriesSlice = createSlice({
       reducer: (
         state,
         action: PayloadAction<{
-          object: {[k: number]: CategoriesType};
+          object: {[k: number]: CategoryType};
           list: CategoryType[];
-          childrenToParent: {[k: number]: number};
         }>,
       ) => ({
         ...state,
         httpRequestStatus: 'success',
         categoriesObject: action.payload.object,
         categoriesList: action.payload.list,
-        childrenToParent: action.payload.childrenToParent,
       }),
 
       prepare: (request: RequestType<'categories', CategoryType[]>) => {
         const categories = request.data;
-        const categoriesObject: {[k: number]: CategoriesType} = {};
-        const childrenToParent: {[k: number]: number} = {};
+        const categoriesObject: {[k: number]: CategoryType} = {};
         categories.categories.forEach(category => {
-          if (category.parent_id) {
-            const parentId = category.parent_id;
-            childrenToParent[category.id] = category.parent_id;
-            if (categoriesObject[parentId]) {
-              categoriesObject[parentId].children[category.id] = category;
-            } else {
-              // @ts-ignore
-              categoriesObject[parentId] = {
-                children: {[category.id]: category},
-              };
-            }
-          } else {
-            categoriesObject[category.id] = {
-              ...category,
-              children: categoriesObject[category.id]?.children || {},
-            };
+          categoriesObject[category.id] = category;
+          if (category.parent_id && categoriesObject[category.parent_id]) {
+            categoriesObject[category.parent_id].childExist = true;
+          } else if (category.parent_id) {
+            categoriesObject[category.parent_id] = {
+              childExist: true,
+            } as CategoryType;
           }
         });
         return {
           payload: {
             object: categoriesObject,
             list: categories.categories,
-            childrenToParent,
           },
         };
       },

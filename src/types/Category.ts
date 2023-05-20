@@ -7,6 +7,7 @@ export type CategoryType = {
   order: number;
   status: 'active' | 'Inactive';
   create_at: string;
+  childExist?: boolean;
 };
 
 export type CategoriesType = CategoryType & {
