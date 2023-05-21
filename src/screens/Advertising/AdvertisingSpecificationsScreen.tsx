@@ -9,6 +9,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Spinner,
   Stack,
   Text,
   useTheme,
@@ -41,7 +42,7 @@ type Props = StackScreenProps<
 const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
   const {
     dispatch,
-    state: {districts_ids, districtsList, images, auth, isLoading},
+    state: {districts_ids, districtsList, images, auth, isLoading, upload},
   } = useHttpRequest({
     selector: state => ({
       districts_ids: state.advertising.districts_ids,
@@ -53,6 +54,7 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
         state.http.createAdvertisements?.httpRequestStatus,
       ].includes('loading'),
       create: state.http.createAdvertisements,
+      upload: state.http.uploadFile,
     }),
     onUpdate: (lastState, state) => {
       if (
@@ -107,7 +109,22 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
       <SelectLocationModal ref={locationModalRef} />
       <SelectSpecificationsActionSheet ref={specificationRef} />
       <PricePickerModal ref={pricePickerRef} />
-
+      <Stack
+        alignItems={'center'}
+        bg={'#00000060'}
+        bottom={0}
+        display={upload?.httpRequestStatus === 'loading' ? 'flex' : 'none'}
+        justifyContent={'center'}
+        left={0}
+        position={'absolute'}
+        right={0}
+        top={0}
+        zIndex={100}>
+        <VStack bg={'white'} padding={6} rounded={'xl'} shadow={8}>
+          <Text>آپلود تصاویر</Text>
+          <Spinner mt={2} size={'lg'} />
+        </VStack>
+      </Stack>
       <ScrollView p={6}>
         <FormControl isInvalid={!districts_ids?.length && dirty}>
           <Stack mx={1}>
@@ -138,7 +155,7 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
                     _text={{
                       color: 'black',
                     }}>
-                    {data?.name}
+                    {district === '-1' ? 'تمامی منطقه ها' : data?.name}
                   </Button>
                 );
               })}

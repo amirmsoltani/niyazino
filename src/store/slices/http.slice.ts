@@ -83,12 +83,13 @@ export const httpsSlice = createSlice({
         const data = action.payload.data!.auth;
         return {
           ...state,
-          verifyCode: data?.httpRequestStatus
-            ? {
-                ...data,
-                httpRequestStatus: data?.httpRequestStatus || 'idle',
-              }
-            : undefined,
+          verifyCode:
+            data?.httpRequestStatus === 'success'
+              ? {
+                  ...data,
+                  httpRequestStatus: data!.httpRequestStatus || 'idle',
+                }
+              : undefined,
         };
       }
       return state;

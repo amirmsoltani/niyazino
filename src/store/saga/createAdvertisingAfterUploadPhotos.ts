@@ -15,9 +15,11 @@ function* createAdvertisingAfterUploadPhotos() {
     httpRequestAction('createAdvertisements', {
       data: {
         title: advertising.title!,
-        districts_ids: advertising.districts_ids!.includes('-1')
-          ? []
-          : advertising.districts_ids!,
+        districts_ids:
+          advertising.districts_ids!.includes('-1') ||
+          advertising.districts_ids?.length === 0
+            ? ''
+            : advertising.districts_ids!,
         description: advertising.description!,
         show_mobile: true,
         has_chat: true,

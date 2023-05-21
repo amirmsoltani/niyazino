@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {CreateAdvertisingLayout} from '~/layout';
-import {FormControl, Input, VStack} from 'native-base';
+import {FormControl, Input, Spinner, Stack, Text, VStack} from 'native-base';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
 import {Controller, useForm} from 'react-hook-form';
@@ -31,6 +31,7 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
       sendCode: state.http.sendVerificationCode,
       auth: state.http.verifyCode,
       create: state.http.createAdvertisements,
+      upload: state.http.uploadFile,
     }),
     clearAfterUnmount: ['sendVerificationCode'],
     onUpdate: (lastState, state) => {
@@ -77,12 +78,30 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
     <CreateAdvertisingLayout
       isLoading={
         ['loading', 'success'].includes(state.auth?.httpRequestStatus!) &&
-        state.create?.httpRequestStatus !== 'success'
+        !['success', 'error'].includes(state.create?.httpRequestStatus!)
       }
       validateForNext={() => {
         submit();
         return false;
       }}>
+      <Stack
+        alignItems={'center'}
+        bg={'#00000060'}
+        bottom={0}
+        justifyContent={'center'}
+        left={0}
+        position={'absolute'}
+        right={0}
+        top={0}
+        zIndex={100}
+        display={
+          state.upload?.httpRequestStatus === 'loading' ? 'flex' : 'none'
+        }>
+        <VStack bg={'white'} padding={6} rounded={'xl'} shadow={8}>
+          <Text>آپلود تصاویر</Text>
+          <Spinner mt={2} size={'lg'} />
+        </VStack>
+      </Stack>
       <VStack px={6}>
         <FormControl
           display={status === 'phone' ? 'flex' : 'none'}
