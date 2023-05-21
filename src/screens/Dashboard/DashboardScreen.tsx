@@ -1,4 +1,4 @@
-import {FC, useRef} from 'react';
+import {FC, useRef, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
 import {
@@ -23,15 +23,20 @@ import Carousel from 'react-native-snap-carousel';
 import {Dimensions} from 'react-native';
 import {useDrawer} from '~/hooks';
 import VideoPlayer from 'react-native-video-player';
+import {useAppDispatch} from '~/hooks/reduxHooks';
+import {advertisingSetData} from '~/store/slices';
 
 type Props = StackScreenProps<RootParamList, 'dashboardScreen'>;
 
 const {width} = Dimensions.get('window');
 
 const menuIcon = require('src/assets/images/menuIcon.png');
-const DashboardScreen: FC<Props> = () => {
+const DashboardScreen: FC<Props> = ({navigation}) => {
   const {colors, sizes} = useTheme();
   const carouselRef = useRef<Carousel<any>>(null);
+  const [inputText, setInputText] = useState('');
+  const dispatch = useAppDispatch();
+
   const {setDrawerStatus} = useDrawer();
   return (
     <MainLayout bg={'coolGray.100'}>
@@ -75,6 +80,7 @@ const DashboardScreen: FC<Props> = () => {
               fontWeight={'600'}
               h={'55px'}
               mt={6}
+              onChangeText={text => setInputText(text)}
               placeholder={'چی نیاز داری بگو برات ثبت کنم؟!'}
               shadow={'4'}
               textAlign={'right'}
@@ -85,6 +91,12 @@ const DashboardScreen: FC<Props> = () => {
                   icon={<Add color={colors.white} />}
                   m={2}
                   rounded={'full'}
+                  onPress={() => {
+                    if (inputText !== '') {
+                      dispatch(advertisingSetData({title: inputText}));
+                      navigation.navigate('createAdvertisingCategoryScreen');
+                    }
+                  }}
                 />
               }
             />
