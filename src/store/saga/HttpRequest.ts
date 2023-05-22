@@ -74,12 +74,15 @@ function* HttpRequest(action: HttpActionType) {
     yield put(
       httpResponseAction(action._name as RequestKeyExclude, {
         httpResponseStatus: 'error',
-        error: e,
+        error: JSON.parse(JSON.stringify(e?.response)),
         addToList: data?.addToList,
       }),
     );
     console.log('error');
-    console.log(e.isAxiosError ? (e as AxiosError).request : 'error');
+    console.log(
+      e.isAxiosError ? {request: e.request, response: e.response} : 'error',
+      'http Request Error',
+    );
   }
 }
 

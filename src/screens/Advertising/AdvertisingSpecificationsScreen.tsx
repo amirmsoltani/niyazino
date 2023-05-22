@@ -28,10 +28,19 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Dimensions} from 'react-native';
 import {useHttpRequest} from '~/hooks';
-import {advertisingClear, setRemoveAssets} from '~/store/slices';
+import {
+  advertisingClear,
+  advertisingRemoveData,
+  advertisingSetData,
+  httpClear,
+  setRemoveAssets,
+} from '~/store/slices';
 import {createAdvertisingAfterUploadPhotos} from '~/store/Actions';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
+import {convertNumToPersian} from '~/util/ChangeToJalali';
+import {priceFormat} from '~/util/PriceFormat';
+import {mapPrice} from '~/util/MapPrice';
 
 const {width} = Dimensions.get('window');
 
@@ -42,12 +51,20 @@ type Props = StackScreenProps<
 const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
   const {
     dispatch,
-    state: {districts_ids, districtsList, images, auth, isLoading, upload},
+    state: {
+      districts_ids,
+      districtsList,
+      advertising,
+      auth,
+      isLoading,
+      upload,
+      attributes,
+    },
   } = useHttpRequest({
     selector: state => ({
       districts_ids: state.advertising.districts_ids,
       districtsList: state.http.districtList,
-      images: state.advertising.assets,
+      advertising: state.advertising,
       auth: state.http.verifyCode,
       isLoading: [
         state.http.uploadFile?.httpRequestStatus,
@@ -55,25 +72,17 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
       ].includes('loading'),
       create: state.http.createAdvertisements,
       upload: state.http.uploadFile,
+      attributes: state.http.attributes,
     }),
     onUpdate: (lastState, state) => {
       if (
         lastState.create?.httpRequestStatus === 'loading' &&
         state.create?.httpRequestStatus === 'success'
       ) {
-        const name = state!.create.data!.__typename;
+        dispatch(httpClear(['userAdvertisements']));
         navigation.reset({
-          index: 2,
-          routes: [
-            {name: 'dashboardScreen'},
-            {name: 'advertisingListScreen'},
-            {
-              name: 'advertisingDetailScreen',
-              params: {
-                id: state!.create!.data!.data![name]!.id,
-              },
-            },
-          ],
+          index: 1,
+          routes: [{name: 'dashboardScreen'}, {name: 'userAdvertisingScreen'}],
         });
         dispatch(advertisingClear());
       }
@@ -92,18 +101,35 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
   };
   const {colors, sizes} = useTheme();
   const [agreedPrice, setAgreedPrice] = useState(false);
+  const attributeList = attributes?.data?.data?.[attributes!.data!.__typename];
   return (
     <CreateAdvertisingLayout
       isLoading={isLoading}
       validateForNext={() => {
         setDirty(true);
-        if (!districts_ids?.length) {
+
+        if (
+          !districts_ids?.length ||
+          (!agreedPrice &&
+            (!advertising.min_price ||
+              !advertising.max_price ||
+              +advertising.min_price >= +advertising.max_price)) ||
+          attributeList?.find(
+            (attribute, index) =>
+              attribute.is_required &&
+              [undefined, null, '', '-1'].includes(
+                advertising.attributes?.[index],
+              ),
+          ) !== undefined
+        ) {
           return false;
         }
+
         if (auth?.httpRequestStatus === 'success') {
           dispatch(createAdvertisingAfterUploadPhotos());
           return false;
         }
+
         return true;
       }}>
       <SelectLocationModal ref={locationModalRef} />
@@ -111,7 +137,6 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
       <PricePickerModal ref={pricePickerRef} />
       <Stack
         alignItems={'center'}
-        bg={'#00000060'}
         bottom={0}
         display={upload?.httpRequestStatus === 'loading' ? 'flex' : 'none'}
         justifyContent={'center'}
@@ -175,7 +200,191 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
             </FormControl.ErrorMessage>
           </Stack>
         </FormControl>
-        <FormControl mt={4} isInvalid>
+
+        <FormControl
+          mt={4}
+          isInvalid={
+            attributeList?.find(
+              (attribute, index) =>
+                attribute.is_required &&
+                [undefined, null, '', '-1'].includes(
+                  advertising.attributes?.[index],
+                ),
+            ) !== undefined && dirty
+          }>
+          <Stack mx={1}>
+            <FormControl.Label
+              _text={{color: 'black', fontSize: 20, fontWeight: 700}}
+              color={'black'}>
+              خصوصیات
+            </FormControl.Label>
+            <FormControl.HelperText
+              _text={{color: 'gray.400', fontWeight: 600, fontSize: 'sm'}}>
+              می توانید برای محصول خود، خصوصیاتی از جمله رنگ، سال تولید، اندازه
+              و غیره را انتخاب و وارد کنید
+            </FormControl.HelperText>
+            <HStack alignItems={'center'} my={6} px={2}>
+              <IconButton
+                bg={'orange.600'}
+                icon={<Add color={'white'} size={26} />}
+                onPress={() => specificationRef.current!.setStatus(true)}
+                rounded={'full'}
+              />
+              <VStack justifyContent={'space-between'} ml={4} w={'3/6'}>
+                <Text fontSize={'sm'} fontWeight={'500'}>
+                  افزودن خصوصیت
+                </Text>
+                <Text color={'gray.400'} fontSize={'xs'} fontWeight={600}>
+                  خصوصیات بیشتر سبب بهتر دیده شدن آگهی می شود
+                </Text>
+              </VStack>
+            </HStack>
+            <VStack my={6} px={2}>
+              {advertising.attributes
+                ?.map((attribute, index) =>
+                  [undefined, null, '', '-1'].includes(attribute) ? null : (
+                    <HStack
+                      key={attribute + index}
+                      alignItems={'center'}
+                      justifyContent={'space-between'}
+                      mb={6}>
+                      <VStack>
+                        <Text
+                          color={'gray.400'}
+                          fontSize={'sm'}
+                          fontWeight={600}>
+                          {attributeList?.[index].title}
+                        </Text>
+                        <Text
+                          fontSize={'md'}
+                          fontWeight={'800'}
+                          textAlign={'left'}>
+                          {attributeList?.[index].type === 'select'
+                            ? attributeList[index].options.find(
+                                option => option.id.toString() === attribute,
+                              )?.title
+                            : attributeList?.[index].type === 'text'
+                            ? attribute
+                            : convertNumToPersian(attribute || '')}
+                        </Text>
+                      </VStack>
+                      <IconButton
+                        bg={'red.500'}
+                        p={1}
+                        rounded={'full'}
+                        icon={
+                          <Add
+                            color={'white'}
+                            size={18}
+                            style={{transform: [{rotate: '45deg'}]}}
+                          />
+                        }
+                        onPress={() => {
+                          const newAttribute = [...advertising.attributes!];
+                          newAttribute[index] = '-1';
+                          dispatch(
+                            advertisingSetData({attributes: newAttribute}),
+                          );
+                        }}
+                      />
+                    </HStack>
+                  ),
+                )
+                .filter(node => node !== null)}
+            </VStack>
+          </Stack>
+          <FormControl.ErrorMessage>
+            لطفا خصوصیات محصول را تکمیل کنید
+          </FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl
+          mt={4}
+          pb={10}
+          isInvalid={
+            !agreedPrice &&
+            dirty &&
+            (!advertising.min_price ||
+              !advertising.max_price ||
+              +advertising.min_price >= +advertising.max_price)
+          }>
+          <Stack mx={1}>
+            <FormControl.Label
+              _text={{color: 'black', fontSize: 20, fontWeight: 700}}
+              color={'black'}>
+              بازه ی قیمتی
+            </FormControl.Label>
+            <FormControl.HelperText
+              _text={{color: 'gray.400', fontWeight: 600, fontSize: 'sm'}}>
+              می توانید برای دریافت پیشنهادات بهتر، حدود قیمتی محصول مورد نظر
+              خود را مشخص کنید
+            </FormControl.HelperText>
+            <VStack mt={4}>
+              <Checkbox
+                borderWidth={0}
+                my={4}
+                shadow={4}
+                value={'agreedPrice'}
+                onChange={agreed => {
+                  setAgreedPrice(agreed);
+                  dispatch(advertisingRemoveData('min_price'));
+                  dispatch(advertisingRemoveData('max_price'));
+                }}>
+                قیمت توافقی
+              </Checkbox>
+              <Button
+                _pressed={{bg: 'gray.200'}}
+                _text={{color: 'gray.400', fontSize: 'md', fontWeight: '600'}}
+                bg={agreedPrice ? 'gray.200' : 'white'}
+                disabled={agreedPrice}
+                fontSize={'md'}
+                onPress={() => pricePickerRef.current!.setStatus('min', true)}
+                rounded={'full'}
+                shadow={4}
+                textAlign={'center'}>
+                {advertising.min_price
+                  ? (advertising.min_price in mapPrice
+                      ? mapPrice[advertising.min_price]
+                      : convertNumToPersian(
+                          priceFormat(+advertising.min_price),
+                        )) + ' تومان'
+                  : 'حداقل قیمت'}
+              </Button>
+              <Text
+                fontSize={'md'}
+                fontWeight={600}
+                my={4}
+                textAlign={'center'}>
+                تا
+              </Text>
+              <Button
+                _pressed={{bg: 'gray.200'}}
+                _text={{color: 'gray.400', fontSize: 'md', fontWeight: '600'}}
+                bg={agreedPrice ? 'gray.200' : 'white'}
+                disabled={agreedPrice}
+                fontSize={'md'}
+                onPress={() => pricePickerRef.current!.setStatus('max', true)}
+                rounded={'full'}
+                shadow={4}
+                textAlign={'center'}>
+                {advertising.max_price
+                  ? (advertising.max_price in mapPrice
+                      ? mapPrice[advertising.max_price]
+                      : convertNumToPersian(
+                          priceFormat(+advertising.max_price),
+                        )) + ' تومان'
+                  : 'حداکثر قیمت'}
+              </Button>
+            </VStack>
+          </Stack>
+          <FormControl.ErrorMessage>
+            {!advertising.min_price || !advertising.max_price
+              ? 'لطفا بازه قیمتی را انتخاب کنید'
+              : +advertising.max_price <= +advertising.min_price
+              ? 'حداکثر قیمت نمی تواند کوچک تر یا برابر با حداقال قیمت باشد'
+              : ''}
+          </FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl my={4} isInvalid>
           <Stack mx={1}>
             <FormControl.Label
               _text={{color: 'black', fontSize: 20, fontWeight: 700}}
@@ -216,7 +425,7 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
 
                 <Text fontWeight={'400'}>تصویر جدید</Text>
               </Pressable>
-              {images?.map(image => (
+              {advertising.assets?.map(image => (
                 <Box
                   key={image.fileName}
                   alignItems={'center'}
@@ -257,168 +466,6 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
                 </Box>
               ))}
             </HStack>
-          </Stack>
-        </FormControl>
-        <FormControl mt={4} isInvalid>
-          <Stack mx={1}>
-            <FormControl.Label
-              _text={{color: 'black', fontSize: 20, fontWeight: 700}}
-              color={'black'}>
-              خصوصیات
-            </FormControl.Label>
-            <FormControl.HelperText
-              _text={{color: 'gray.400', fontWeight: 600, fontSize: 'sm'}}>
-              می توانید برای محصول خود، خصوصیاتی از جمله رنگ، سال تولید، اندازه
-              و غیره را انتخاب و وارد کنید
-            </FormControl.HelperText>
-            <HStack alignItems={'center'} my={6} px={2}>
-              <IconButton
-                bg={'orange.600'}
-                icon={<Add color={'white'} size={26} />}
-                onPress={() => specificationRef.current!.setStatus(true)}
-                rounded={'full'}
-              />
-              <VStack justifyContent={'space-between'} ml={4} w={'3/6'}>
-                <Text fontSize={'sm'} fontWeight={'500'}>
-                  افزودن خصوصیت
-                </Text>
-                <Text color={'gray.400'} fontSize={'xs'} fontWeight={600}>
-                  خصوصیات بیشتر سبب بهتر دیده شدن آگهی می شود
-                </Text>
-              </VStack>
-            </HStack>
-            <VStack my={6} px={2}>
-              <HStack
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                mb={6}>
-                <VStack>
-                  <Text color={'gray.400'} fontSize={'sm'} fontWeight={600}>
-                    تعداد سیلندر
-                  </Text>
-                  <Text fontSize={'md'} fontWeight={'800'}>
-                    ۴عدد
-                  </Text>
-                </VStack>
-                <IconButton
-                  bg={'red.500'}
-                  p={1}
-                  rounded={'full'}
-                  icon={
-                    <Add
-                      color={'white'}
-                      size={18}
-                      style={{transform: [{rotate: '45deg'}]}}
-                    />
-                  }
-                />
-              </HStack>
-              <HStack
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                mb={6}>
-                <VStack alignItems={'flex-start'}>
-                  <Text color={'gray.400'} fontSize={'sm'} fontWeight={600}>
-                    سال تولید
-                  </Text>
-                  <Text fontSize={'md'} fontWeight={'800'}>
-                    ۱۳۹۶
-                  </Text>
-                </VStack>
-                <IconButton
-                  bg={'red.500'}
-                  p={1}
-                  rounded={'full'}
-                  icon={
-                    <Add
-                      color={'white'}
-                      size={18}
-                      style={{transform: [{rotate: '45deg'}]}}
-                    />
-                  }
-                />
-              </HStack>
-              <HStack
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                mb={6}>
-                <VStack>
-                  <Text color={'gray.400'} fontSize={'sm'} fontWeight={600}>
-                    شرکت سازنده
-                  </Text>
-                  <Text fontSize={'md'} fontWeight={'800'}>
-                    پژو سیتروئن
-                  </Text>
-                </VStack>
-                <IconButton
-                  bg={'red.500'}
-                  p={1}
-                  rounded={'full'}
-                  icon={
-                    <Add
-                      color={'white'}
-                      size={18}
-                      style={{transform: [{rotate: '45deg'}]}}
-                    />
-                  }
-                />
-              </HStack>
-            </VStack>
-          </Stack>
-        </FormControl>
-        <FormControl mt={4} pb={10} isInvalid>
-          <Stack mx={1}>
-            <FormControl.Label
-              _text={{color: 'black', fontSize: 20, fontWeight: 700}}
-              color={'black'}>
-              بازه ی قیمتی
-            </FormControl.Label>
-            <FormControl.HelperText
-              _text={{color: 'gray.400', fontWeight: 600, fontSize: 'sm'}}>
-              می توانید برای دریافت پیشنهادات بهتر، حدود قیمتی محصول مورد نظر
-              خود را مشخص کنید
-            </FormControl.HelperText>
-            <VStack mt={4}>
-              <Checkbox
-                borderWidth={0}
-                my={4}
-                onChange={agreed => setAgreedPrice(agreed)}
-                shadow={4}
-                value={'agreedPrice'}>
-                قیمت توافقی
-              </Checkbox>
-              <Button
-                _pressed={{bg: 'gray.200'}}
-                _text={{color: 'gray.400', fontSize: 'md', fontWeight: '600'}}
-                bg={agreedPrice ? 'gray.200' : 'white'}
-                disabled={agreedPrice}
-                fontSize={'md'}
-                onPress={() => pricePickerRef.current!.setStatus(true)}
-                rounded={'full'}
-                shadow={4}
-                textAlign={'center'}>
-                حداقل قیمت
-              </Button>
-              <Text
-                fontSize={'md'}
-                fontWeight={600}
-                my={4}
-                textAlign={'center'}>
-                تا
-              </Text>
-              <Button
-                _pressed={{bg: 'gray.200'}}
-                _text={{color: 'gray.400', fontSize: 'md', fontWeight: '600'}}
-                bg={agreedPrice ? 'gray.200' : 'white'}
-                disabled={true}
-                fontSize={'md'}
-                onPress={() => pricePickerRef.current!.setStatus(true)}
-                rounded={'full'}
-                shadow={4}
-                textAlign={'center'}>
-                حداکثر قیمت
-              </Button>
-            </VStack>
           </Stack>
         </FormControl>
       </ScrollView>

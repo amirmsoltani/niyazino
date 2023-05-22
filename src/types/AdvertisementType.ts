@@ -1,3 +1,6 @@
+import {CityType, DistrictType, ProvinceType} from '~/types/LocationType';
+import {ShowAttributeType} from '~/types/AttributeType';
+
 export type AdvertisementType = {
   category_id: number;
   province_id: number;
@@ -11,6 +14,13 @@ export type AdvertisementType = {
   user_id: number;
   created_at: string;
   id: number;
+  status: 'active' | 'pending' | 'rejected';
+  min_price?: number;
+  max_price?: number;
+  attributes?: ShowAttributeType[];
+  districts: DistrictType[];
+  province: ProvinceType;
+  city: CityType;
 };
 
 export type AdvertisementDataType = Pick<
@@ -24,4 +34,6 @@ export type AdvertisementDataType = Pick<
   | 'province_id'
   | 'show_mobile'
   | 'category_id'
->;
+  | 'min_price'
+  | 'max_price'
+> & {attributes: Array<null | string>};

@@ -28,7 +28,11 @@ const mapNumberToPersian = {
 export const convertNumToPersian = (num: string) => {
   return num
     .split('')
-    .map(n => mapNumberToPersian[n as keyof typeof mapNumberToPersian])
+    .map(n =>
+      n in mapNumberToPersian
+        ? mapNumberToPersian[n as keyof typeof mapNumberToPersian]
+        : n,
+    )
     .join('');
 };
 

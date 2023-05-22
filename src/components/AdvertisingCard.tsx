@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {Box, HStack, Pressable, Text, VStack} from 'native-base';
 import {Car, Chart21, Clock} from 'iconsax-react-native';
+import {mapStatus} from '~/util/MapStatus';
 
 type PropsType = {
   title: string;
@@ -8,6 +9,8 @@ type PropsType = {
   time: string;
   id: number;
   price: string;
+  status?: 'active' | 'pending' | 'rejected';
+
   onPress?: (id: number) => void;
 };
 const AdvertisingCard: FC<PropsType> = ({
@@ -17,6 +20,7 @@ const AdvertisingCard: FC<PropsType> = ({
   category,
   onPress,
   price,
+  status,
 }) => {
   return (
     <Pressable
@@ -37,9 +41,16 @@ const AdvertisingCard: FC<PropsType> = ({
         <Text fontSize={'md'} fontWeight={700}>
           {title}
         </Text>
-        <Text fontSize={'xs'} my={2}>
-          {category}
-        </Text>
+        <HStack alignItems={'center'} justifyContent={'space-between'}>
+          <Text fontSize={'xs'} my={2}>
+            {category}
+          </Text>
+          {status ? (
+            <Text fontSize={'xs'} fontWeight={700}>
+              {mapStatus[status]}
+            </Text>
+          ) : null}
+        </HStack>
         <HStack space={2}>
           <HStack>
             <Clock color={'gray'} size={16} />

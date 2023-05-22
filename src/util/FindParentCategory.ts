@@ -13,6 +13,6 @@ export const findParentCategory = (
       categoryObject[category_id].parent_id!,
     ];
   } else {
-    return [];
+    return [category_id];
   }
 };

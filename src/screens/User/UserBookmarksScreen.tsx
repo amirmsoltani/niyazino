@@ -18,6 +18,8 @@ import {AdvertisingCard} from '~/components';
 import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
 import dayjs from 'dayjs';
 import {findParentCategory} from '~/util/FindParentCategory';
+import {mapPrice} from '~/util/MapPrice';
+import {priceFormat} from '~/util/PriceFormat';
 
 type Props = StackScreenProps<RootParamList, 'userBookmarksScreen'>;
 
@@ -121,11 +123,27 @@ const UserBookmarksScreen: FC<Props> = ({navigation}) => {
           <AdvertisingCard
             id={item.id}
             onPress={onPress}
-            price={'سیصد تا هفصد میلیون تومان'}
             title={item.advertisement.title}
             category={`${selectedCategory.title} /${
               category.categoriesObject[item.advertisement.category_id].title
             }`}
+            price={
+              item.advertisement.min_price && item.advertisement.max_price
+                ? `${
+                    item.advertisement.min_price in mapPrice
+                      ? mapPrice[
+                          item.advertisement.min_price as keyof typeof mapPrice
+                        ]
+                      : priceFormat(item.advertisement.min_price)
+                  } تا ${
+                    item.advertisement.max_price in mapPrice
+                      ? mapPrice[
+                          item.advertisement.max_price as keyof typeof mapPrice
+                        ]
+                      : priceFormat(item.advertisement.max_price)
+                  } تومان`
+                : 'توافقی'
+            }
             time={dayjs(item.advertisement.created_at)
               .fromNow()
               .replace(regMapToJalali, changeToJalali)}

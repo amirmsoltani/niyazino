@@ -30,8 +30,14 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
 import {useHttpRequest} from '~/hooks';
 import dayjs from 'dayjs';
-import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
+import {
+  changeToJalali,
+  convertNumToPersian,
+  regMapToJalali,
+} from '~/util/ChangeToJalali';
 import {findParentCategory} from '~/util/FindParentCategory';
+import {mapPrice} from '~/util/MapPrice';
+import {priceFormat} from '~/util/PriceFormat';
 
 const car = require('~/assets/images/car.png');
 const car2 = require('~/assets/images/car2.png');
@@ -43,38 +49,15 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
   const carouselRef = useRef<Carousel<any>>(null);
   const {sizes} = useTheme();
   const {
-    state: {detail, category, provinceList, districtList, cityLst},
-    request,
+    state: {detail, category},
   } = useHttpRequest({
     selector: state => ({
       detail: state.http.detailAdvertisements,
       category: state.categories,
-      provinceList: state.http.provinceList,
-      cityLst: state.http.cityList,
-      districtList: state.http.districtList,
     }),
     clearAfterUnmount: ['detailAdvertisements'],
     initialRequests: request => {
       request('detailAdvertisements', {params: {id: route.params.id}});
-    },
-    onUpdate: (lastState, state) => {
-      if (
-        lastState.detail?.httpRequestStatus === 'loading' &&
-        state.detail!.httpRequestStatus === 'success'
-      ) {
-        request('cityList', {
-          params: {
-            id: state.detail!.data!.data[state.detail!.data!.__typename]
-              .province_id,
-          },
-        });
-        request('districtList', {
-          params: {
-            id: state.detail!.data!.data[state.detail!.data!.__typename]
-              .city_id,
-          },
-        });
-      }
     },
   });
 
@@ -94,7 +77,6 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
       category.categoriesObject[
         findParentCategory(data.category_id, category.categoriesObject)[0]
       ];
-    const districtIds = (data.districts_ids as string)?.split(',') || [];
     return (
       <Stack flex={1}>
         <Stack h={'full'}>
@@ -145,7 +127,17 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
                 <Text fontWeight={600}>محدوده قیمت</Text>
               </HStack>
               <Text color={'gray.400'} fontWeight={600}>
-                قیمت توافقی
+                {data.min_price && data.max_price
+                  ? `${
+                      data.min_price in mapPrice
+                        ? mapPrice[data.min_price as keyof typeof mapPrice]
+                        : priceFormat(data.min_price)
+                    } تا ${
+                      data.max_price in mapPrice
+                        ? mapPrice[data.max_price as keyof typeof mapPrice]
+                        : priceFormat(data.max_price)
+                    } تومان`
+                  : 'قیمت توافقی'}
               </Text>
             </HStack>
             <HStack
@@ -164,29 +156,23 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
               </HStack>
               <VStack>
                 <Text color={'gray.400'} fontWeight={600}>
-                  {
-                    provinceList?.data?.data[
-                      provinceList!.data!.__typename
-                    ].find(province => province.id === data.province_id)?.name
-                  }
+                  {data.province.name}
                 </Text>
                 <Text color={'gray.400'} fontWeight={600}>
-                  {
-                    cityLst?.data?.data[cityLst!.data!.__typename].find(
-                      city => city.id === data.city_id,
-                    )?.name
-                  }
+                  {data.city.name}
                 </Text>
 
-                {districtList?.data?.data[districtList!.data!.__typename]
-                  .filter(district =>
-                    districtIds.includes(district.id.toString()),
-                  )
-                  .map(district => (
+                {data.districts.length ? (
+                  data.districts.map(district => (
                     <Text key={district.id} color={'gray.400'} fontWeight={600}>
                       {district.name}
                     </Text>
-                  ))}
+                  ))
+                ) : (
+                  <Text color={'gray.400'} fontWeight={600}>
+                    همه محله ها
+                  </Text>
+                )}
               </VStack>
             </HStack>
             <VStack
@@ -202,26 +188,37 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
                   خصوصیات محصول
                 </Text>
               </HStack>
-              <HStack justifyContent={'space-between'} mb={4} pl={4}>
-                <Text fontWeight={'600'}>تعداد سیلندر</Text>
-                <Text color={'gray.400'} fontWeight={600}>
-                  ۴ عدد
-                </Text>
-              </HStack>
-              <HStack justifyContent={'space-between'} mb={4} pl={4}>
-                <Text fontWeight={'600'}>سال تولید</Text>
-                <Text color={'gray.400'} fontWeight={600}>
-                  ۱۳۹۶
-                </Text>
-              </HStack>
-              <HStack justifyContent={'space-between'} pl={4}>
-                <Text fontWeight={'600'}>شرکت سازنده</Text>
-                <Text color={'gray.400'} fontWeight={600}>
-                  پژو سیتروئن
-                </Text>
-              </HStack>
+              {data.attributes?.map(attribute => (
+                <HStack
+                  key={attribute.id}
+                  justifyContent={'space-between'}
+                  mb={4}
+                  pl={4}>
+                  <Text fontWeight={'600'}>{attribute.attribute.title}</Text>
+                  <Text color={'gray.400'} fontWeight={600}>
+                    {attribute.attribute.type === 'select'
+                      ? attribute.option?.title || ''
+                      : attribute.attribute.type === 'integer'
+                      ? convertNumToPersian(attribute.value || '')
+                      : attribute.value}
+                  </Text>
+                </HStack>
+              ))}
+
+              {/*<HStack justifyContent={'space-between'} mb={4} pl={4}>*/}
+              {/*  <Text fontWeight={'600'}>سال تولید</Text>*/}
+              {/*  <Text color={'gray.400'} fontWeight={600}>*/}
+              {/*    ۱۳۹۶*/}
+              {/*  </Text>*/}
+              {/*</HStack>*/}
+              {/*<HStack justifyContent={'space-between'} pl={4}>*/}
+              {/*  <Text fontWeight={'600'}>شرکت سازنده</Text>*/}
+              {/*  <Text color={'gray.400'} fontWeight={600}>*/}
+              {/*    پژو سیتروئن*/}
+              {/*  </Text>*/}
+              {/*</HStack>*/}
             </VStack>
-            <VStack mb={10}>
+            <VStack display={'none'} mb={10}>
               <Carousel
                 ref={carouselRef}
                 data={[1, 2, 3, 4, 5, 6]}

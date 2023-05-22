@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {AdvertisementDataType, AdvertisementType} from '~/types';
+import {AdvertisementDataType} from '~/types';
 import {Asset} from 'react-native-image-picker';
 
 export type AdvertisingSliceType = Partial<AdvertisementDataType> & {
@@ -12,7 +12,7 @@ export const advertisingSlice = createSlice({
   name: 'advertising',
   initialState,
   reducers: {
-    setData: (state, action: PayloadAction<Partial<AdvertisementType>>) => {
+    setData: (state, action: PayloadAction<Partial<AdvertisementDataType>>) => {
       return {...state, ...action.payload};
     },
     setRemoveDistrict: (state, action: PayloadAction<string>) => {

@@ -42,6 +42,8 @@ import {AdvertisementListQueryStringType} from '~/types';
 import dayjs from 'dayjs';
 import {syncStorageAction} from '~/store/Actions';
 import {findParentCategory} from '~/util/FindParentCategory';
+import {mapPrice} from '~/util/MapPrice';
+import {priceFormat} from '~/util/PriceFormat';
 
 type Props = StackScreenProps<RootParamList, 'advertisingListScreen'>;
 
@@ -222,7 +224,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
               setFilters({...filters, search: text, page: 1});
             }}
           />
-          <HStack alignItems={'center'} mt={4}>
+          <HStack alignItems={'center'} my={4}>
             <Pressable
               _pressed={{bg: 'orange.300'}}
               alignItems={'center'}
@@ -264,7 +266,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
             <Pressable
               _pressed={{bg: 'orange.400'}}
               alignItems={'flex-end'}
-              bg={'orange.600'}
+              bg={'gray.400'}
               flexGrow={1}
               h={8}
               justifyContent={'center'}
@@ -272,20 +274,20 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
               rounded={'full'}>
               <Box
                 bg={'white'}
-                left={0}
                 p={3}
                 position={'absolute'}
+                right={0}
                 rounded={'full'}>
                 <Filter color={'black'} size={14} />
               </Box>
-              <Add
-                color={'white'}
-                size={18}
-                style={{transform: [{rotate: '45deg'}]}}
-              />
+              {/*<Add*/}
+              {/*  color={'white'}*/}
+              {/*  size={18}*/}
+              {/*  style={{transform: [{rotate: '45deg'}]}}*/}
+              {/*/>*/}
             </Pressable>
           </HStack>
-          <HStack flexWrap={'wrap'} mb={2} mt={4} space={'sm'}>
+          <HStack display={'none'} flexWrap={'wrap'} mb={2} space={'sm'}>
             <Pressable
               alignItems={'center'}
               bg={'black'}
@@ -395,11 +397,23 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           <AdvertisingCard
             id={item.id}
             onPress={onPress}
-            price={'سیصد تا هفصد میلیون تومان'}
             title={item.title}
             category={`${selectedCategory.title} /${
               category.categoriesObject[item.category_id].title
             }`}
+            price={
+              item.min_price && item.max_price
+                ? `${
+                    item.min_price in mapPrice
+                      ? mapPrice[item.min_price as keyof typeof mapPrice]
+                      : priceFormat(item.min_price)
+                  } تا ${
+                    item.max_price in mapPrice
+                      ? mapPrice[item.max_price as keyof typeof mapPrice]
+                      : priceFormat(item.max_price)
+                  } تومان`
+                : 'توافقی'
+            }
             time={dayjs(item.created_at)
               .fromNow()
               .replace(regMapToJalali, changeToJalali)}

@@ -4,6 +4,7 @@ import {
   AdvertisementDataType,
   AdvertisementListQueryStringType,
   AdvertisementType,
+  AttributeType,
   CityType,
   DistrictType,
   FileType,
@@ -34,7 +35,8 @@ type RequestKeys =
   | 'userAdvertisements'
   | 'userBookmarks'
   | 'getMe'
-  | 'logOut';
+  | 'logOut'
+  | 'attributes';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + 'v1/categories',
@@ -102,6 +104,10 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     method: 'get',
     auth: true,
   },
+  attributes: {
+    url: BASE_URL + 'v1/categories/attributes/{id}',
+    method: 'get',
+  },
 };
 
 export type RequestListTypes = {
@@ -134,6 +140,7 @@ export type RequestListTypes = {
   userBookmarks: undefined;
   getMe: undefined;
   logOut: undefined;
+  attributes: {params: {id: number}};
 };
 
 export type ResponseListType = {
@@ -151,4 +158,5 @@ export type ResponseListType = {
   userBookmarks: RequestType<'advertisements', UserBookmarkType[]>;
   getMe: RequestType<'user', UserType>;
   logOut: RequestType<'data', null>;
+  attributes: RequestType<'attributes', AttributeType[]>;
 };

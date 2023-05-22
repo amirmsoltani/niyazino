@@ -28,7 +28,7 @@ const AdvertisingCategoryScreen = () => {
   >([
     null,
     ...(selectedId
-      ? findParentCategory(selectedId, categories.categoriesObject)
+      ? findParentCategory(selectedId, categories.categoriesObject).slice(1)
       : []),
   ]);
   const [dirty, setDirty] = useState(false);

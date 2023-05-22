@@ -9,7 +9,7 @@ import {
   createAdvertisingAfterUploadPhotos,
   syncStorageAction,
 } from '~/store/Actions';
-import {advertisingClear} from '~/store/slices';
+import {advertisingClear, httpClear} from '~/store/slices';
 
 type Props = StackScreenProps<
   RootParamList,
@@ -47,19 +47,10 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
         lastState.create?.httpRequestStatus === 'loading' &&
         state.create?.httpRequestStatus === 'success'
       ) {
-        const name = state!.create.data!.__typename;
+        dispatch(httpClear(['userAdvertisements']));
         navigation.reset({
-          index: 2,
-          routes: [
-            {name: 'dashboardScreen'},
-            {name: 'advertisingListScreen'},
-            {
-              name: 'advertisingDetailScreen',
-              params: {
-                id: state!.create!.data!.data![name]!.id,
-              },
-            },
-          ],
+          index: 1,
+          routes: [{name: 'dashboardScreen'}, {name: 'userAdvertisingScreen'}],
         });
         dispatch(advertisingClear());
       }
@@ -86,7 +77,6 @@ const AdvertisingAuthorizeScreen: FC<Props> = ({navigation}) => {
       }}>
       <Stack
         alignItems={'center'}
-        bg={'#00000060'}
         bottom={0}
         justifyContent={'center'}
         left={0}

@@ -10,7 +10,7 @@ function* createAdvertisingAfterUploadPhotos() {
   const advertising: AdvertisingSliceType = yield select(
     (state: RootState) => state.advertising,
   );
-  const files: FileType[] = yield uploadQueue(advertising.assets!);
+  const files: FileType[] = yield uploadQueue(advertising.assets || []);
   yield put(
     httpRequestAction('createAdvertisements', {
       data: {
@@ -27,6 +27,9 @@ function* createAdvertisingAfterUploadPhotos() {
         city_id: advertising.city_id!,
         images_ids: files.length ? files.map(file => file.id) : null,
         category_id: advertising.category_id!,
+        attributes: [null, ...advertising.attributes!],
+        max_price: advertising.max_price,
+        min_price: advertising.min_price,
       },
     }),
   );

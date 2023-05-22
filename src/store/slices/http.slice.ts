@@ -47,9 +47,10 @@ export const httpsSlice = createSlice({
       HttpResponseAction,
       (state, action: HttpResponseActionType) => {
         const {httpResponseStatus, responseData, error} = action.payload;
-        const __typename = responseData?.data
-          ? Object.keys(responseData?.data)[0]
-          : undefined;
+        const __typename =
+          httpResponseStatus === 'success' && responseData?.data
+            ? Object.keys(responseData!.data)[0]
+            : undefined;
 
         if (
           action.payload.addToList &&
@@ -69,10 +70,13 @@ export const httpsSlice = createSlice({
           [action._name]: {
             httpRequestStatus: httpResponseStatus,
             error,
-            data: {
-              __typename,
-              ...responseData,
-            },
+            data:
+              httpResponseStatus === 'success'
+                ? {
+                    __typename,
+                    ...responseData,
+                  }
+                : undefined,
           },
         };
       },
