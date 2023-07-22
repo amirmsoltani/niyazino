@@ -266,6 +266,8 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
       </Stack>
     );
   };
+
+  const data = detail?.data?.data[detail?.data?.__typename];
   return (
     <VStack bg={'white'} h={'full'} safeArea>
       <StatusBar backgroundColor={'white'} />
@@ -306,11 +308,19 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
           _text={{color: 'gray.500', fontSize: 'md'}}
           borderColor={'gray.400'}
           borderWidth={2}
+          disabled={!data}
           leftIcon={<MessageMinus color={'gray'} />}
-          onPress={() => navigation.navigate('chatScreen', {id: 1})}
           rounded={'full'}
           variant={'outline'}
-          w={'2/6'}>
+          w={'2/6'}
+          onPress={() =>
+            navigation.navigate('chatScreen', {
+              adId: data?.id || 0,
+              adImage: data?.images.length ? data.images[0] : undefined,
+              adTitle: data?.title || '',
+              userId: data?.user_id || 0,
+            })
+          }>
           گفتگو
         </Button>
       </HStack>

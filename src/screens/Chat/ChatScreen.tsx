@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {
   Box,
   FormControl,
@@ -14,10 +14,23 @@ import {
 import {ArrowLeft, CameraSlash, Send} from 'iconsax-react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
+import socketEmit from '~/store/Actions/socketEmit.action';
+import {useDispatch} from 'react-redux';
 
 type Props = StackScreenProps<RootParamList, 'chatScreen'>;
 
-const ChatScreen: FC<Props> = ({navigation}) => {
+const ChatScreen: FC<Props> = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(
+      socketEmit('submitMessage', {
+        advertisement_id: route.params.adId,
+        content: 'aaa',
+        image: false,
+        to_id: route.params.userId,
+      }),
+    );
+  }, []);
   return (
     <VStack bg={'white'} h={'full'} safeArea>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />

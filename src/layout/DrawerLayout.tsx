@@ -76,15 +76,22 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
     selector: state => ({
       user: state.http.getMe,
       isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
+      verifyCode: state.http.verifyCode,
     }),
     onUpdate: (lastState, state) => {
-      if (state.isLogin !== lastState.isLogin) {
+      if (
+        (lastState.verifyCode?.httpRequestStatus === 'loading' &&
+          state.verifyCode?.httpRequestStatus === 'success') ||
+        (lastState.verifyCode?.httpRequestStatus === 'success' &&
+          state.verifyCode?.httpRequestStatus === 'idle')
+      ) {
         reduxDispatch(syncStorageAction('update'));
       }
       if (
         state.isLogin &&
         ['error', 'idle', undefined].includes(state.user?.httpRequestStatus)
       ) {
+        reduxDispatch({type: 'SOCKET_CONNECT'});
         request('getMe', undefined);
       }
     },

@@ -3,3 +3,4 @@ export * from './http.slice';
 export * from './advertising.slice';
 export * from './location.slice';
 export * from './storage.slice';
+export * from './socket.slice';

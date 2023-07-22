@@ -10,3 +10,8 @@ export * from './QueryStringsType';
 export * from './UserBookmarkType';
 export * from './UserType';
 export * from './AttributeType';
+export * from './ChatType';
+export * from './MessageType';
+export * from './SocketEmitsType';
+export * from './SocketReceivesType';
+export * from './SocketSliceType';

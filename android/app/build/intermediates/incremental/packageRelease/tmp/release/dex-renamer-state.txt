@@ -1,4 +1,4 @@
-#Thu May 18 00:27:16 IRDT 2023
+#Tue May 23 02:47:30 IRDT 2023
 base.1=/home/amir/Documents/niyazino-front/android/app/build/intermediates/dex/release/mergeDexRelease/classes2.dex
 path.1=classes2.dex
 base.0=/home/amir/Documents/niyazino-front/android/app/build/intermediates/dex/release/mergeDexRelease/classes.dex

@@ -4,6 +4,7 @@ import {
   categoriesReducer,
   httpsReducer,
   locationsReducer,
+  socketReducer,
   storageReducer,
 } from './slices';
 import createSagaMiddleware from 'redux-saga';
@@ -21,6 +22,7 @@ export const store = configureStore({
     advertising: advertisingReducer,
     locations: locationsReducer,
     storage: storageReducer,
+    socket: socketReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(middlewares),

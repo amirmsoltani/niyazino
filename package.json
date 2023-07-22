@@ -39,7 +39,8 @@
     "react-native-video-player": "^0.14.0",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
-    "redux-saga": "^1.2.3"
+    "redux-saga": "^1.2.3",
+    "socket.io-client": "^4.7.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -16,7 +16,7 @@ import {
 } from '~/types';
 import {Asset} from 'react-native-image-picker';
 
-export const BASE_URL = 'http://api.niyazino.com/';
+export const BASE_URL = 'http://api.niyazino.com';
 
 export const excludeList = ['categoryList'];
 export type RequestKeyExclude = keyof Omit<RequestListTypes, 'categoryList'>;
@@ -39,73 +39,73 @@ type RequestKeys =
   | 'attributes';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
-    url: BASE_URL + 'v1/categories',
+    url: BASE_URL + '/v1/categories',
     method: 'get',
     sagaName: SerializeCategoriesActionName,
   },
   provinceList: {
-    url: BASE_URL + 'v1/locations/provinces',
+    url: BASE_URL + '/v1/locations/provinces',
     method: 'get',
   },
   cityList: {
-    url: BASE_URL + 'v1/locations/cities/{id}',
+    url: BASE_URL + '/v1/locations/cities/{id}',
     method: 'get',
   },
   districtList: {
-    url: BASE_URL + 'v1/locations/districts/{id}',
+    url: BASE_URL + '/v1/locations/districts/{id}',
     method: 'get',
   },
   uploadFile: {
-    url: BASE_URL + 'v1/files/upload',
+    url: BASE_URL + '/v1/files/upload',
     method: 'post',
     headers: {'Content-Type': 'multipart/form-data; '},
     auth: true,
   },
   sendVerificationCode: {
-    url: BASE_URL + 'v1/auth/code',
+    url: BASE_URL + '/v1/auth/code',
     method: 'post',
   },
   verifyCode: {
-    url: BASE_URL + 'v1/auth/verify',
+    url: BASE_URL + '/v1/auth/verify',
     method: 'post',
   },
   createAdvertisements: {
-    url: BASE_URL + 'v1/advertisements/create',
+    url: BASE_URL + '/v1/advertisements/create',
     method: 'post',
     auth: true,
   },
   detailAdvertisements: {
-    url: BASE_URL + 'v1/advertisements/show/{id}',
+    url: BASE_URL + '/v1/advertisements/show/{id}',
     method: 'get',
     auth: true,
   },
   listAdvertisements: {
-    url: BASE_URL + 'v1/advertisements',
+    url: BASE_URL + '/v1/advertisements',
     method: 'get',
     auth: true,
   },
   userAdvertisements: {
-    url: BASE_URL + 'v1/advertisements/my',
+    url: BASE_URL + '/v1/advertisements/my',
     method: 'get',
     auth: true,
   },
   userBookmarks: {
-    url: BASE_URL + 'v1/bookmarks',
+    url: BASE_URL + '/v1/bookmarks',
     method: 'get',
     auth: true,
   },
   getMe: {
-    url: BASE_URL + 'v1/auth/me',
+    url: BASE_URL + '/v1/auth/me',
     method: 'get',
     auth: true,
   },
   logOut: {
-    url: BASE_URL + 'v1/auth/logout',
+    url: BASE_URL + '/v1/auth/logout',
     method: 'get',
     auth: true,
   },
   attributes: {
-    url: BASE_URL + 'v1/categories/attributes/{id}',
+    url: BASE_URL + '/v1/categories/attributes/{id}',
     method: 'get',
   },
 };
