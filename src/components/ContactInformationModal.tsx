@@ -1,5 +1,7 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
-import {Modal, Text, VStack} from 'native-base';
+import {Button, HStack, Modal, Text} from 'native-base';
+import {Call, Sms} from 'iconsax-react-native';
+import {Linking} from 'react-native';
 
 export type RefType = {
   isOpen: boolean;
@@ -34,9 +36,34 @@ const ContactInformationModal = forwardRef<RefType, PropsType>((props, ref) => {
         <Modal.CloseButton />
         <Modal.Header>اطلاعات تماس</Modal.Header>
         <Modal.Body>
-          <VStack>
-            <Text>{props.phoneNumber}</Text>
-          </VStack>
+          <HStack alignItems={'center'} justifyContent={'space-between'}>
+            <Text fontSize={'md'}>شماره همراه</Text>
+            <HStack alignItems={'center'}>
+              <Text fontSize={'md'} bold>
+                {props.phoneNumber}
+              </Text>
+              <Button
+                ml={4}
+                p={1}
+                onPress={() => {
+                  Linking.canOpenURL('tel://' + props.phoneNumber).then(() => {
+                    Linking.openURL('tel://' + props.phoneNumber);
+                  });
+                }}>
+                <Call color={'white'} />
+              </Button>
+              <Button
+                ml={4}
+                p={1}
+                onPress={() => {
+                  Linking.canOpenURL('sms://' + props.phoneNumber).then(() => {
+                    Linking.openURL('sms://' + props.phoneNumber);
+                  });
+                }}>
+                <Sms color={'white'} />
+              </Button>
+            </HStack>
+          </HStack>
         </Modal.Body>
       </Modal.Content>
     </Modal>

@@ -1,10 +1,11 @@
 import {
-  select,
-  takeLeading,
   call,
-  takeEvery,
-  take,
+  cancel,
   fork,
+  select,
+  take,
+  takeEvery,
+  takeLeading,
 } from 'redux-saga/effects';
 import {Socket} from 'socket.io-client';
 import {RootState} from '~/store';
@@ -14,7 +15,7 @@ import {
   socketHandelEmitter,
   socketHandelReceiver,
 } from '~/util/socket';
-import {EventChannel} from 'redux-saga';
+import {EventChannel, Task} from 'redux-saga';
 import {
   SocketEmitAction,
   SocketEmitActionType,
@@ -25,15 +26,18 @@ function* socket() {
     ({http: {verifyCode}}: RootState) => verifyCode?.data!.data.token!,
   );
   const socket: Socket = yield call(socketConnect, token);
-  const channel: EventChannel<any> = yield socketCreateChannel(socket);
+  const channel: EventChannel<any> = yield call(socketCreateChannel, socket);
 
-  yield takeEvery(channel, socketHandelReceiver);
+  const forkEvery: Task = yield takeEvery(channel, socketHandelReceiver);
 
-  let action: SocketEmitActionType | undefined;
-  while (action?._name !== 'userConnect') {
-    action = yield take(SocketEmitAction);
+  let action: SocketEmitActionType = yield take(SocketEmitAction);
+  while (action?._name !== 'disconnect') {
     yield fork(socketHandelEmitter, action!, socket);
+    action = yield take(SocketEmitAction);
   }
+  yield cancel(forkEvery);
+  channel.close();
+  socket.disconnect();
 }
 
 export default takeLeading('SOCKET_CONNECT', socket);

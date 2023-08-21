@@ -22,6 +22,7 @@ import {httpClear} from '~/store/slices';
 import {syncStorageAction} from '~/store/Actions';
 import {AuthModal, AuthModalRef} from '~/components';
 import {convertNumToPersian} from '~/util/ChangeToJalali';
+import socketEmit from '~/store/Actions/socketEmit.action';
 
 const {width} = Dimensions.get('window');
 const sixtyPercent = Math.floor(width * 0.6);
@@ -131,6 +132,7 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
           onPress={() => {
             if (isLogin) {
               request('logOut', undefined);
+              reduxDispatch(socketEmit('disconnect', undefined));
               reduxDispatch(httpClear(['verifyCode', 'getMe']));
             } else {
               authModalRef.current!.setStatus(true);

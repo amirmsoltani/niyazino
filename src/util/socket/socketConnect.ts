@@ -7,7 +7,7 @@ export const socketConnect = (token: string) =>
       extraHeaders: {authorization: token},
     });
     socket.on('connect', () => {
+      socket.emit('userConnect');
       resolve(socket);
-      socket.off('connect');
     });
   });

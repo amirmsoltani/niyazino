@@ -1,43 +1,115 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
+  AspectRatio,
   Box,
   FormControl,
   HStack,
   IconButton,
   Input,
+  Pressable,
   ScrollView,
   Stack,
   StatusBar,
   Text,
   VStack,
 } from 'native-base';
-import {ArrowLeft, CameraSlash, Send} from 'iconsax-react-native';
+import {
+  Add,
+  ArrowLeft,
+  CameraSlash,
+  Paperclip,
+  Send,
+} from 'iconsax-react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
-import socketEmit from '~/store/Actions/socketEmit.action';
 import {useDispatch} from 'react-redux';
+import socketEmit from '~/store/Actions/socketEmit.action';
+import {useAppSelector} from '~/hooks/reduxHooks';
+import dayjs from 'dayjs';
+import {socketClear} from '~/store/slices';
+import {convertNumToPersian} from '~/util/ChangeToJalali';
+import {TouchableOpacity, Image, Modal} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import ImageView from 'react-native-image-zoom-viewer';
 
 type Props = StackScreenProps<RootParamList, 'chatScreen'>;
 
+const itemProps = {
+  another: {
+    bg: 'warmGray.100',
+    roundedLeft: '24px',
+    px: 3,
+    py: 2,
+  },
+  self: {
+    bg: 'orange.100',
+    p: 2,
+    pr: 6,
+    roundedRight: '24px',
+  },
+};
 const ChatScreen: FC<Props> = ({navigation, route}) => {
   const dispatch = useDispatch();
+  const messages = useAppSelector(state => state.socket.getMessages);
+  const [preview, setPreview] = useState<undefined | string>(undefined);
   useEffect(() => {
+    dispatch(
+      socketEmit('getMessages', {
+        advertisement_id: route.params.adId,
+        page: 1,
+        user_id: route.params.userId,
+      }),
+    );
+    return () => {
+      dispatch(socketClear('getMessages'));
+    };
+  }, []);
+  const [message, setMessage] = useState('');
+  const sendMessage = () => {
     dispatch(
       socketEmit('submitMessage', {
         advertisement_id: route.params.adId,
-        content: 'aaa',
-        image: false,
         to_id: route.params.userId,
+        content: message,
+        image: false,
       }),
     );
-  }, []);
+    setMessage('');
+  };
+
+  const sendImage = () => {
+    launchImageLibrary({
+      mediaType: 'photo',
+      includeBase64: true,
+      quality: 0.4,
+    }).then(response => {
+      if (!response.didCancel) {
+        const asset = response.assets![0];
+        console.log(asset.fileSize);
+        if (asset.fileSize! > 1024 * 1024 * 4) {
+          return;
+        }
+        dispatch(
+          socketEmit('submitMessage', {
+            image: false,
+            content: `data:${asset.type!};base64,${asset.base64!}`,
+            to_id: route.params.userId,
+            advertisement_id: route.params.adId,
+          }),
+        );
+      }
+    });
+  };
+
   return (
     <VStack bg={'white'} h={'full'} safeArea>
       <StatusBar backgroundColor={'white'} barStyle={'dark-content'} />
 
       <HStack alignItems={'center'} justifyContent={'space-between'} px={4}>
         <Text fontSize={'lg'} fontWeight={'600'}>
-          امیر سلطانی
+          {!route.params.userFirstName
+            ? 'کاربر بدون نام'
+            : `${route.params.userFirstName} ${route.params.userLastName!}`}
         </Text>
         <IconButton
           icon={<ArrowLeft color={'black'} size={28} />}
@@ -50,75 +122,139 @@ const ChatScreen: FC<Props> = ({navigation, route}) => {
           <CameraSlash color={'black'} size={28} />
         </Box>
         <Text color={'gray.500'} fontSize={'xs'} fontWeight={'600'} ml={'2'}>
-          خودروی بی.ام.دبلیو ۲۰۰۲ شما را خریداریم
+          {route.params.adTitle}
         </Text>
       </HStack>
       <Stack flex={1}>
-        <ScrollView px={4} py={2} style={{transform: [{rotate: '180deg'}]}}>
-          <HStack justifyContent={'flex-end'} px={1} py={2}>
-            <HStack
-              bg={'orange.100'}
-              p={2}
-              pr={6}
-              rounded={'lg'}
-              roundedRight={'full'}
-              shadow={1}
-              style={{transform: [{rotate: '180deg'}]}}>
-              <Text
-                alignSelf={'flex-end'}
-                fontSize={'2xs'}
-                fontWeight={500}
-                mr={2}>
-                ۵:۳۹ PM
-              </Text>
-              <Text fontSize={'sm'} fontWeight={'500'}>
-                سلام ماشین مدل ۲۰۰۲ دارم
-              </Text>
-            </HStack>
-          </HStack>
-          <HStack justifyContent={'flex-start'} px={1} py={2}>
-            <HStack
-              bg={'warmGray.100'}
-              px={3}
-              py={2}
-              rounded={'lg'}
-              roundedLeft={'full'}
-              shadow={1}
-              style={{transform: [{rotate: '180deg'}]}}>
-              <Text
-                alignSelf={'flex-end'}
-                fontSize={'2xs'}
-                fontWeight={500}
-                mr={2}>
-                ۵:۳۹ PM
-              </Text>
-              <Text fontSize={'sm'} fontWeight={'500'}>
-                قیمت چند؟
-              </Text>
-            </HStack>
-          </HStack>
+        <ScrollView
+          _contentContainerStyle={{pb: 4}}
+          px={4}
+          py={2}
+          style={{transform: [{rotate: '180deg'}]}}>
+          {messages?.data?.data.map(message => {
+            const isBig2000 = message.content?.length > 2000;
+            const isImage = message.content?.includes(';base64,');
+            return (
+              <HStack
+                key={message.created_at + message.id}
+                px={1}
+                py={2}
+                justifyContent={
+                  message.from_id === route.params.userId
+                    ? 'flex-start'
+                    : 'flex-end'
+                }>
+                <Stack
+                  minW={'20'}
+                  pb={3}
+                  shadow={1}
+                  style={[
+                    {transform: [{rotate: '180deg'}]},
+                    isImage ? {paddingRight: 8, paddingLeft: 8} : null,
+                  ]}
+                  {...(message.from_id === route.params.userId
+                    ? itemProps.another
+                    : itemProps.self)}
+                  maxW={'5/6'}>
+                  {isImage || isBig2000 ? (
+                    isBig2000 && !isImage ? null : (
+                      <Pressable
+                        onPress={() => {
+                          setPreview(message.content);
+                        }}>
+                        <Image
+                          alt={'image'}
+                          resizeMode={'cover'}
+                          source={{
+                            uri: message.content,
+                          }}
+                          style={{
+                            width: '100%',
+                            aspectRatio: 1,
+                            marginBottom: 4,
+                            borderRadius: 12,
+                          }}
+                        />
+                      </Pressable>
+                    )
+                  ) : (
+                    <Text fontSize={'sm'} fontWeight={'500'}>
+                      {message.content}
+                    </Text>
+                  )}
+                  <Text
+                    alignSelf={'flex-start'}
+                    bottom={0}
+                    fontSize={'2xs'}
+                    fontWeight={500}
+                    left={3}
+                    position={'absolute'}>
+                    {convertNumToPersian(
+                      dayjs(message.created_at).format('h:mm A'),
+                    )}{' '}
+                    {message.from_id !== route.params.userId ? (
+                      <Text fontSize={'8px'} letterSpacing={-3}>
+                        &#x2713;
+                        {message.readed ? '\u2713' : null}
+                      </Text>
+                    ) : null}
+                  </Text>
+                </Stack>
+              </HStack>
+            );
+          })}
         </ScrollView>
       </Stack>
-      <HStack bg={'gray.100'} h={'20'} p={4} w={'full'}>
-        <IconButton
-          icon={<Send color={'black'} />}
-          mr={1}
-          p={2}
-          rounded={'full'}
-        />
+      <HStack
+        alignItems={'center'}
+        bg={'gray.100'}
+        maxH={'40'}
+        minH={'20'}
+        p={4}
+        w={'full'}>
+        <TouchableOpacity
+          onPress={message.length ? sendMessage : sendImage}
+          style={{marginRight: 4, padding: 2}}>
+          {message ? <Send color={'black'} /> : <Paperclip color={'black'} />}
+        </TouchableOpacity>
 
-        <FormControl flex={1}>
+        <FormControl
+          flex={1}
+          minH={`${36 + 14 * Math.min(message?.split('\n').length, 6)}px`}>
           <Input
             bg={'white'}
             flex={1}
             fontWeight={'500'}
-            h={'16'}
+            numberOfLines={5}
+            onChangeText={message => setMessage(message)}
             placeholder={'پیامی بنویسید'}
+            rounded={'24px'}
             textAlign={'right'}
+            value={message}
             variant={'rounded'}
+            multiline
           />
         </FormControl>
       </HStack>
+      <Modal visible={!!preview} transparent>
+        <ImageView
+          imageUrls={[
+            {
+              url: preview!,
+            },
+          ]}
+          renderHeader={() => (
+            <HStack justifyContent={'flex-end'}>
+              <IconButton
+                icon={<Add color={'white'} rotation={45} size={32} />}
+                onPress={() => {
+                  setPreview(undefined);
+                }}
+              />
+            </HStack>
+          )}
+        />
+      </Modal>
     </VStack>
   );
 };

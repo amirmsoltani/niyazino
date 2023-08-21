@@ -11,7 +11,7 @@ if (__DEV__) {
   const warn = console.error;
   console.error = (...arg) => {
     for (const warning of ignoreWarns) {
-      if (arg[0].startsWith(warning)) {
+      if (arg[0]?.startsWith?.(warning)) {
         return;
       }
     }

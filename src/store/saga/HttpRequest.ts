@@ -24,7 +24,7 @@ function* HttpRequest(action: HttpActionType) {
   }
   if (auth) {
     const token: string = yield select(
-      ({http: {verifyCode}}: RootState) => verifyCode?.data!.data.token!,
+      ({http: {verifyCode}}: RootState) => verifyCode?.data?.data.token!,
     );
     requestHeaders['AUTH-TOKEN'] = token;
   }
@@ -74,14 +74,11 @@ function* HttpRequest(action: HttpActionType) {
     yield put(
       httpResponseAction(action._name as RequestKeyExclude, {
         httpResponseStatus: 'error',
-        error: JSON.parse(JSON.stringify(e?.response)),
+        error: JSON.parse(
+          JSON.stringify(e?.response?.data || e.response || e || {}),
+        ),
         addToList: data?.addToList,
       }),
-    );
-    console.log('error');
-    console.log(
-      e.isAxiosError ? {request: e.request, response: e.response} : 'error',
-      'http Request Error',
     );
   }
 }

@@ -1,15 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {
   SocketEmitAction,
   SocketEmitActionType,
 } from '~/store/Actions/socketEmit.action';
-import {
-  ChatType,
-  HttpRequestStatusType,
-  MessageType,
-  SocketReceivesType,
-  SocketSliceType,
-} from '~/types';
+import {MessageType, SocketReceivesType, SocketSliceType} from '~/types';
 import {
   SocketReceiveAction,
   SocketReceiveActionType,
@@ -20,21 +14,30 @@ const initialState: SocketSliceType = {status: 'idle', unread: []};
 export const socketSlice = createSlice({
   name: 'socket',
   initialState,
-  reducers: {},
+  reducers: {
+    socketClear: (
+      state,
+      action: PayloadAction<keyof Omit<SocketSliceType, 'status' | 'unread'>>,
+    ) => {
+      state[action.payload] = undefined;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(SocketEmitAction, (state, action: SocketEmitActionType) => {
       if (action._name === 'userConnect') {
         return {...state, status: 'success'};
       }
+      const name = action._name as Exclude<typeof action._name, 'disconnect'>;
       return {
         ...state,
-        [action._name]: {
-          ...state[action._name],
+        [name]: {
+          ...state[name],
           status: 'loading',
           request: action.payload,
         },
       };
     });
+
     builder.addCase(
       SocketReceiveAction,
       (state, action: SocketReceiveActionType) => {
@@ -48,19 +51,16 @@ export const socketSlice = createSlice({
                 response.advertisement_id ===
                   state.getMessages.request.advertisement_id
               ) {
-                return {
-                  ...state,
-                  getMessages: {
-                    ...state.getMessages,
-                    data: [...state.getMessages!.data!, response],
-                  },
-                };
+                state.getMessages.data!.data = [
+                  action.payload as MessageType,
+                  ...state.getMessages.data!.data,
+                ];
               } else if (state.getChats?.status === 'success') {
-                const index = state.getChats?.data!.findIndex(
+                const index = state.getChats?.data!.data.findIndex(
                   chat => chat.advertisement_id === response.advertisement_id,
                 );
                 if (index !== -1) {
-                  state.getChats.data![index].readed = false;
+                  state.getChats.data!.data[index].readed = false;
                 }
               }
             }
@@ -74,34 +74,37 @@ export const socketSlice = createSlice({
                 response.advertisement_id ===
                   state.getMessages.request.advertisement_id
               ) {
-                const newMessages = [...state.getMessages.data!].map(message =>
-                  message.readed ||
-                  message.to_id === state.getMessages!.request.user_id
-                    ? message
-                    : {...message, readed: true},
+                const newMessages = [...state.getMessages.data!.data].map(
+                  message =>
+                    message.readed ||
+                    message.to_id === state.getMessages!.request.user_id
+                      ? message
+                      : {...message, readed: true},
                 );
-                state.getMessages.data = newMessages;
+                state.getMessages.data!.data = newMessages;
               }
               if (state.getChats?.status === 'success') {
-                const index = state.getChats?.data!.findIndex(
+                const index = state.getChats?.data!.data.findIndex(
                   chat => chat.advertisement_id === response.advertisement_id,
                 );
                 if (index !== -1) {
-                  state.getChats.data![index].readed = true;
+                  state.getChats.data!.data[index].readed = true;
                 }
               }
             }
             break;
           default: {
             const name = action._name;
-            const data = action.payload as ChatType[] | MessageType[];
+            const data = action.payload as SocketReceivesType[
+              | 'getChats'
+              | 'getMessages'];
             return {
               ...state,
               [name]: {
                 ...state[name],
                 status: 'success',
                 data: state[name]?.data
-                  ? [...state[name]!.data!, ...data]
+                  ? {...data, data: [...data.data, ...state[name]!.data!.data]}
                   : action.payload,
               },
             };
@@ -112,6 +115,6 @@ export const socketSlice = createSlice({
   },
 });
 
-const {} = socketSlice.actions;
+export const {socketClear} = socketSlice.actions;
 
 export const socketReducer = socketSlice.reducer;

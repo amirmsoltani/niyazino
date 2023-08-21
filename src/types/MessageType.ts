@@ -6,8 +6,8 @@ export type MessageType = {
   to_id: number;
   advertisement_id: number;
   type: 'text' | 'image';
-  content: string | Asset;
+  content: string;
   readed: boolean;
-  create_at: number;
+  created_at: number;
   deleted_at: number;
 };

@@ -17,6 +17,7 @@ import {useAppDispatch, useAppSelector} from '~/hooks/reduxHooks';
 import socketEmit from '~/store/Actions/socketEmit.action';
 import dayjs from 'dayjs';
 import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
+import {socketClear} from '~/store/slices';
 
 const menuIcon = require('src/assets/images/menuIcon.png');
 
@@ -29,6 +30,10 @@ const ChatListScreen: FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     dispatch(socketEmit('getChats', 1));
+
+    return () => {
+      dispatch(socketClear('getChats'));
+    };
   }, []);
 
   const chats = useAppSelector(state => state.socket.getChats);
@@ -36,7 +41,7 @@ const ChatListScreen: FC<Props> = ({navigation, route}) => {
   return (
     <VirtualizeMainLayout
       bg={'blueGray.200'}
-      data={chats?.data || []}
+      data={chats?.data?.data || []}
       header={
         <VStack px={6}>
           <HStack alignItems={'center'} h={14} justifyContent={'space-between'}>

@@ -36,7 +36,8 @@ type RequestKeys =
   | 'userBookmarks'
   | 'getMe'
   | 'logOut'
-  | 'attributes';
+  | 'attributes'
+  | 'contactInfo';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + '/v1/categories',
@@ -101,12 +102,17 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   },
   logOut: {
     url: BASE_URL + '/v1/auth/logout',
-    method: 'get',
+    method: 'post',
     auth: true,
   },
   attributes: {
     url: BASE_URL + '/v1/categories/attributes/{id}',
     method: 'get',
+  },
+  contactInfo: {
+    url: BASE_URL + '/v1/advertisements/contact/{id}',
+    method: 'get',
+    auth: true,
   },
 };
 
@@ -141,6 +147,7 @@ export type RequestListTypes = {
   getMe: undefined;
   logOut: undefined;
   attributes: {params: {id: number}};
+  contactInfo: {params: {id: number}};
 };
 
 export type ResponseListType = {
@@ -159,4 +166,5 @@ export type ResponseListType = {
   getMe: RequestType<'user', UserType>;
   logOut: RequestType<'data', null>;
   attributes: RequestType<'attributes', AttributeType[]>;
+  contactInfo: RequestType<'mobile', string>;
 };
