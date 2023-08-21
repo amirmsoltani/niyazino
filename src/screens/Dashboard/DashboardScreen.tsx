@@ -1,4 +1,4 @@
-import {FC, useRef, useState} from 'react';
+import {FC, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
 import {
@@ -17,10 +17,8 @@ import {
   useTheme,
   VStack,
 } from 'native-base';
-import {Add, ArrowLeft2, ArrowRight2} from 'iconsax-react-native';
+import {Add} from 'iconsax-react-native';
 import {MainLayout} from '~/layout';
-import Carousel from 'react-native-snap-carousel';
-import {Dimensions} from 'react-native';
 import {useDrawer} from '~/hooks';
 import VideoPlayer from 'react-native-video-player';
 import {useAppDispatch} from '~/hooks/reduxHooks';
@@ -28,12 +26,12 @@ import {advertisingSetData} from '~/store/slices';
 
 type Props = StackScreenProps<RootParamList, 'dashboardScreen'>;
 
-const {width} = Dimensions.get('window');
+// const {width} = Dimensions.get('window');
 
 const menuIcon = require('src/assets/images/menuIcon.png');
 const DashboardScreen: FC<Props> = ({navigation}) => {
-  const {colors, sizes} = useTheme();
-  const carouselRef = useRef<Carousel<any>>(null);
+  const {colors} = useTheme();
+  // const carouselRef = useRef<Carousel<any>>(null);
   const [inputText, setInputText] = useState('');
   const dispatch = useAppDispatch();
 
@@ -79,7 +77,7 @@ const DashboardScreen: FC<Props> = ({navigation}) => {
               fontSize={'md'}
               fontWeight={'600'}
               h={'55px'}
-              mt={6}
+              mt={32}
               onChangeText={text => setInputText(text)}
               placeholder={'چی نیاز داری بگو برات ثبت کنم؟!'}
               shadow={'4'}
@@ -101,50 +99,50 @@ const DashboardScreen: FC<Props> = ({navigation}) => {
               }
             />
           </Center>
-          <HStack alignItems={'center'} mt={12} px={8}>
-            <IconButton
-              _pressed={{bg: '#ffffff7e'}}
-              icon={<ArrowLeft2 color={'#0000007e'} variant={'Bold'} />}
-              onPress={() => carouselRef.current?.snapToPrev()}
-              position={'absolute'}
-              right={2}
-            />
-            <Carousel
-              ref={carouselRef}
-              data={[1, 2, 3]}
-              itemWidth={width - sizes[8] * 2}
-              sliderWidth={width - sizes[8] * 2}
-              renderItem={({item}) => (
-                <Center h="32">
-                  <VStack
-                    alignItems={'flex-start'}
-                    bg={'black'}
-                    h={32}
-                    justifyContent={'center'}
-                    px={8}
-                    rounded={'3xl'}
-                    w={'72'}>
-                    <Text color={'white'} fontSize={'xs'} fontWeight={'400'}>
-                      پرطرفدار ترین
-                    </Text>
-                    <Text color={'white'} fontSize={'sm'}>
-                      خودروی سواری دست دوم کارکرده خوش فرمون خوش پوش
-                    </Text>
-                  </VStack>
-                </Center>
-              )}
-              autoplay
-              loop
-              nestedScrollEnabled
-            />
-            <IconButton
-              _pressed={{bg: '#ffffff7e'}}
-              icon={<ArrowRight2 color={'#0000007e'} variant={'Bold'} />}
-              left={2}
-              onPress={() => carouselRef.current?.snapToNext()}
-              position={'absolute'}
-            />
-          </HStack>
+          {/*<HStack alignItems={'center'} mt={12} px={8}>*/}
+          {/*  <IconButton*/}
+          {/*    _pressed={{bg: '#ffffff7e'}}*/}
+          {/*    icon={<ArrowLeft2 color={'#0000007e'} variant={'Bold'} />}*/}
+          {/*    onPress={() => carouselRef.current?.snapToPrev()}*/}
+          {/*    position={'absolute'}*/}
+          {/*    right={2}*/}
+          {/*  />*/}
+          {/*  <Carousel*/}
+          {/*    ref={carouselRef}*/}
+          {/*    data={[1, 2, 3]}*/}
+          {/*    itemWidth={width - sizes[8] * 2}*/}
+          {/*    sliderWidth={width - sizes[8] * 2}*/}
+          {/*    renderItem={({item}) => (*/}
+          {/*      <Center h="32">*/}
+          {/*        <VStack*/}
+          {/*          alignItems={'flex-start'}*/}
+          {/*          bg={'black'}*/}
+          {/*          h={32}*/}
+          {/*          justifyContent={'center'}*/}
+          {/*          px={8}*/}
+          {/*          rounded={'3xl'}*/}
+          {/*          w={'72'}>*/}
+          {/*          <Text color={'white'} fontSize={'xs'} fontWeight={'400'}>*/}
+          {/*            پرطرفدار ترین*/}
+          {/*          </Text>*/}
+          {/*          <Text color={'white'} fontSize={'sm'}>*/}
+          {/*            خودروی سواری دست دوم کارکرده خوش فرمون خوش پوش*/}
+          {/*          </Text>*/}
+          {/*        </VStack>*/}
+          {/*      </Center>*/}
+          {/*    )}*/}
+          {/*    autoplay*/}
+          {/*    loop*/}
+          {/*    nestedScrollEnabled*/}
+          {/*  />*/}
+          {/*  <IconButton*/}
+          {/*    _pressed={{bg: '#ffffff7e'}}*/}
+          {/*    icon={<ArrowRight2 color={'#0000007e'} variant={'Bold'} />}*/}
+          {/*    left={2}*/}
+          {/*    onPress={() => carouselRef.current?.snapToNext()}*/}
+          {/*    position={'absolute'}*/}
+          {/*  />*/}
+          {/*</HStack>*/}
           <VStack mt={'1/6'}>
             <VStack
               alignSelf={'flex-end'}

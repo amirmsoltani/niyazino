@@ -16,7 +16,7 @@ import {
 } from '~/hooks';
 import {CallCalling, Icon, Receipt21, Save2} from 'iconsax-react-native';
 import {RootParamList} from '~/screens/type';
-import {Animated, Dimensions} from 'react-native';
+import {Animated, Dimensions, Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {httpClear} from '~/store/slices';
 import {syncStorageAction} from '~/store/Actions';
@@ -27,8 +27,9 @@ import socketEmit from '~/store/Actions/socketEmit.action';
 const {width} = Dimensions.get('window');
 const sixtyPercent = Math.floor(width * 0.6);
 const drawerItems: {
+  link?: string;
   name: string;
-  path: keyof Pick<
+  path?: keyof Pick<
     RootParamList,
     'userBookmarksScreen' | 'userAdvertisingScreen'
   >;
@@ -41,8 +42,8 @@ const drawerItems: {
   },
   {name: 'نشان شده ها', path: 'userBookmarksScreen', Icon: Save2},
   {
+    link: 'https://niyazino.com/',
     name: 'پشتیبانی',
-    path: 'userAdvertisingScreen',
     Icon: CallCalling,
   },
 ];
@@ -142,7 +143,7 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
         </Button>
         {isLogin ? (
           <VStack borderTopColor={'gray.200'} borderTopWidth={1}>
-            {drawerItems.map(({name, path, Icon}) => (
+            {drawerItems.map(({name, path, Icon, link}) => (
               <Pressable
                 key={name}
                 _pressed={{bg: 'orange.300'}}
@@ -154,7 +155,14 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
                 py={4}
                 onPress={() => {
                   closeDrawer();
-                  navigation.navigate(path);
+                  if (link) {
+                    Linking.canOpenURL(link).then(() => {
+                      Linking.openURL(link);
+                    });
+                  }
+                  if (path) {
+                    navigation.navigate(path);
+                  }
                 }}>
                 <Text fontWeight={'600'} mr={'10'}>
                   {name}

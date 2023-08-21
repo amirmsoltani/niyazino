@@ -49,20 +49,20 @@ const ChatListScreen: FC<Props> = ({navigation, route}) => {
               چت نیازینو
             </Text>
 
-            <Button
-              _pressed={{bg: 'orange.300'}}
-              onPress={() => setDrawerStatus(true)}
-              p={2}
-              variant={'ghost'}>
-              <Image
-                alt={'icon'}
-                m={0}
-                maxH={'30px'}
-                maxW={'30px'}
-                resizeMode={'contain'}
-                source={menuIcon}
-              />
-            </Button>
+            {/*<Button*/}
+            {/*  _pressed={{bg: 'orange.300'}}*/}
+            {/*  onPress={() => setDrawerStatus(true)}*/}
+            {/*  p={2}*/}
+            {/*  variant={'ghost'}>*/}
+            {/*  <Image*/}
+            {/*    alt={'icon'}*/}
+            {/*    m={0}*/}
+            {/*    maxH={'30px'}*/}
+            {/*    maxW={'30px'}*/}
+            {/*    resizeMode={'contain'}*/}
+            {/*    source={menuIcon}*/}
+            {/*  />*/}
+            {/*</Button>*/}
           </HStack>
         </VStack>
       }

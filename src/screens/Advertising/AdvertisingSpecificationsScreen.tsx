@@ -244,7 +244,7 @@ const AdvertisingSpecificationsScreen: FC<Props> = ({navigation}) => {
                 ?.map((attribute, index) =>
                   [undefined, null, '', '-1'].includes(attribute) ? null : (
                     <HStack
-                      key={attribute + index}
+                      key={attribute! + index}
                       alignItems={'center'}
                       justifyContent={'space-between'}
                       mb={6}>

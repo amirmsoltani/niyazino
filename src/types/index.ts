@@ -15,3 +15,4 @@ export * from './MessageType';
 export * from './SocketEmitsType';
 export * from './SocketReceivesType';
 export * from './SocketSliceType';
+export * from './ProfileType';

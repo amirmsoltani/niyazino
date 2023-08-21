@@ -11,6 +11,7 @@ import {
   ProvinceType,
   RequestListType,
   RequestType,
+  UpdateProfileType,
   UserBookmarkType,
   UserType,
 } from '~/types';
@@ -37,7 +38,8 @@ type RequestKeys =
   | 'getMe'
   | 'logOut'
   | 'attributes'
-  | 'contactInfo';
+  | 'contactInfo'
+  | 'updateProfile';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + '/v1/categories',
@@ -114,6 +116,11 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     method: 'get',
     auth: true,
   },
+  updateProfile: {
+    url: BASE_URL + '/users/profile',
+    method: 'post',
+    auth: true,
+  },
 };
 
 export type RequestListTypes = {
@@ -148,6 +155,9 @@ export type RequestListTypes = {
   logOut: undefined;
   attributes: {params: {id: number}};
   contactInfo: {params: {id: number}};
+  updateProfile: {
+    data: Partial<UpdateProfileType>;
+  };
 };
 
 export type ResponseListType = {
@@ -167,4 +177,5 @@ export type ResponseListType = {
   logOut: RequestType<'data', null>;
   attributes: RequestType<'attributes', AttributeType[]>;
   contactInfo: RequestType<'mobile', string>;
+  updateProfile: UpdateProfileType;
 };
