@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import {
-  AspectRatio,
   Box,
   FormControl,
   HStack,
@@ -28,7 +27,7 @@ import {useAppSelector} from '~/hooks/reduxHooks';
 import dayjs from 'dayjs';
 import {socketClear} from '~/store/slices';
 import {convertNumToPersian} from '~/util/ChangeToJalali';
-import {TouchableOpacity, Image, Modal} from 'react-native';
+import {Image, Modal, TouchableOpacity} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import ImageView from 'react-native-image-zoom-viewer';
 
@@ -60,6 +59,7 @@ const ChatScreen: FC<Props> = ({navigation, route}) => {
         user_id: route.params.userId,
       }),
     );
+    dispatch(socketEmit('readMessage', route.params.adId));
     return () => {
       dispatch(socketClear('getMessages'));
     };
@@ -85,7 +85,6 @@ const ChatScreen: FC<Props> = ({navigation, route}) => {
     }).then(response => {
       if (!response.didCancel) {
         const asset = response.assets![0];
-        console.log(asset.fileSize);
         if (asset.fileSize! > 1024 * 1024 * 4) {
           return;
         }
@@ -145,7 +144,7 @@ const ChatScreen: FC<Props> = ({navigation, route}) => {
                     : 'flex-end'
                 }>
                 <Stack
-                  minW={'20'}
+                  minW={24}
                   pb={3}
                   shadow={1}
                   style={[
@@ -185,19 +184,21 @@ const ChatScreen: FC<Props> = ({navigation, route}) => {
                   <Text
                     alignSelf={'flex-start'}
                     bottom={0}
-                    fontSize={'2xs'}
+                    fontSize={8}
                     fontWeight={500}
                     left={3}
                     position={'absolute'}>
                     {convertNumToPersian(
-                      dayjs(message.created_at).format('h:mm A'),
+                      dayjs(message.created_at * 1000)
+                        .locale('fa')
+                        .fromNow(),
                     )}{' '}
-                    {message.from_id !== route.params.userId ? (
-                      <Text fontSize={'8px'} letterSpacing={-3}>
-                        &#x2713;
-                        {message.readed ? '\u2713' : null}
-                      </Text>
-                    ) : null}
+                    {/*{message.from_id !== route.params.userId ? (*/}
+                    {/*  <Text fontSize={'8px'} letterSpacing={-3}>*/}
+                    {/*    &#x2713;*/}
+                    {/*    {message.readed ? '\u2713' : null}*/}
+                    {/*  </Text>*/}
+                    {/*) : null}*/}
                   </Text>
                 </Stack>
               </HStack>
@@ -236,7 +237,12 @@ const ChatScreen: FC<Props> = ({navigation, route}) => {
           />
         </FormControl>
       </HStack>
-      <Modal visible={!!preview} transparent>
+      <Modal
+        visible={!!preview}
+        onRequestClose={() => {
+          setPreview(undefined);
+        }}
+        transparent>
         <ImageView
           imageUrls={[
             {

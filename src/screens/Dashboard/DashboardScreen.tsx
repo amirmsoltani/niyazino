@@ -90,10 +90,8 @@ const DashboardScreen: FC<Props> = ({navigation}) => {
                   m={2}
                   rounded={'full'}
                   onPress={() => {
-                    if (inputText !== '') {
-                      dispatch(advertisingSetData({title: inputText}));
-                      navigation.navigate('createAdvertisingCategoryScreen');
-                    }
+                    dispatch(advertisingSetData({title: inputText}));
+                    navigation.navigate('createAdvertisingCategoryScreen');
                   }}
                 />
               }
@@ -172,11 +170,11 @@ const DashboardScreen: FC<Props> = ({navigation}) => {
                 mt={4}
                 textAlign={'justify'}>
                 نیازینو پلتفرمی متفاوت از تمام نیازمندی هاست در اینجا به جای
-                فروشندگان. خریداران و متقاضیان خدمات و کالا آگهی ثبت میکنند. در
+                فروشندگان،خریداران و متقاضیان خدمات و کالا آگهی ثبت میکنند. در
                 نیازینو نیازی نیست که خریداران در میان انبوه آگهی های نیازمندی
                 ها به دنبال خواسته خود بگردن بلکه آنچه نیاز دارند را ثبت میکنند
-                و فروشندگانی که آرن کالا یا خدمات را برای ارائه دارد با خریدار
-                ارتباط برقراد میکنند
+                و فروشندگانی که آن کالا یا خدمات را برای ارائه دارند با خریدار
+                ارتباط برقرار می نمایند
               </Text>
               <VideoPlayer
                 thumbnail={require('~/assets/images/logoWhite.png')}

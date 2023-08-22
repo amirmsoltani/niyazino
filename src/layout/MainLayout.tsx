@@ -1,5 +1,5 @@
 import React, {FC, ReactNode, useRef} from 'react';
-import {HStack, IconButton, ScrollView, Stack, useTheme} from 'native-base';
+import {HStack, ScrollView, Stack, Text, useTheme} from 'native-base';
 import {Add, Home2, Icon, MessageMinus, Note} from 'iconsax-react-native';
 import {
   AuthModal,
@@ -13,6 +13,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {RootParamList} from '~/screens/type';
 import {useAppSelector} from '~/hooks/reduxHooks';
 import {shallowEqual} from 'react-redux';
+import {TouchableOpacity} from 'react-native';
 
 type Props = {children: ReactNode; bg?: ColorType; hiddenElements?: ReactNode};
 
@@ -29,9 +30,9 @@ const items: {
   bg?: ColorType;
   color?: string;
 }[] = [
-  {path: 'dashboardScreen', Icon: Home2, name: 'home'},
-  {path: 'advertisingListScreen', Icon: Note, name: 'list'},
-  {path: 'chatListScreen', Icon: MessageMinus, name: 'chat'},
+  {path: 'dashboardScreen', Icon: Home2, name: 'داشبورد'},
+  {path: 'advertisingListScreen', Icon: Note, name: 'لیست آگهی ها'},
+  {path: 'chatListScreen', Icon: MessageMinus, name: 'گفتگو'},
   {
     path: 'createAdvertisingCategoryScreen',
     Icon: Add,
@@ -50,8 +51,8 @@ const MainLayout: FC<Props> = ({
   const route = useRoute();
   const {isLogin, self} = useAppSelector(
     state => ({
-      isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
       self: state.http.getMe,
+      isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
     }),
     shallowEqual,
   );
@@ -78,13 +79,31 @@ const MainLayout: FC<Props> = ({
           shadow={9}
           w={'full'}>
           {items.map(({name, Icon, path, ...btn}) => (
-            <TabItem key={name} active={route.name === path}>
-              <IconButton
-                bg={btn.bg || 'transparent'}
-                h={'14'}
-                rounded={'full'}
-                w={'14'}
-                icon={
+            <TouchableOpacity
+              key={name}
+              onPress={() => {
+                if (path === 'chatListScreen') {
+                  if (!isLogin) {
+                    return authRef.current?.setStatus(true);
+                  } else if (
+                    self?.httpRequestStatus === 'success' &&
+                    self.data?.data.user.first_name === null
+                  ) {
+                    return userDataRef.current?.setStatus(true);
+                  }
+                }
+                navigation.navigate(path);
+              }}>
+              <TabItem active={route.name === path}>
+                <Stack
+                  alignItems={'center'}
+                  bg={btn.bg || 'transparent'}
+                  h={path === 'createAdvertisingCategoryScreen' ? 14 : 'auto'}
+                  justifyContent={'center'}
+                  pb={path === 'createAdvertisingCategoryScreen' ? 2 : 1}
+                  pt={2}
+                  rounded={'full'}
+                  w={'14'}>
                   <Icon
                     size={28}
                     color={
@@ -92,23 +111,22 @@ const MainLayout: FC<Props> = ({
                       (route.name === path ? 'black' : colors.gray['400'])
                     }
                   />
-                }
-                onPress={() => {
-                  if (path === 'chatListScreen') {
-                    if (!isLogin) {
-                      return authRef.current?.setStatus(true);
-                    }
-                    // else if (
-                    //   self?.httpRequestStatus === 'success' &&
-                    //   self.data?.data.user.first_name === null
-                    // ) {
-                    //   return userDataRef.current?.setStatus(true);
-                    // }
-                  }
-                  navigation.navigate(path);
-                }}
-              />
-            </TabItem>
+                </Stack>
+
+                {path !== 'createAdvertisingCategoryScreen' ? (
+                  <Text
+                    fontSize={12}
+                    fontWeight={'semibold'}
+                    pb={2}
+                    color={
+                      btn.color ||
+                      (route.name === path ? 'black' : colors.gray['400'])
+                    }>
+                    {name}
+                  </Text>
+                ) : null}
+              </TabItem>
+            </TouchableOpacity>
           ))}
         </HStack>
       </ScrollView>

@@ -44,6 +44,7 @@ import {syncStorageAction} from '~/store/Actions';
 import {findParentCategory} from '~/util/FindParentCategory';
 import {mapPrice} from '~/util/MapPrice';
 import {priceFormat} from '~/util/PriceFormat';
+import {RefreshControl} from 'react-native';
 
 type Props = StackScreenProps<RootParamList, 'advertisingListScreen'>;
 
@@ -236,7 +237,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
               pl={12}
               rounded={'full'}
               shadow={4}
-              w={'78%'}>
+              w={'full'}>
               <Box
                 bg={'white'}
                 p={3}
@@ -267,6 +268,7 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
               _pressed={{bg: 'orange.400'}}
               alignItems={'flex-end'}
               bg={'gray.400'}
+              display={'none'}
               flexGrow={1}
               h={8}
               justifyContent={'center'}
@@ -388,6 +390,32 @@ const AdvertisingListScreen: FC<Props> = ({navigation}) => {
           }
         }
       }}
+      refreshControl={
+        <RefreshControl
+          onRefresh={() => {
+            if (locations.city && locations.province) {
+              setFilters({...filters, page: 1});
+              const districts = Object.entries(locations.districts);
+              const queryString: AdvertisementListQueryStringType = {
+                province_id: locations.province!.id,
+                city_id: locations.city!.id,
+                page: 1,
+              };
+              if (districts.length && districts.every(([id]) => id !== '-1')) {
+                queryString['districts_ids[]'] = districts.map(([id]) => id);
+              }
+              request('listAdvertisements', {
+                queryString,
+                addToList: false,
+              });
+              lastFilter.current = filters;
+            }
+          }}
+          refreshing={
+            list?.httpRequestStatus === 'loading' && !!list?.data?.data
+          }
+        />
+      }
       renderItem={({item}) => {
         const selectedCategory =
           category.categoriesObject[

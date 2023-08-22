@@ -39,7 +39,8 @@ type RequestKeys =
   | 'logOut'
   | 'attributes'
   | 'contactInfo'
-  | 'updateProfile';
+  | 'updateProfile'
+  | 'version';
 export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
   categoryList: {
     url: BASE_URL + '/v1/categories',
@@ -117,10 +118,11 @@ export const RequestList: {[k in RequestKeys]: ActionRequestType} = {
     auth: true,
   },
   updateProfile: {
-    url: BASE_URL + '/users/profile',
+    url: BASE_URL + '/v1/users/profile',
     method: 'post',
     auth: true,
   },
+  version: {url: BASE_URL + '/v1/version', method: 'get', auth: true},
 };
 
 export type RequestListTypes = {
@@ -158,6 +160,7 @@ export type RequestListTypes = {
   updateProfile: {
     data: Partial<UpdateProfileType>;
   };
+  version: undefined;
 };
 
 export type ResponseListType = {
@@ -178,4 +181,5 @@ export type ResponseListType = {
   attributes: RequestType<'attributes', AttributeType[]>;
   contactInfo: RequestType<'mobile', string>;
   updateProfile: UpdateProfileType;
+  version: {version: string};
 };

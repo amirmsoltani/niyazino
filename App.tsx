@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import duration from 'dayjs/plugin/duration';
+import 'dayjs/locale/fa';
+import {UpdateModal} from '~/layout';
 
 const config = {
   dependencies: {
@@ -25,6 +27,7 @@ const App = () => {
     <NavigationContainer>
       <NativeBaseProvider config={config} theme={customTheme}>
         <Provider store={store}>
+          <UpdateModal />
           <Screens />
         </Provider>
       </NativeBaseProvider>

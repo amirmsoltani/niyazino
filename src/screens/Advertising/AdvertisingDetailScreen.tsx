@@ -45,6 +45,8 @@ import {
   AuthModalRef,
   ContactInformationModal,
   ContactInformationModalRef,
+  UserDataModal,
+  UserDataModalRef,
 } from '~/components';
 
 const {width} = Dimensions.get('window');
@@ -54,11 +56,12 @@ type Props = StackScreenProps<RootParamList, 'advertisingDetailScreen'>;
 const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
   const carouselRef = useRef<Carousel<any>>(null);
   const authRef = useRef<AuthModalRef>(null);
+  const userDataRef = useRef<UserDataModalRef>(null);
   const contactRef = useRef<ContactInformationModalRef>(null);
   const [preview, setPreview] = useState<number | undefined>(undefined);
   const {sizes} = useTheme();
   const {
-    state: {detail, category, isLogin, contact},
+    state: {detail, category, isLogin, contact, self},
     request,
   } = useHttpRequest({
     selector: state => ({
@@ -66,6 +69,7 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
       category: state.categories,
       isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
       contact: state.http.contactInfo,
+      self: state.http.getMe,
     }),
     clearAfterUnmount: ['detailAdvertisements'],
     initialRequests: request => {
@@ -99,7 +103,12 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
       ];
     return (
       <Stack flex={1}>
-        <Modal visible={preview !== undefined} transparent>
+        <Modal
+          visible={preview !== undefined}
+          onRequestClose={() => {
+            setPreview(undefined);
+          }}
+          transparent>
           <ImageView
             imageUrls={data.images.map(image => ({url: image}))}
             index={preview}
@@ -116,6 +125,7 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
           />
         </Modal>
         <AuthModal ref={authRef} />
+        <UserDataModal ref={userDataRef} />
         <ContactInformationModal
           ref={contactRef}
           phoneNumber={contact?.data?.data?.mobile || ''}
@@ -379,6 +389,11 @@ const AdvertisingDetailScreen: FC<Props> = ({navigation, route}) => {
                 adTitle: data?.title || '',
                 userId: data?.user_id || 0,
               });
+            } else if (
+              self?.httpRequestStatus === 'success' &&
+              self.data?.data.user.first_name === null
+            ) {
+              return userDataRef.current?.setStatus(true);
             } else {
               authRef.current?.setStatus(true);
             }

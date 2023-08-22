@@ -9,7 +9,6 @@ import {
   VStack,
 } from 'native-base';
 import {Controller, useForm} from 'react-hook-form';
-import {UserAdd} from 'iconsax-react-native';
 import {useHttpRequest} from '~/hooks';
 import {UserType} from '~/types';
 
@@ -36,6 +35,20 @@ const UserDataModal = forwardRef<RefType, PropsType>((props, ref) => {
       self: state.http.getMe,
       update: state.http.updateProfile,
     }),
+    onUpdate: (lastState, state) => {
+      if (
+        lastState.update?.httpRequestStatus === 'loading' &&
+        state.update?.httpRequestStatus === 'success'
+      ) {
+        request('getMe', undefined);
+      }
+      if (
+        lastState.self?.httpRequestStatus === 'loading' &&
+        state.self?.httpRequestStatus === 'success'
+      ) {
+        setState({isOpen: false});
+      }
+    },
   });
   const setStatus: RefType['setStatus'] = (open = false) => {
     if (open !== state.isOpen) {

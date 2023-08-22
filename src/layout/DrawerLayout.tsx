@@ -4,6 +4,7 @@ import {
   Button,
   HStack,
   Pressable,
+  Stack,
   Text,
   useTheme,
   VStack,
@@ -14,7 +15,7 @@ import {
   drawerReducer,
   useHttpRequest,
 } from '~/hooks';
-import {CallCalling, Icon, Receipt21, Save2} from 'iconsax-react-native';
+import {CallCalling, Icon, Receipt21, User} from 'iconsax-react-native';
 import {RootParamList} from '~/screens/type';
 import {Animated, Dimensions, Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -40,7 +41,7 @@ const drawerItems: {
     path: 'userAdvertisingScreen',
     Icon: Receipt21,
   },
-  {name: 'نشان شده ها', path: 'userBookmarksScreen', Icon: Save2},
+  // {name: 'نشان شده ها', path: 'userBookmarksScreen', Icon: Save2},
   {
     link: 'https://niyazino.com/',
     name: 'پشتیبانی',
@@ -121,7 +122,9 @@ const DrawerLayout: FC<PropsType> = ({children}) => {
                 user.data!.data[user.data!.__typename].mobile,
               )}
             </Text>
-            <Avatar bg={'coolGray.200'}>AM</Avatar>
+            <Stack bg={'gray.300'} p={3} rounded={'full'}>
+              <User color={'black'} />
+            </Stack>
           </HStack>
         ) : null}
         <Button

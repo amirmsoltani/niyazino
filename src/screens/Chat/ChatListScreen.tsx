@@ -1,15 +1,6 @@
 import React, {FC, useEffect} from 'react';
 import {VirtualizeMainLayout} from '~/layout';
-import {
-  Button,
-  HStack,
-  Image,
-  StatusBar,
-  Text,
-  useTheme,
-  VStack,
-} from 'native-base';
-import {useDrawer} from '~/hooks';
+import {HStack, StatusBar, Text, useTheme, VStack} from 'native-base';
 import {ChatCard} from '~/components';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootParamList} from '~/screens/type';
@@ -18,14 +9,12 @@ import socketEmit from '~/store/Actions/socketEmit.action';
 import dayjs from 'dayjs';
 import {changeToJalali, regMapToJalali} from '~/util/ChangeToJalali';
 import {socketClear} from '~/store/slices';
-
-const menuIcon = require('src/assets/images/menuIcon.png');
+import {RefreshControl} from 'react-native';
 
 type Props = StackScreenProps<RootParamList, 'chatListScreen'>;
 
-const ChatListScreen: FC<Props> = ({navigation, route}) => {
+const ChatListScreen: FC<Props> = ({navigation}) => {
   const {colors} = useTheme();
-  const {setDrawerStatus} = useDrawer();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -72,9 +61,19 @@ const ChatListScreen: FC<Props> = ({navigation, route}) => {
           barStyle={'dark-content'}
         />
       }
+      refreshControl={
+        <RefreshControl
+          refreshing={chats?.status === 'loading'}
+          onRefresh={() => {
+            dispatch(socketClear('getChats'));
+            dispatch(socketEmit('getChats', 1));
+          }}
+        />
+      }
       renderItem={({item}) => (
         <ChatCard
           id={item.id}
+          isRead={item.readed}
           title={item.title}
           onPress={() =>
             navigation.navigate('chatScreen', {

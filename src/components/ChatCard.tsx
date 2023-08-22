@@ -8,13 +8,14 @@ type PropsType = {
   time: string;
   id: number;
   onPress?: (id: number) => void;
+  isRead: boolean;
 };
-const ChatCard: FC<PropsType> = ({user, title, id, time, onPress}) => {
+const ChatCard: FC<PropsType> = ({user, title, id, time, onPress, isRead}) => {
   return (
     <Pressable
       _pressed={{bg: 'orange.300'}}
       alignItems={'center'}
-      bg={'white'}
+      bg={isRead ? 'white' : 'orange.200'}
       flex={1}
       flexDirection={'row'}
       m={2}

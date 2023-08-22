@@ -1,11 +1,20 @@
-import React, {forwardRef, ReactNode} from 'react';
-import {FlatList, HStack, IconButton, Stack, useTheme} from 'native-base';
+import React, {forwardRef, ReactNode, useRef} from 'react';
+import {FlatList, HStack, Stack, Text, useTheme} from 'native-base';
 import {Add, Home2, Icon, MessageMinus, Note} from 'iconsax-react-native';
-import {TabItem} from '~/components';
+import {
+  AuthModal,
+  AuthModalRef,
+  TabItem,
+  UserDataModal,
+  UserDataModalRef,
+} from '~/components';
 import {ColorType} from 'native-base/lib/typescript/components/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {RootParamList} from '~/screens/type';
 import {IFlatListProps} from 'native-base/lib/typescript/components/basic/FlatList';
+import {TouchableOpacity} from 'react-native';
+import {useAppSelector} from '~/hooks/reduxHooks';
+import {shallowEqual} from 'react-redux';
 
 type Props<ItemI> = IFlatListProps<ItemI> & {
   hiddenElements?: ReactNode;
@@ -25,9 +34,9 @@ const items: {
   bg?: ColorType;
   color?: string;
 }[] = [
-  {path: 'dashboardScreen', Icon: Home2, name: 'home'},
-  {path: 'advertisingListScreen', Icon: Note, name: 'list'},
-  {path: 'chatListScreen', Icon: MessageMinus, name: 'chat'},
+  {path: 'dashboardScreen', Icon: Home2, name: 'داشبورد'},
+  {path: 'advertisingListScreen', Icon: Note, name: 'لیست آگهی ها'},
+  {path: 'chatListScreen', Icon: MessageMinus, name: 'گفتگو'},
   {
     path: 'createAdvertisingCategoryScreen',
     Icon: Add,
@@ -38,13 +47,25 @@ const items: {
 ];
 const MainLayout = forwardRef(
   ({hiddenElements, header, ...props}, ref: any) => {
+    const {isLogin, self} = useAppSelector(
+      state => ({
+        isLogin: state.http.verifyCode?.httpRequestStatus === 'success',
+        self: state.http.getMe,
+      }),
+      shallowEqual,
+    );
+    const authRef = useRef<AuthModalRef>(null);
+    const userDataRef = useRef<UserDataModalRef>(null);
     const {colors} = useTheme();
     const navigation = useNavigation();
     const route = useRoute();
+
     return (
       <Stack bg={props.bg} h={'full'} safeArea>
         {hiddenElements}
         {header}
+        <AuthModal ref={authRef} />
+        <UserDataModal ref={userDataRef} />
         <Stack flex={1}>
           <FlatList {...props} ref={ref} />
         </Stack>
@@ -58,14 +79,31 @@ const MainLayout = forwardRef(
           shadow={9}
           w={'full'}>
           {items.map(({name, Icon, path, ...btn}) => (
-            <TabItem key={name} active={route.name === path}>
-              <IconButton
-                bg={btn.bg || 'transparent'}
-                h={'14'}
-                onPress={() => navigation.navigate(path)}
-                rounded={'full'}
-                w={'14'}
-                icon={
+            <TouchableOpacity
+              key={name}
+              onPress={() => {
+                if (path === 'chatListScreen') {
+                  if (!isLogin) {
+                    return authRef.current?.setStatus(true);
+                  } else if (
+                    self?.httpRequestStatus === 'success' &&
+                    self.data?.data.user.first_name === null
+                  ) {
+                    return userDataRef.current?.setStatus(true);
+                  }
+                }
+                navigation.navigate(path);
+              }}>
+              <TabItem active={route.name === path}>
+                <Stack
+                  alignItems={'center'}
+                  bg={btn.bg || 'transparent'}
+                  h={path === 'createAdvertisingCategoryScreen' ? 14 : 'auto'}
+                  justifyContent={'center'}
+                  pb={path === 'createAdvertisingCategoryScreen' ? 2 : 1}
+                  pt={2}
+                  rounded={'full'}
+                  w={'14'}>
                   <Icon
                     size={28}
                     color={
@@ -73,9 +111,22 @@ const MainLayout = forwardRef(
                       (route.name === path ? 'black' : colors.gray['400'])
                     }
                   />
-                }
-              />
-            </TabItem>
+                </Stack>
+
+                {path !== 'createAdvertisingCategoryScreen' ? (
+                  <Text
+                    fontSize={12}
+                    fontWeight={'semibold'}
+                    pb={2}
+                    color={
+                      btn.color ||
+                      (route.name === path ? 'black' : colors.gray['400'])
+                    }>
+                    {name}
+                  </Text>
+                ) : null}
+              </TabItem>
+            </TouchableOpacity>
           ))}
         </HStack>
       </Stack>

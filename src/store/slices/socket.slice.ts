@@ -3,7 +3,12 @@ import {
   SocketEmitAction,
   SocketEmitActionType,
 } from '~/store/Actions/socketEmit.action';
-import {MessageType, SocketReceivesType, SocketSliceType} from '~/types';
+import {
+  MessageType,
+  SocketEmitsType,
+  SocketReceivesType,
+  SocketSliceType,
+} from '~/types';
 import {
   SocketReceiveAction,
   SocketReceiveActionType,
@@ -26,6 +31,20 @@ export const socketSlice = createSlice({
     builder.addCase(SocketEmitAction, (state, action: SocketEmitActionType) => {
       if (action._name === 'userConnect') {
         return {...state, status: 'success'};
+      } else if (action._name === 'readMessage') {
+        const request = action.payload as SocketEmitsType['readMessage'];
+        if (state.getChats?.status === 'success') {
+          const index = state.getChats?.data!.data.findIndex(
+            chat => chat.advertisement_id === request,
+          );
+          if (index !== -1) {
+            state.getChats.data!.data[index] = {
+              ...state.getChats.data!.data[index],
+              readed: true,
+            };
+            return void 0;
+          }
+        }
       }
       const name = action._name as Exclude<typeof action._name, 'disconnect'>;
       return {

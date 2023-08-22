@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Box, HStack, Pressable, Text, VStack} from 'native-base';
-import {Car, Chart21, Clock} from 'iconsax-react-native';
+import {Chart21, Clock, Stickynote} from 'iconsax-react-native';
 import {mapStatus} from '~/util/MapStatus';
 
 type PropsType = {
@@ -35,7 +35,7 @@ const AdvertisingCard: FC<PropsType> = ({
       rounded={'3xl'}
       shadow={4}>
       <Box bg={'orange.100'} p={3} rounded={'full'}>
-        <Car color={'black'} size={28} />
+        <Stickynote color={'black'} size={28} />
       </Box>
       <VStack flex={1} ml={2}>
         <Text fontSize={'md'} fontWeight={700}>
